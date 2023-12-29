@@ -1,6 +1,5 @@
 package geometries;
 
-import java.awt.*;
 import primitives.*;
 
 /**
@@ -12,6 +11,6 @@ public interface Geometry {
      * @param p is a point
      * @return Vector normal to the point on the shape
      */
-    Vector GetNormal(Point p);
+    public Vector GetNormal(Point p);
 
 }
