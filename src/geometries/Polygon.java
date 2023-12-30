@@ -79,6 +79,6 @@ public class Polygon implements Geometry {
       }
    }
 
-   public Vector GetNormal(Point point) { return plane.GetNormal(); }
+   public Vector getNormal(Point point) { return plane.GetNormal(); }
 
 }

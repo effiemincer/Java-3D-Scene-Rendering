@@ -2,24 +2,15 @@ package geometries;
 
 import primitives.*;
 
-public class Cylinder extends Tube{
-    private final double height ;
-
-    /**
-     * ctor that initializes RadialGeometry
-     * JUST DID THIS TO AVOID ERRORS
-     *
-     * @param r    which is the radius
-     * @param axis
-     */
-    Cylinder(double r, Ray axis, double height) {
-        super(r, axis);
-        this.height = height;
-    }
-
+/**
+ * Represents a cylinder in a three-dimensional (3D) space, inheriting from the Tube class.
+ * The cylinder is defined by its radius, axis, and height.
+ */
+public class Cylinder extends Tube {
+    private double height; // The height of the cylinder
 
     @Override
-    public Vector GetNormal(Point p) {
-        return null;
+    public Vector getNormal(Point p) {
+        return null; // Currently returns null as the normal calculation is not implemented for a cylinder
     }
 }
