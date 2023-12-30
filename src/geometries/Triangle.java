@@ -1,15 +1,21 @@
 package geometries;
 import primitives.*;
 
+/**
+ * Represents a Triangle, a type of Polygon, defined by three points.
+ */
 public class Triangle extends Polygon {
+
     /**
-     * Triangle Constructor using parent ctor from Polygon, takes 3 points and makes a triangle
-     * @param a 1st point of triangle
-     * @param b 2nd point on triangle
-     * @param c 3rd point of triangle
+     * Constructs a Triangle object with three specified points.
+     *
+     * @param a The first point of the triangle.
+     * @param b The second point of the triangle.
+     * @param c The third point of the triangle.
      */
     public Triangle(Point a, Point b, Point c) {
         super(a, b, c);
     }
 }
+
 
