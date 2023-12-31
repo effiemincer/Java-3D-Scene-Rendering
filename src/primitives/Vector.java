@@ -8,6 +8,7 @@ public class Vector extends Point {
 
         super(d1, d2, d3);
         checkForZeroVector(d1, d2, d3);
+
     }
 
     Vector(Double3 point) {
