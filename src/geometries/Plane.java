@@ -2,47 +2,54 @@ package geometries;
 
 import primitives.*;
 
-public class Plane implements Geometry{
-    private final Point q;
-    private final Vector normal;
+/**
+ * Represents a plane in a three-dimensional (3D) space, defined by a point on the plane (q) and a normal vector.
+ * The plane implements the Geometry interface.
+ */
+public class Plane implements Geometry {
+    private final Point q; // A point on the plane
+    private final Vector normal; // The normal vector to the plane
 
     /**
-     * ctor with 3 points, finds normal and saves 1 point as reference
-     * @param a
-     * @param b
-     * @param c
+     * Constructs a Plane object defined by three points (a, b, c) on the plane.
+     * Calculates the normal to the plane using the given points.
+     *
+     * @param a A point on the plane.
+     * @param b Another point on the plane.
+     * @param c Yet another point on the plane.
      */
     Plane(Point a, Point b, Point c){
-        normal = null;
-        q = a;
+        // Calculating the normal to the plane
+        // AB x AC = normal
+        Vector ab = b.subtract(a);
+        Vector ac = c.subtract(a);
+        this.normal = ab.crossProduct(ac).normalize(); // Calculates and normalizes the normal vector
+        this.q = a; // Initializes the point 'q' on the plane
     }
 
     /**
-     * Ctor which accepts point and vector param
-     * @param p reference point for plane
-     * @param n normal vector
+     * Constructs a Plane object with a specified point and normal vector.
+     *
+     * @param p      A point on the plane.
+     * @param normal The normal vector to the plane.
      */
-    Plane(Point p, Vector n){
-        q = p;
-        normal = n;
+    Plane(Point p, Vector normal){
+        this.q = p; // Initializes the point 'q' on the plane
+        this.normal = normal.normalize(); // Normalizes the provided normal vector
     }
 
     /**
-     * returns the normal of the plane
-     * @return Vector normal
+     * Retrieves the normal vector to the plane.
+     *
+     * @return The normal vector to the plane.
      */
     public Vector GetNormal() {
-        return normal;
+        return this.normal;
     }
 
-    /**
-     * returns the normal of the plane
-     * @return a Vector normal
-     */
     @Override
     public Vector GetNormal(Point p) {
-        //must implement more I think
-        return normal;
+        // Additional implementation might be needed for accurate normal at a specific point
+        return this.normal;
     }
-
 }
