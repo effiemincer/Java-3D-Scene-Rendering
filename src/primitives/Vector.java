@@ -6,6 +6,8 @@ package primitives;
  */
 public class Vector extends Point {
 
+    final int ZERO = 0;
+
     /**
      * Constructs a Vector object with three individual coordinates.
      *
@@ -75,7 +77,13 @@ public class Vector extends Point {
         double xProduct = this.xyz.d1 * other.xyz.d1;
         double yProduct = this.xyz.d2 * other.xyz.d2;
         double zProduct = this.xyz.d3 * other.xyz.d3;
-        return xProduct + yProduct + zProduct;
+        double sumProducts = xProduct + yProduct + zProduct;
+
+        // ! Necesary?
+        if (sumProducts == this.ZERO)
+            throw new IllegalArgumentException(("ERROR: dotProduct() for orthogonal vectors is not zero"));
+
+        return sumProducts;
     }
 
     /**

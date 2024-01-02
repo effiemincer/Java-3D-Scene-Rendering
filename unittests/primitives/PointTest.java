@@ -12,23 +12,10 @@ class PointTest {
         Point point1 = new Point(2, 2, 2);
         Point point2 = new Point(1, 1, 1);
 
-        Vector result = point1.subtract(point2);
-
-        assertEquals(result, new Vector(1, 1, 1));
+        assertEquals(point1.subtract(point2), new Vector(1, 1, 1), "ERROR: (point1 - point2) does not work correctly");
+        assertThrows(IllegalArgumentException.class, () -> point1.subtract(point1), "ERROR: (point - itself) does not throw an exception");
     }
 
-    @Test
-    void testSubtractResultsZero() {
-
-        Point point = new Point(1, 2, 3);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> point.subtract(point));
-
-        // Assert the exception message if needed
-        assertEquals("Can't subtract a point from itself", exception.getMessage());
-    }
-
-    // TODO: Check for P(1, 1, 1).add(V(-1, -1, -1)) ???
     @Test
     void testAdd() {
         Point point = new Point(1, 2, 3);
