@@ -37,20 +37,8 @@ public class Vector extends Point {
      * @throws IllegalArgumentException if the vector is initialized as a zero vector.
      */
     private void checkForZeroVector(double d1, double d2, double d3) {
-        // TODO: Check for syntax of new Double3(d1, d2, d3)
         if (new Double3(d1, d2, d3).equals(Double3.ZERO))
             throw new IllegalArgumentException("Vector Zero is not allowed");
-    }
-
-    /**
-     * Checks if a value is zero.
-     *
-     * @param value The value to check.
-     * @throws IllegalArgumentException if the value is zero.
-     */
-    private void checkForZero(double value) {
-        if (value == 0)
-            throw new IllegalArgumentException("Dividing by Zero is not allowed");
     }
 
     /**
@@ -129,7 +117,6 @@ public class Vector extends Point {
      */
     public Vector normalize() {
         double length = this.length();
-        this.checkForZero(length);
 
         double xNormalized = this.xyz.d1 / length;
         double yNormalized = this.xyz.d2 / length;

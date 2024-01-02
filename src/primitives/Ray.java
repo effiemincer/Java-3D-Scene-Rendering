@@ -11,11 +11,19 @@ public class Ray {
     /**
      * Constructs a Ray object initialized with a specified starting point and direction vector.
      *
-     * @param startingPoint The starting point of the ray.
+     * @param startingPoint   The starting point of the ray.
      * @param directionVector The direction vector of the ray.
      */
-    public Ray(Point startingPoint, Vector directionVector){
+    public Ray(Point startingPoint, Vector directionVector) {
         this.head = startingPoint;
         this.direction = directionVector.normalize(); // Normalizes the direction vector
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        return (other instanceof Ray obj)
+                && this.head.equals(obj.head)
+                && this.direction.equals(obj.direction);
     }
 }

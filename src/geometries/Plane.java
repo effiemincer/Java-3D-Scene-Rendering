@@ -48,7 +48,7 @@ public class Plane implements Geometry {
     }
 
     @Override
-    public Vector GetNormal(Point p) {
+    public Vector getNormal(Point p) {
         // Additional implementation might be needed for accurate normal at a specific point
         return this.normal;
     }
