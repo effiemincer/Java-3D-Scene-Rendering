@@ -114,7 +114,7 @@ public class Vector extends Point {
      * @return The length of the vector.
      */
     public double length() {
-        return Math.sqrt(this.lengthSquared());
+        return Math.sqrt(this.dotProduct(this));
     }
 
     /**
