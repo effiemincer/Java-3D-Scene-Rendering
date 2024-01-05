@@ -77,12 +77,12 @@ public final class Main {
         // Test Vector operations ===============================================
 
         // test length
-//        if (!isZero(v4.lengthSquared() - 9))
+        if (!isZero(v4.lengthSquared() - 9))
         // * DONE!
-//            out.println("ERROR: lengthSquared() wrong value");
-//        if (!isZero(v4.length() - 3))
+            out.println("ERROR: lengthSquared() wrong value");
+        if (!isZero(v4.length() - 3))
         // * DONE!
-//            out.println("ERROR: length() wrong value");
+           out.println("ERROR: length() wrong value");
 
         // Test add & subtract
         try {
@@ -105,12 +105,12 @@ public final class Main {
             out.println("ERROR: Vector + Vector does not work correctly");
 
         // test Dot-Product
-//        if (!isZero(v1.dotProduct(v3)))
+        if (!isZero(v1.dotProduct(v3)))
         // * DONE!
-//            out.println("ERROR: dotProduct() for orthogonal vectors is not zero");
-//        if (!isZero(v1.dotProduct(v2) + 28))
+            out.println("ERROR: dotProduct() for orthogonal vectors is not zero");
+        if (!isZero(v1.dotProduct(v2) + 28))
         // * DONE!
-//            out.println("ERROR: dotProduct() wrong value");
+            out.println("ERROR: dotProduct() wrong value");
 
         // test Cross-Product
         try { // test zero vector
@@ -119,9 +119,9 @@ public final class Main {
         } catch (Exception e) {
         }
         Vector vr = v1.crossProduct(v3);
-//        if (!isZero(vr.length() - v1.length() * v3.length()))
+        if (!isZero(vr.length() - v1.length() * v3.length()))
         // * DONE!
-//            out.println("ERROR: crossProduct() wrong result length");
+            out.println("ERROR: crossProduct() wrong result length");
         if (!isZero(vr.dotProduct(v1)) || !isZero(vr.dotProduct(v3)))
             out.println("ERROR: crossProduct() result is not orthogonal to its operands");
 
