@@ -69,6 +69,7 @@ public class Vector extends Point {
     }
 
     public Vector subtract(Vector other) {
+        //throw exception for subtracting vector - itself
         return new Vector(this.xyz.add(other.xyz.scale(this.VECTOR_INVERTER_SCALE)));
     }
 
@@ -83,10 +84,6 @@ public class Vector extends Point {
         double yProduct = this.xyz.d2 * other.xyz.d2;
         double zProduct = this.xyz.d3 * other.xyz.d3;
         double sumProducts = xProduct + yProduct + zProduct;
-
-        // ! Necesary?
-        if (sumProducts == this.ZERO)
-            throw new IllegalArgumentException(("ERROR: dotProduct() for orthogonal vectors is not zero"));
 
         return sumProducts;
     }

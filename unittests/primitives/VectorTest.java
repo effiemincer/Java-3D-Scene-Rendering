@@ -17,6 +17,7 @@ class VectorTest {
     @Test
     void testZeroVectorConstructor() {
         assertThrows(IllegalArgumentException.class, () -> new Vector(0, 0, 0), "ERROR: zero vector does not throw an exception");
+        //TODO: throw exception in constructor for zero vector
         assertThrows(IllegalArgumentException.class, () -> new Vector(Double3.ZERO), "ERROR: zero vector does not throw an exception");
     }
 
@@ -42,6 +43,7 @@ class VectorTest {
         Vector vector1 = new Vector(1, 2, 3);
         Vector vector2 = new Vector(2, 3, 4);
 
+        //TODO: add exception to subtract function
         assertThrows(IllegalArgumentException.class, () -> vector1.subtract(vector1), "ERROR: Vector - itself does not throw an exception");
         assertEquals(vector2.subtract(vector1), new Vector(1, 1, 1), "ERROR: Vector - Vector does not work correctly");
     }
@@ -64,12 +66,12 @@ class VectorTest {
      */
     @Test
     void testDotProduct() {
-        /*
+
         Vector vector1 = new Vector(1, -1, 1);
         Vector vector2 = new Vector(2, 2, 2);
         Vector vector3 = new Vector(0, 1, -1);
         Vector vector4 = new Vector(1, 0, 0);
-         */
+
 
         Vector v1         = new Vector(1, 2, 3);
         Vector v2         = new Vector(-2, -4, -6);
@@ -84,10 +86,10 @@ class VectorTest {
         assertEquals(vector1.dotProduct(vector2), 2, "ERROR: dotProduct() wrong value");
         // Check for same vector
         assertEquals(vector1.dotProduct(vector1), 3, "ERROR: dotProduct() wrong value");
-
+*/
         // Check for ortholinearity
-        assertThrows(IllegalArgumentException.class, () -> vector3.dotProduct(vector4), "ERROR: dotProduct() for orthogonal vectors is not zero");
-        */
+        //assertThrows(IllegalArgumentException.class, () -> vector3.dotProduct(vector4), "ERROR: dotProduct() for orthogonal vectors is not zero");
+
 
     }
 
@@ -109,7 +111,7 @@ class VectorTest {
 
         //test cases for crossProduct based on main from stage0
         assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v2), "ERROR: crossProduct() for parallel vectors does not throw an exception");
-        assertEquals(vr.length() - v1.length() * v3.length(), 0, "ERROR: crossProduct() wrong result length");
+        assertTrue(Util.isZero(vr.length() - v1.length() * v3.length()), "ERROR: crossProduct() wrong result length");
         assertEquals(vr.dotProduct(v1), 0,"ERROR: crossProduct() result is not orthogonal to its operands" );
         assertEquals(vr.dotProduct(v3), 0, "ERROR: crossProduct() result is not orthogonal to its operands");
 
@@ -148,7 +150,7 @@ class VectorTest {
 
         // Test cases for vector normalization
         assertEquals(u.length() -1, 0 , "ERROR: the normalized vector is not a unit vector");
-        assertDoesNotThrow(() -> v.crossProduct(u), "ERROR: the normalized vector is not parallel to the original one");
+        assertThrows(IllegalArgumentException.class, () -> v.crossProduct(u), "ERROR: the normalized vector is not parallel to the original one");
         assertTrue(v.dotProduct(u) >= 0, "ERROR: the normalized vector is opposite to the original one");
 
 
