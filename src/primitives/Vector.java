@@ -7,6 +7,7 @@ package primitives;
 public class Vector extends Point {
 
     final int ZERO = 0;
+    final int VECTOR_INVERTER_SCALE = -1;
 
     /**
      * Constructs a Vector object with three individual coordinates.
@@ -65,6 +66,10 @@ public class Vector extends Point {
      */
     public Vector scale(double scalingValue) {
         return new Vector(this.xyz.scale(scalingValue));
+    }
+
+    public Vector subtract(Vector other) {
+        return new Vector(this.xyz.add(other.xyz.scale(this.VECTOR_INVERTER_SCALE)));
     }
 
     /**

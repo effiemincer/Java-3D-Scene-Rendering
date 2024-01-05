@@ -26,5 +26,15 @@ class PointTest {
         assertEquals(point_result, new Point(4, 4, 4));
     }
 
+    @Test
+    void testDistance() {
+
+    }
+
+    @Test
+    void testDistanceSquared() {
+        
+    }
+
 
 }
