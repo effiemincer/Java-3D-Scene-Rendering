@@ -16,9 +16,7 @@ class VectorTest {
         Vector vector1 = new Vector(1, 2, 3);
         Vector vector2 = new Vector(3, 2, 1);
 
-        Vector resultVector = vector1.add(vector2);
-
-        assertEquals(resultVector, new Vector(4, 4, 4), "ERROR: Vector + itself throws wrong exception");
+        assertEquals(vector1.add(vector2), new Vector(4, 4, 4), "ERROR: Vector + itself throws wrong exception");
         assertThrows(IllegalArgumentException.class, () -> vector1.add(vector1.scale(vector1.VECTOR_INVERTER_SCALE)), "ERROR: Cannot add a vector + -itself!");
     }
 
