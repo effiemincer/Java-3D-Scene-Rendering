@@ -6,6 +6,9 @@ package primitives;
  */
 public class Vector extends Point {
 
+    final int ZERO = 0;
+    final int VECTOR_INVERTER_SCALE = -1;
+
     /**
      * Constructs a Vector object with three individual coordinates.
      *
@@ -37,20 +40,8 @@ public class Vector extends Point {
      * @throws IllegalArgumentException if the vector is initialized as a zero vector.
      */
     private void checkForZeroVector(double d1, double d2, double d3) {
-        // TODO: Check for syntax of new Double3(d1, d2, d3)
         if (new Double3(d1, d2, d3).equals(Double3.ZERO))
             throw new IllegalArgumentException("Vector Zero is not allowed");
-    }
-
-    /**
-     * Checks if a value is zero.
-     *
-     * @param value The value to check.
-     * @throws IllegalArgumentException if the value is zero.
-     */
-    private void checkForZero(double value) {
-        if (value == 0)
-            throw new IllegalArgumentException("Dividing by Zero is not allowed");
     }
 
     /**
@@ -77,6 +68,10 @@ public class Vector extends Point {
         return new Vector(this.xyz.scale(scalingValue));
     }
 
+    public Vector subtract(Vector other) {
+        return new Vector(this.xyz.add(other.xyz.scale(this.VECTOR_INVERTER_SCALE)));
+    }
+
     /**
      * Calculates the dot product of this vector and another vector.
      *
@@ -87,7 +82,13 @@ public class Vector extends Point {
         double xProduct = this.xyz.d1 * other.xyz.d1;
         double yProduct = this.xyz.d2 * other.xyz.d2;
         double zProduct = this.xyz.d3 * other.xyz.d3;
-        return xProduct + yProduct + zProduct;
+        double sumProducts = xProduct + yProduct + zProduct;
+
+        // ! Necesary?
+        if (sumProducts == this.ZERO)
+            throw new IllegalArgumentException(("ERROR: dotProduct() for orthogonal vectors is not zero"));
+
+        return sumProducts;
     }
 
     /**
@@ -118,7 +119,7 @@ public class Vector extends Point {
      * @return The length of the vector.
      */
     public double length() {
-        return Math.sqrt(this.lengthSquared());
+        return Math.sqrt(this.dotProduct(this));
     }
 
     /**
@@ -129,7 +130,6 @@ public class Vector extends Point {
      */
     public Vector normalize() {
         double length = this.length();
-        this.checkForZero(length);
 
         double xNormalized = this.xyz.d1 / length;
         double yNormalized = this.xyz.d2 / length;

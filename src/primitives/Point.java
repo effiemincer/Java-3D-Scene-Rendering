@@ -63,11 +63,7 @@ public class Point {
      * @return The distance between the points.
      */
     public double distance(Point other) {
-        double xDistance = other.xyz.d1 - this.xyz.d1;
-        double yDistance = other.xyz.d2 - this.xyz.d2;
-        double zDistance = other.xyz.d3 - this.xyz.d3;
-
-        return Math.sqrt((xDistance * xDistance) + (yDistance * yDistance) + (zDistance * zDistance));
+        return Math.sqrt(this.distanceSquared(other));
     }
 
     /**
@@ -77,13 +73,15 @@ public class Point {
      * @return The squared distance between the points.
      */
     public double distanceSquared(Point other) {
-        double distance = this.distance(other);
-        return distance * distance;
+        double xDistance = other.xyz.d1 - this.xyz.d1;
+        double yDistance = other.xyz.d2 - this.xyz.d2;
+        double zDistance = other.xyz.d3 - this.xyz.d3;
+        return (xDistance * xDistance) + (yDistance * yDistance) + (zDistance * zDistance);
     }
 
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (this == obj) return true;
         return (obj instanceof Point other)
                 && this.xyz.equals(other.xyz);
