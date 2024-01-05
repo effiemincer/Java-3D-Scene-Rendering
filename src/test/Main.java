@@ -42,17 +42,17 @@ public final class Main {
         // Test point operations ================================================
 
         // Subtract points
-//        if (!p2.subtract(p1).equals(v1))
+       if (!p2.subtract(p1).equals(v1))
+        // * DONE
+           out.println("ERROR: (point2 - point1) does not work correctly");
+        try {
+            p1.subtract(p1);
         // * DONE!
-//            out.println("ERROR: (point2 - point1) does not work correctly");
-//        try {
-//            p1.subtract(p1);
-        // * DONE!
-//            out.println("ERROR: (point - itself) does not throw an exception");
-//        } catch (IllegalArgumentException ignore) {
-//        } catch (Exception ignore) {
-//            out.println("ERROR: (point - itself) throws wrong exception");
-//        }
+            out.println("ERROR: (point - itself) does not throw an exception");
+        } catch (IllegalArgumentException ignore) {
+        } catch (Exception ignore) {
+            out.println("ERROR: (point - itself) throws wrong exception");
+        }
 
         // Add vector to point
         if (!(p1.add(v1).equals(p2)))
