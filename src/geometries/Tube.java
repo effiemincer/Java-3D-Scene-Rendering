@@ -8,6 +8,10 @@ import primitives.*;
 public class Tube extends RadialGeometry {
     protected Ray axis; // The axis of the tube
 
+    public Tube(double radius, Ray axis) {
+        super(radius);
+        this.axis = axis;
+    }
 
     @Override
     public Vector getNormal(Point p) {

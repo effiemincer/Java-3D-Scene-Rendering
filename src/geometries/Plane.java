@@ -19,6 +19,14 @@ public class Plane implements Geometry {
      * @param c Yet another point on the plane.
      */
     Plane(Point a, Point b, Point c){
+        //throws exception if the points are not duplicates
+        if (a.equals(b) || a.equals(c) || b.equals(c))
+            throw new IllegalArgumentException("Two of the points of a plane cannot be the same");
+
+        //throws exception if points are on the same line by calculating the area of the triangle they make and seeing if it's zero
+        if ((new Triangle(a,b,c).getArea() == 0))
+            throw new IllegalArgumentException("The points cannot all be on the same line");
+
         // Calculating the normal to the plane
         // AB x AC = normal
         Vector ab = b.subtract(a);
@@ -43,7 +51,7 @@ public class Plane implements Geometry {
      *
      * @return The normal vector to the plane.
      */
-    public Vector GetNormal() {
+    public Vector getNormal() {
         return this.normal;
     }
 

@@ -7,7 +7,12 @@ import primitives.*;
  * The cylinder is defined by its radius, axis, and height.
  */
 public class Cylinder extends Tube {
-    private double height; // The height of the cylinder
+    private final double height; // The height of the cylinder
+
+    public Cylinder(double radius, Ray axis, double height) {
+        super(radius, axis);
+        this.height = height;
+    }
 
     @Override
     public Vector getNormal(Point p) {

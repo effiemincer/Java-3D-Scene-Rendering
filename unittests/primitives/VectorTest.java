@@ -17,7 +17,6 @@ class VectorTest {
     @Test
     void testZeroVectorConstructor() {
         assertThrows(IllegalArgumentException.class, () -> new Vector(0, 0, 0), "ERROR: zero vector does not throw an exception");
-        //TODO: throw exception in constructor for zero vector
         assertThrows(IllegalArgumentException.class, () -> new Vector(Double3.ZERO), "ERROR: zero vector does not throw an exception");
     }
 
@@ -55,10 +54,13 @@ class VectorTest {
     void testScale() {
         Vector vector = new Vector(1, 1, 1);
         double scalingValue = 2;
+        double zero = 0;
+
 
         Vector resultVector = new Vector(vector.xyz.scale(scalingValue));
 
         assertEquals(resultVector, new Vector(2, 2, 2));
+        assertThrows(IllegalArgumentException.class, () -> vector.scale(0), "ERROR: the scaling value cannot be zero");
     }
 
     /**
@@ -145,14 +147,12 @@ class VectorTest {
      */
     @Test
     void testNormalize() {
-        Vector v = new Vector(1, 2, 3);
+        Vector v = new Vector(-1, -2, -3);
         Vector u = v.normalize();
 
         // Test cases for vector normalization
         assertEquals(u.length() -1, 0 , "ERROR: the normalized vector is not a unit vector");
         assertThrows(IllegalArgumentException.class, () -> v.crossProduct(u), "ERROR: the normalized vector is not parallel to the original one");
         assertTrue(v.dotProduct(u) >= 0, "ERROR: the normalized vector is opposite to the original one");
-
-
     }
 }
