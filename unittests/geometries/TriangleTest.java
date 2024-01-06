@@ -11,9 +11,10 @@ class TriangleTest {
     void testGetNormal(){
         // ============ Equivalence Partitions Tests ==============
         //TC01: testing the normal to the triangle is correct
-        Point p1 = new Point(0,0,0);
-        Point p2 = new Point(1,0,0);
-        Point p3 = new Point(0,1,0);
+        Point p1 = new Point(0, 0, 0);
+        Point p2 = new Point(1, 0, 0);
+        Point p3 = new Point(0, 1, 0);
+
         Triangle tri = new Triangle(p1,p2,p3);
 
         Vector normal = tri.getNormal(new Point(0,0,0));

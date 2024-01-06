@@ -15,9 +15,8 @@ public class Sphere extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point p){
-        // To be implemented
-        // If it intersects at the point (x,y,z) and the centre of the sphere is at (l,m,n) then I am reading that the normal
-        // to the point of intersection on the sphere is: N = ( (x-l)/r , (y-m)/r , (z-n)/r ) where r is the radius of the circle.
-        return null; // Returns null as the normal calculation is not implemented
+        // Assuming the point lies on the surface of the sphere
+        // formula for normal is normal = (point - center) normalized
+        return (p.subtract(center)).normalize();
     }
 }

@@ -15,6 +15,10 @@ public class Tube extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point p) {
+        //I don't know how to implement this
+        //Vector vectorToSurface = p.subtract(axis.direction);
+
+        //todo
         return null; // Returns null as the normal calculation is not implemented
     }
 }

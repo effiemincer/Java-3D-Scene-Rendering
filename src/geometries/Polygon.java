@@ -14,7 +14,7 @@ import primitives.Vector;
  */
 public class Polygon implements Geometry {
    /** List of polygon's vertices */
-   protected final List<Point> vertices;
+   protected List<Point> vertices;
    /** Associated plane in which the polygon lays */
    protected final Plane       plane;
    /** The size of the polygon - the amount of the vertices in the polygon */

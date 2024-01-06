@@ -24,13 +24,16 @@ public class Plane implements Geometry {
             throw new IllegalArgumentException("Two of the points of a plane cannot be the same");
 
         //throws exception if points are on the same line by calculating the area of the triangle they make and seeing if it's zero
-        if ((new Triangle(a,b,c).getArea() == 0))
+        //create vectors, find cross product, divide by 2
+        Vector ab = b.subtract(a);
+        Vector ac = c.subtract(a);
+        Vector cross = ab.crossProduct(ac);
+        if ((cross.length() * 0.5) == 0) {
             throw new IllegalArgumentException("The points cannot all be on the same line");
+        }
 
         // Calculating the normal to the plane
         // AB x AC = normal
-        Vector ab = b.subtract(a);
-        Vector ac = c.subtract(a);
         this.normal = ab.crossProduct(ac).normalize(); // Calculates and normalizes the normal vector
         this.q = a; // Initializes the point 'q' on the plane
     }
