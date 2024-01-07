@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for primitives.Vector class
+ *
  * @author Effie Mincer and Yehuda Gurovich
  */
 class VectorTest {
@@ -30,19 +31,19 @@ class VectorTest {
     @Test
     void testAdd() {
 
-        Vector v1         = new Vector(1, 2, 3);
+        Vector v1 = new Vector(1, 2, 3);
         Vector v1Opposite = new Vector(-1, -2, -3);
-        Vector v2         = new Vector(-2, -4, -6);
+        Vector v2 = new Vector(-2, -4, -6);
 
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing that a vector plus a vector is the correct calculation
-        assertEquals(v1.add(v2), v1Opposite,"ERROR: Vector + Vector does not work correctly");
+        assertEquals(v1.add(v2), new Vector(-1, -2, -3), "ERROR: Vector + Vector does not work correctly");
 
         // =============== Boundary Values Tests ==================
 
         //TC01: testing that getting a result that would return a zero vector throws an exception
-        assertThrows(IllegalArgumentException.class, () -> v1.add(v1Opposite),"ERROR: Vector + -itself does not throw an exception" );
+        assertThrows(IllegalArgumentException.class, () -> v1.add(v1Opposite), "ERROR: Vector + -itself does not throw an exception");
     }
 
     /**
@@ -81,9 +82,9 @@ class VectorTest {
      */
     @Test
     void testDotProduct() {
-        Vector v1         = new Vector(1, 2, 3);
-        Vector v2         = new Vector(-2, -4, -6);
-        Vector v3         = new Vector(0, 3, -2);
+        Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(-2, -4, -6);
+        Vector v3 = new Vector(0, 3, -2);
 
         // ============ Equivalence Partitions Tests ==============
 
@@ -91,7 +92,7 @@ class VectorTest {
         assertEquals(v1.dotProduct(v3), 0, "ERROR: dotProduct() for orthogonal vectors is not zero");
 
         //TC02: checking a regular dot product produces the correct value
-        assertEquals(v1.dotProduct(v2) + 28, 0,"ERROR: dotProduct() wrong value");
+        assertEquals(v1.dotProduct(v2) + 28, 0, "ERROR: dotProduct() wrong value");
 
     }
 
@@ -101,9 +102,9 @@ class VectorTest {
     @Test
     void testCrossProduct() {
 
-        Vector v1         = new Vector(1, 2, 3);
-        Vector v2         = new Vector(-2, -4, -6);
-        Vector v3         = new Vector(0, 3, -2);
+        Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(-2, -4, -6);
+        Vector v3 = new Vector(0, 3, -2);
         Vector vr = v1.crossProduct(v3);
 
         // ============ Equivalence Partitions Tests ==============
@@ -112,7 +113,7 @@ class VectorTest {
         assertTrue(Util.isZero(vr.length() - v1.length() * v3.length()), "ERROR: crossProduct() wrong result length");
 
         //TC02: cross product result is orthogonal to its operands
-        assertEquals(vr.dotProduct(v1), 0,"ERROR: crossProduct() result is not orthogonal to its operands" );
+        assertEquals(vr.dotProduct(v1), 0, "ERROR: crossProduct() result is not orthogonal to its operands");
         assertEquals(vr.dotProduct(v3), 0, "ERROR: crossProduct() result is not orthogonal to its operands");
 
         // =============== Boundary Values Tests ==================
@@ -158,7 +159,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing that the vector is a unit vector
-        assertEquals(u.length() -1, 0 , "ERROR: the normalized vector is not a unit vector");
+        assertEquals(u.length() - 1, 0, "ERROR: the normalized vector is not a unit vector");
 
         //TC02: testing that the dot product of the normalized vector is just a unit vector of the 1st vector
         assertTrue(v.dotProduct(u) >= 0, "ERROR: the normalized vector is opposite to the original one");

@@ -67,6 +67,9 @@ public class Vector extends Point {
      * @return The resulting scaled vector.
      */
     public Vector scale(double scalingValue) {
+        if (scalingValue == 0)
+            throw new IllegalArgumentException("Your point and the head of the ray are orthogonal to the axis");
+
         return new Vector(this.xyz.scale(scalingValue));
     }
 
