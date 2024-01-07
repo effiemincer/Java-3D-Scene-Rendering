@@ -4,10 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit tests for primitives.Vector class
- * @author Effie Mincer and Yehuda Gurovich
- */
 class VectorTest {
 
 
@@ -30,19 +26,19 @@ class VectorTest {
     @Test
     void testAdd() {
 
-        Vector v1         = new Vector(1, 2, 3);
+        Vector v1 = new Vector(1, 2, 3);
         Vector v1Opposite = new Vector(-1, -2, -3);
-        Vector v2         = new Vector(-2, -4, -6);
+        Vector v2 = new Vector(-2, -4, -6);
 
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing that a vector plus a vector is the correct calculation
-        assertEquals(v1.add(v2), v1Opposite,"ERROR: Vector + Vector does not work correctly");
+        assertEquals(new Vector(-1, -2, -3), v1.add(v2), "ERROR: Vector + Vector does not work correctly");
 
         // =============== Boundary Values Tests ==================
 
-        //TC01: testing that getting a result that would return a zero vector throws an exception
-        assertThrows(IllegalArgumentException.class, () -> v1.add(v1Opposite),"ERROR: Vector + -itself does not throw an exception" );
+        //TC02: testing that getting a result that would return a zero vector throws an exception
+        assertThrows(IllegalArgumentException.class, () -> v1.add(v1Opposite), "ERROR: Vector + -itself does not throw an exception");
     }
 
     /**
@@ -55,11 +51,11 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing that a vector minus a vector is the correct calculation
-        assertEquals(vector2.subtract(vector1), new Vector(1, 1, 1), "ERROR: Vector - Vector does not work correctly");
+        assertEquals(new Vector(1, 1, 1), vector2.subtract(vector1), "ERROR: Vector - Vector does not work correctly");
 
         // =============== Boundary Values Tests ==================
 
-        //TC01: testing that getting a result that would return a zero vector throws an exception
+        //TC02: testing that getting a result that would return a zero vector throws an exception
         assertThrows(IllegalArgumentException.class, () -> vector1.subtract(vector1), "ERROR: Vector - itself does not throw an exception");
     }
 
@@ -73,7 +69,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing that a vector is properly scaled
-        assertEquals(new Vector(vector.xyz.scale(2)), new Vector(2, 2, 2));
+        assertEquals(new Vector(2, 2, 2), new Vector(vector.xyz.scale(2)), "ERROR: The vector is not scaling correctly");
     }
 
     /**
@@ -81,17 +77,17 @@ class VectorTest {
      */
     @Test
     void testDotProduct() {
-        Vector v1         = new Vector(1, 2, 3);
-        Vector v2         = new Vector(-2, -4, -6);
-        Vector v3         = new Vector(0, 3, -2);
+        Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(-2, -4, -6);
+        Vector v3 = new Vector(0, 3, -2);
 
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing orthogonal vectors (whose dot product is 0)
-        assertEquals(v1.dotProduct(v3), 0, "ERROR: dotProduct() for orthogonal vectors is not zero");
+        assertEquals(0, v1.dotProduct(v3), "ERROR: dotProduct() for orthogonal vectors is not zero");
 
         //TC02: checking a regular dot product produces the correct value
-        assertEquals(v1.dotProduct(v2) + 28, 0,"ERROR: dotProduct() wrong value");
+        assertEquals(0, v1.dotProduct(v2) + 28, "ERROR: dotProduct() wrong value");
 
     }
 
@@ -101,9 +97,9 @@ class VectorTest {
     @Test
     void testCrossProduct() {
 
-        Vector v1         = new Vector(1, 2, 3);
-        Vector v2         = new Vector(-2, -4, -6);
-        Vector v3         = new Vector(0, 3, -2);
+        Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(-2, -4, -6);
+        Vector v3 = new Vector(0, 3, -2);
         Vector vr = v1.crossProduct(v3);
 
         // ============ Equivalence Partitions Tests ==============
@@ -112,8 +108,8 @@ class VectorTest {
         assertTrue(Util.isZero(vr.length() - v1.length() * v3.length()), "ERROR: crossProduct() wrong result length");
 
         //TC02: cross product result is orthogonal to its operands
-        assertEquals(vr.dotProduct(v1), 0,"ERROR: crossProduct() result is not orthogonal to its operands" );
-        assertEquals(vr.dotProduct(v3), 0, "ERROR: crossProduct() result is not orthogonal to its operands");
+        assertEquals(0, vr.dotProduct(v1), "ERROR: crossProduct() result is not orthogonal to its operands");
+        assertEquals(0, vr.dotProduct(v3), "ERROR: crossProduct() result is not orthogonal to its operands");
 
         // =============== Boundary Values Tests ==================
 
@@ -131,7 +127,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing length squared works correctly
-        assertEquals(vector.lengthSquared(), 25, "ERROR: lengthSquared() wrong value");
+        assertEquals(25, vector.lengthSquared(), "ERROR: lengthSquared() wrong value");
     }
 
     /**
@@ -144,7 +140,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing length works correctly
-        assertEquals(vector.length(), 5, "ERROR: length() wrong value");
+        assertEquals(5, vector.length(), "ERROR: length() wrong value");
     }
 
     /**
@@ -158,7 +154,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
 
         //TC01: testing that the vector is a unit vector
-        assertEquals(u.length() -1, 0 , "ERROR: the normalized vector is not a unit vector");
+        assertEquals(0, u.length() - 1, "ERROR: the normalized vector is not a unit vector");
 
         //TC02: testing that the dot product of the normalized vector is just a unit vector of the 1st vector
         assertTrue(v.dotProduct(u) >= 0, "ERROR: the normalized vector is opposite to the original one");

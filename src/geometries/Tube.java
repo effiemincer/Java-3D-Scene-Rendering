@@ -1,4 +1,5 @@
 package geometries;
+
 import primitives.*;
 
 /**
@@ -17,10 +18,10 @@ public class Tube extends RadialGeometry {
     public Vector getNormal(Point p) {
 
         // t = direction (dot product) point - head
-        //centerOfTube = point + (direction * t)
+        // centerOfTube = point + (direction * t)
         double t = this.axis.getDirection().dotProduct(p.subtract(axis.getHead()));
-        if (t == 0) throw new IllegalArgumentException("Your point and the head of the ray are orthogonal to the axis");
 
+        // Add If t==0? (Peretz)
         Point centerOfTube = (axis.getHead()).add((axis.getDirection()).scale(t));
         return p.subtract(centerOfTube).normalize();
     }
