@@ -16,6 +16,11 @@ public class Cylinder extends Tube {
 
     @Override
     public Vector getNormal(Point p) {
+        //find out where the point is
+        //get vector from base to the head and see if it's orthogonal to a vector to the point
+        //if it's on the base then return the positive or negative
+        //otherwise use getNormal from tube
+
         return null; // Currently returns null as the normal calculation is not implemented for a cylinder
     }
 }
