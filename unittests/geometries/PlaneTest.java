@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlaneTest {
 
+    /**
+     Test method for ctor.
+     */
     @Test
     void testConstructor(){
         // =============== Boundary Values Tests ==================
@@ -17,13 +20,16 @@ class PlaneTest {
         Point p3 = new Point(2,0,0);
         Point p4 = new Point(0,0,0);
 
-        //TC01: tests that points are not all on same line
+        //TC10: tests that points are not all on same line
         assertThrows(IllegalArgumentException.class, () -> new Plane(p1,p2,p3), "ERROR: points are all on the same line");
 
-        //TC02: tests that no 2 points are the same
+        //TC11: tests that no 2 points are the same
         assertThrows(IllegalArgumentException.class, () -> new Plane(p1,p4,p2), "ERROR: 2 Duplicate points in plane ctor");
     }
 
+    /**
+     Test method for {@link Plane#getNormal()}  and {@link Plane#getNormal(Point)}.
+     */
     @Test
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
