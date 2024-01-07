@@ -6,12 +6,17 @@ import primitives.*;
  * The sphere extends the RadialGeometry abstract class.
  */
 public class Sphere extends RadialGeometry {
-    private Point center; // The center point of the sphere
+    private final Point center; // The center point of the sphere
 
+    public Sphere(double radius, Point center) {
+        super(radius);
+        this.center = center;
+    }
 
     @Override
     public Vector getNormal(Point p){
-        // To be implemented
-        return null; // Returns null as the normal calculation is not implemented
+        // Assuming the point lies on the surface of the sphere
+        // formula for normal is normal = (point - center) normalized
+        return (p.subtract(center)).normalize();
     }
 }

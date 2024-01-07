@@ -6,6 +6,9 @@ package primitives;
  */
 public class Vector extends Point {
 
+    final int ZERO = 0;
+    final int VECTOR_INVERTER_SCALE = -1;
+
     /**
      * Constructs a Vector object with three individual coordinates.
      *
@@ -26,6 +29,8 @@ public class Vector extends Point {
      */
     public Vector(Double3 point) {
         super(point);
+        if (point.equals(Double3.ZERO))
+            throw new IllegalArgumentException("Vector Zero is not allowed");
     }
 
     /**
@@ -65,6 +70,13 @@ public class Vector extends Point {
         return new Vector(this.xyz.scale(scalingValue));
     }
 
+    public Vector subtract(Vector other) {
+        //throw exception for subtracting vector - itself
+        if (this == other)
+            throw new IllegalArgumentException("Vector Zero is not allowed");
+        return new Vector(this.xyz.add(other.xyz.scale(this.VECTOR_INVERTER_SCALE)));
+    }
+
     /**
      * Calculates the dot product of this vector and another vector.
      *
@@ -75,7 +87,9 @@ public class Vector extends Point {
         double xProduct = this.xyz.d1 * other.xyz.d1;
         double yProduct = this.xyz.d2 * other.xyz.d2;
         double zProduct = this.xyz.d3 * other.xyz.d3;
-        return xProduct + yProduct + zProduct;
+        double sumProducts = xProduct + yProduct + zProduct;
+
+        return sumProducts;
     }
 
     /**
@@ -106,7 +120,7 @@ public class Vector extends Point {
      * @return The length of the vector.
      */
     public double length() {
-        return Math.sqrt(this.lengthSquared());
+        return Math.sqrt(this.dotProduct(this));
     }
 
     /**

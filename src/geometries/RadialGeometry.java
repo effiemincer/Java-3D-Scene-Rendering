@@ -9,4 +9,7 @@ import primitives.*;
 abstract class RadialGeometry implements Geometry {
     protected double radius; // The radius of the radial geometry
 
+    public RadialGeometry(double radius) {
+        this.radius = radius;
+    }
 }

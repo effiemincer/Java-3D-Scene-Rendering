@@ -5,8 +5,8 @@ package primitives;
  * This class models the behavior and attributes of a ray used in 3D graphics and geometry.
  */
 public class Ray {
-    private Point head; // The starting point of the ray
-    private Vector direction; // The direction vector of the ray
+    private final Point head; // The starting point of the ray
+    private final Vector direction; // The direction vector of the ray
 
     /**
      * Constructs a Ray object initialized with a specified starting point and direction vector.
@@ -18,6 +18,15 @@ public class Ray {
         this.head = startingPoint;
         this.direction = directionVector.normalize(); // Normalizes the direction vector
     }
+
+    public Point getHead(){
+        return this.head;
+    }
+
+    public Vector getDirection(){
+        return this.direction;
+    }
+
 
     @Override
     public boolean equals(Object other) {

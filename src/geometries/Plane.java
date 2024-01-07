@@ -19,10 +19,21 @@ public class Plane implements Geometry {
      * @param c Yet another point on the plane.
      */
     Plane(Point a, Point b, Point c){
-        // Calculating the normal to the plane
-        // AB x AC = normal
+        //throws exception if the points are not duplicates
+        if (a.equals(b) || a.equals(c) || b.equals(c))
+            throw new IllegalArgumentException("Two of the points of a plane cannot be the same");
+
+        //throws exception if points are on the same line by calculating the area of the triangle they make and seeing if it's zero
+        //create vectors, find cross product, divide by 2
         Vector ab = b.subtract(a);
         Vector ac = c.subtract(a);
+        Vector cross = ab.crossProduct(ac);
+        if ((cross.length() * 0.5) == 0) {
+            throw new IllegalArgumentException("The points cannot all be on the same line");
+        }
+
+        // Calculating the normal to the plane
+        // AB x AC = normal
         this.normal = ab.crossProduct(ac).normalize(); // Calculates and normalizes the normal vector
         this.q = a; // Initializes the point 'q' on the plane
     }
@@ -43,7 +54,7 @@ public class Plane implements Geometry {
      *
      * @return The normal vector to the plane.
      */
-    public Vector GetNormal() {
+    public Vector getNormal() {
         return this.normal;
     }
 

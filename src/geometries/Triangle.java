@@ -14,8 +14,9 @@ public class Triangle extends Polygon {
      * @param c The third point of the triangle.
      */
     public Triangle(Point a, Point b, Point c) {
-        super(a, b, c);
+        super(a,b,c);
     }
+
 }
 
 
