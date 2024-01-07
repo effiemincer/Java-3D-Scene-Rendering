@@ -4,11 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit tests for primitives.Vector class
- *
- * @author Effie Mincer and Yehuda Gurovich
- */
 class VectorTest {
 
 
