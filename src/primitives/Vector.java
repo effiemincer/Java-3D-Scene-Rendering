@@ -67,16 +67,13 @@ public class Vector extends Point {
      * @return The resulting scaled vector.
      */
     public Vector scale(double scalingValue) {
-        if (scalingValue == 0)
-            throw new IllegalArgumentException("Your point and the head of the ray are orthogonal to the axis");
+        if (scalingValue == ZERO)
+            throw new IllegalArgumentException("Vectors can't be scaled by zero");
 
         return new Vector(this.xyz.scale(scalingValue));
     }
 
     public Vector subtract(Vector other) {
-        //throw exception for subtracting vector - itself
-        if (this == other)
-            throw new IllegalArgumentException("Vector Zero is not allowed");
         return new Vector(this.xyz.add(other.xyz.scale(this.VECTOR_INVERTER_SCALE)));
     }
 

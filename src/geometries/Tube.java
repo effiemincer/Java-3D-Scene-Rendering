@@ -21,6 +21,7 @@ public class Tube extends RadialGeometry {
         // centerOfTube = point + (direction * t)
         double t = this.axis.getDirection().dotProduct(p.subtract(axis.getHead()));
 
+        // Add If t==0? (Peretz)
         Point centerOfTube = (axis.getHead()).add((axis.getDirection()).scale(t));
         return p.subtract(centerOfTube).normalize();
     }
