@@ -67,8 +67,6 @@ public class Vector extends Point {
      * @return The resulting scaled vector.
      */
     public Vector scale(double scalingValue) {
-        if (scalingValue == 0)
-            throw new IllegalArgumentException("Scaling value of zero not allowed.");
         return new Vector(this.xyz.scale(scalingValue));
     }
 

@@ -15,7 +15,13 @@ public class Tube extends RadialGeometry {
 
     @Override
     public Vector getNormal(Point p) {
-        //TODO: I don't know how to calculate the normal of a tube
-        return null;
+
+        // t = direction (dot product) point - head
+        //centerOfTube = point + (direction * t)
+        double t = this.axis.getDirection().dotProduct(p.subtract(axis.getHead()));
+        if (t == 0) throw new IllegalArgumentException("Your point and the head of the ray are orthogonal to the axis");
+
+        Point centerOfTube = (axis.getHead()).add((axis.getDirection()).scale(t));
+        return p.subtract(centerOfTube).normalize();
     }
 }

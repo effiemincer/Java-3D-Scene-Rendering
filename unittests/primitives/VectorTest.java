@@ -74,11 +74,6 @@ class VectorTest {
 
         //TC01: testing that a vector is properly scaled
         assertEquals(new Vector(vector.xyz.scale(2)), new Vector(2, 2, 2));
-
-        // =============== Boundary Values Tests ==================
-
-        //TC01: testing that scaling value is zero throws exception
-        assertThrows(IllegalArgumentException.class, () -> vector.scale(0), "ERROR: the scaling value cannot be zero");
     }
 
     /**
