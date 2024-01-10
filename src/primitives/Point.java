@@ -35,12 +35,17 @@ public class Point {
         this.xyz = new Double3(d1, d2, d3);
     }
 
+    public Double3 getXyz() {
+        return xyz;
+    }
+
     /**
      * Calculates the vector resulting from subtracting another point.
      *
      * @param other The point to subtract.
      * @return The resulting vector.
      */
+
     public Vector subtract(Point other) {
         if (this.equals(other)) throw new IllegalArgumentException("Can't subtract a point from itself");
         return new Vector(this.xyz.subtract(other.xyz));

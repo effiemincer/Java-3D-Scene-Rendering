@@ -6,7 +6,7 @@ import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TriangleTest {
+class TriangleTests {
     /**
      * Test method for {@link geometries.Triangle#getNormal(Point)}
      */

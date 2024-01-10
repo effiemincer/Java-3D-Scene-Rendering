@@ -5,7 +5,7 @@ import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TubeTest {
+class TubeTests {
 
     @Test
     void testGetNormal() {

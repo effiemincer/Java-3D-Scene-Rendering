@@ -5,7 +5,7 @@ import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlaneTest {
+class PlaneTests {
 
     /**
      * Test method for ctor.
@@ -43,5 +43,10 @@ class PlaneTest {
 
         //TC03: test to see if normal was normalized
         assertEquals(1, normal.length(), "ERROR: normal vector is not normalized");
+    }
+
+    @Test
+    void testFindIntersections() {
+
     }
 }

@@ -1,5 +1,8 @@
 package geometries;
+
 import primitives.*;
+
+import java.util.List;
 
 /**
  * Represents a sphere in a three-dimensional (3D) space, a type of radial geometry defined by a radius and a center point.
@@ -14,9 +17,13 @@ public class Sphere extends RadialGeometry {
     }
 
     @Override
-    public Vector getNormal(Point p){
+    public Vector getNormal(Point p) {
         // Assuming the point lies on the surface of the sphere
         // formula for normal is normal = (point - center) normalized
         return (p.subtract(center)).normalize();
+    }
+
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 }
