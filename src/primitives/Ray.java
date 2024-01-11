@@ -37,6 +37,6 @@ public class Ray {
     }
 
     public Point getPoint(double t) {
-
+        
     }
 }
