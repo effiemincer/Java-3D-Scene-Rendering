@@ -155,12 +155,11 @@ class SphereTests {
         ray = new Ray(rayPoint, rayVector);
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
 
-        // **** Group: Special cases
+        // **** Group: Special cases 
         // TC16: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
         rayPoint = new Point(0, 1, 0);
         rayVector = new Vector(1, 1, 0);
         ray = new Ray(rayPoint, rayVector);
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
-
     }
 }

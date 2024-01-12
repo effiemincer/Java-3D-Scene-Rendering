@@ -20,7 +20,7 @@ public class Sphere extends RadialGeometry {
     public Vector getNormal(Point p) {
         // Assuming the point lies on the surface of the sphere
         // formula for normal is normal = (point - center) normalized
-        return (p.subtract(center)).normalize();
+        return p.subtract(center).normalize();
     }
 
     public List<Point> findIntersections(Ray ray) {
