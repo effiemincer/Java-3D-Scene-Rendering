@@ -44,8 +44,16 @@ public class Sphere extends RadialGeometry {
         if (t1 > 0 )
             res.add(ray.getPoint(t1));
 
-        if (t2 > 0 )
-            res.add(ray.getPoint(t2));
+        if (t2 > 0 ){
+            //puts the closer point to the head of the ray first in the list
+            double distance1 = ray.getPoint(t1).distance(ray.getHead());
+            double distance2 = ray.getPoint(t2).distance(ray.getHead());
+            if (distance1 > distance2 && t1 > 0)
+                res.addFirst(ray.getPoint(t2));
+            else
+                res.add(ray.getPoint(t2));
+        }
+
 
         return res;
     }

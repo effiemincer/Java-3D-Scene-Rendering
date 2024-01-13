@@ -1,4 +1,5 @@
 package primitives;
+import primitives.*;
 
 /**
  * Represents a ray in a three-dimensional (3D) space defined by a starting point and a direction vector.
@@ -37,6 +38,7 @@ public class Ray {
     }
 
     public Point getPoint(double t) {
-        return this.getHead().add(this.getDirection().scale(t));
+        if (t == 0) return getHead();
+        return getHead().add(this.getDirection().scale(t));
     }
 }
