@@ -39,11 +39,12 @@ class SphereTests {
 
         // TC02: Ray starts before and crosses the sphere (2 points)
         rayPoint = new Point(4, 0, 0);
+        final Point rayPoint2 = rayPoint;   //was getting error not using final variable in lambda expression
         rayVector = new Vector(0, 5, 0);
         ray = new Ray(rayPoint, rayVector);
         Point pIntersect1 = new Point(1.67, 2.91, 0);
         Point pIntersect2 = new Point(-0.7, 5.87, 0);
-        var result = sphere.findIntersections(ray).stream().sorted(Comparator.comparingDouble(p -> p.distance(rayPoint))).toList();
+        var result = sphere.findIntersections(ray).stream().sorted(Comparator.comparingDouble(p -> p.distance(rayPoint2))).toList();
         var exp = List.of(pIntersect1, pIntersect2);
         assertEquals(2, result.size(), "Wrong number of points");
         assertEquals(exp, result, "Ray crosses sphere in the incorrect place(s)");
@@ -85,11 +86,12 @@ class SphereTests {
         // **** Group: Ray's line goes through the center
         // TC07: Ray starts before the sphere (2 points)
         rayPoint = new Point(0, 1, 0);
+        final Point rayPoint3 = rayPoint;   //was getting error not using final variable in lambda expression
         rayVector = new Vector(0, 7, 0);
         ray = new Ray(rayPoint, rayVector);
         pIntersect1 = new Point(0, 2, 0);
         pIntersect2 = new Point(0, 6, 0);
-        result = sphere.findIntersections(ray).stream().sorted(Comparator.comparingDouble(p -> p.distance(rayPoint))).toList();
+        result = sphere.findIntersections(ray).stream().sorted(Comparator.comparingDouble(p -> p.distance(rayPoint3))).toList();
         exp = List.of(pIntersect1, pIntersect2);
         assertEquals(2, result.size(), "Wrong number of points");
         assertEquals(exp, result, "Ray crosses sphere in the incorrect place(s)");

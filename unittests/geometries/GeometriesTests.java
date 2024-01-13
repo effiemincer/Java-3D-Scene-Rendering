@@ -6,6 +6,7 @@ public class GeometriesTests {
 
     @Test
     void testFindIntersections() {
-        
+
+
     }
 }
