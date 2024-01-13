@@ -48,6 +48,9 @@ class PlaneTests {
         assertEquals(1, normal.length(), "ERROR: normal vector is not normalized");
     }
 
+    /**
+     * Test method for {@link Plane#findIntersections(Ray)}.
+     */
     @Test
     void testFindIntersections() {
         // ============ Equivalence Partitions Tests ==============

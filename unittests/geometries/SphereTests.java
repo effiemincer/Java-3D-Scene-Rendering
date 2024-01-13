@@ -25,6 +25,9 @@ class SphereTests {
         assertEquals(new Vector(2, 0, 0).normalize(), normal, "ERROR: normal calculation is incorrect");
     }
 
+    /**
+     * Test method for {@link Sphere#findIntersections(Ray)}.
+     */
     @Test
     public void testFindIntersections() {
         final Point centerPoint = new Point(0, 4, 0);

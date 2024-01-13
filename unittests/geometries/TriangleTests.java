@@ -36,6 +36,9 @@ class TriangleTests {
         }
     }
 
+    /**
+     * Test method for {@link Triangle#findIntersections(Ray)}.
+     */
     @Test
     void testFindIntersections() {
         // ============ Equivalence Partitions Tests ==============

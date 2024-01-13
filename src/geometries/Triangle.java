@@ -2,7 +2,6 @@ package geometries;
 
 import primitives.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,13 +20,23 @@ public class Triangle extends Polygon {
         super(a, b, c);
     }
 
+
+    /**
+     * Finds intersections of a ray with a triangle.
+     * First checks for intersections with the plane the triangle is sitting on,
+     * then determines if the intersection point is inside the triangle.
+     * @param ray The ray we're checking to see if it intersects with the triangle
+     */
     public List<Point> findIntersections(Ray ray) {
 
-        //First check if there are any intersections with the plane the triangle is sitting on
+        // First check if there are any intersections with the plane the triangle is sitting on
         List<Point> res = plane.findIntersections(ray);
+
+        // If there are no intersections with the plane, return null
         if (res == null)
             return null;
 
+        // Extracting vectors for vertices and calculating normal vectors
         Vector rayDirection = ray.getDirection();
         Vector v1 = vertices.get(0).subtract(ray.getHead());
         Vector v2 = vertices.get(1).subtract(ray.getHead());
@@ -37,18 +46,22 @@ public class Triangle extends Polygon {
         Vector n2 = (v2.crossProduct(v3)).normalize();
         Vector n3 = (v3.crossProduct(v1)).normalize();
 
+        // Dot products to determine if the intersection point is inside the triangle
         double res1 = rayDirection.dotProduct(n1);
         double res2 = rayDirection.dotProduct(n2);
         double res3 = rayDirection.dotProduct(n3);
 
+        // If any dot product is zero, return null
         if (res1 == 0 || res2 == 0 || res3 == 0)
             return null;
 
-        if ((res1 > 0 && res2 > 0 && res3 > 0) || (res1<0 && res2 < 0 && res3 < 0))
+        // If all dot products have the same sign, the point is inside the triangle
+        if ((res1 > 0 && res2 > 0 && res3 > 0) || (res1 < 0 && res2 < 0 && res3 < 0))
             return res;
         else
             return null;
     }
+
 }
 
 

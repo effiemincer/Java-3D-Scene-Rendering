@@ -1,6 +1,5 @@
 package geometries;
 
-import jdk.jshell.spi.ExecutionControl;
 import primitives.*;
 
 import java.util.LinkedList;
@@ -68,6 +67,12 @@ public class Plane implements Geometry {
         return this.normal;
     }
 
+    /**
+     * Finds the intersection point of a ray with a plane using the parametric equation.
+     *
+     * @param ray The ray for which the intersection point with the plane is to be found.
+     * @return A list containing the intersection point, or {@code null} if there is no intersection.
+     */
     public List<Point> findIntersections(Ray ray) {
         Vector normal = getNormal();
 
