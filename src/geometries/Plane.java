@@ -3,6 +3,7 @@ package geometries;
 import jdk.jshell.spi.ExecutionControl;
 import primitives.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -68,7 +69,21 @@ public class Plane implements Geometry {
     }
 
     public List<Point> findIntersections(Ray ray) {
+        Vector normal = getNormal();
 
-        return null;
+        //for top part of equation
+        Vector qMinusP0 = q.subtract(ray.getHead());
+
+        //for bottom of equation
+        Vector rayDirection = ray.getDirection();
+
+        double t = (normal.dotProduct(qMinusP0))/(normal.dotProduct(rayDirection));
+
+        //if t <= 0 then no points intersect
+        if (t <= 0 || normal.dotProduct(rayDirection) == 0 || normal.dotProduct(rayDirection) == 1) return null;
+
+        List<Point> res = new LinkedList<>();
+        res.add(ray.getPoint(t));
+        return res;
     }
 }

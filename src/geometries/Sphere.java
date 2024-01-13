@@ -28,9 +28,9 @@ public class Sphere extends RadialGeometry {
         //following the formulas given on the slides
 
         //a normalized version of the ray
-        Vector normalizedRay = ray.getDirection().normalize();
+        Vector rayDirection = ray.getDirection();
         Vector headOfRayToOrigin = this.center.subtract(ray.getHead());
-        double tm = normalizedRay.dotProduct(headOfRayToOrigin);
+        double tm = rayDirection.dotProduct(headOfRayToOrigin);
         double d = Math.sqrt(headOfRayToOrigin.lengthSquared() - (tm*tm));
 
         if (d >= radius) return null;       //if (d <= r) then there are no intersections
@@ -42,10 +42,10 @@ public class Sphere extends RadialGeometry {
 
         //take only if t > 0
         if (t1 > 0 )
-            res.add(ray.getHead().add(normalizedRay.scale(t1)));
+            res.add(ray.getPoint(t1));
 
         if (t2 > 0 )
-            res.add(ray.getHead().add(normalizedRay.scale(t2)));
+            res.add(ray.getPoint(t2));
 
         return res;
     }

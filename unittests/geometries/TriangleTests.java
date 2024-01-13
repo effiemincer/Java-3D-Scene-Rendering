@@ -3,6 +3,9 @@ package geometries;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TriangleTests {
@@ -39,8 +42,10 @@ class TriangleTests {
         tri = new Triangle(new Point(1,1,0), new Point(1,3,0), new Point(3,2,1));
 
         //TC01: Ray starts before Triangle and intersects with it
-        Ray ray = new Ray(new Point(1.5,2,1), new Vector(2,0,-3));
-        assertEquals(new Point(1.88,2,0.44), tri.findIntersections(ray), "ERROR: Ray intersects with triangle once");
+        Ray ray = new Ray(new Point(1.5,2,1), new Vector(2,0,-4));
+        List<Point> res = new LinkedList<>();
+        res.add(new Point(1.8,2,0.4));
+        assertEquals(res, tri.findIntersections(ray), "ERROR: Ray intersects with triangle once");
 
         //TC02: Ray starts before triangle and does not intersect
         ray = new Ray(new Point(2,1,1), new Vector(0,0,-1));

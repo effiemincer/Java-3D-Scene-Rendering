@@ -3,6 +3,9 @@ package geometries;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlaneTests {
@@ -60,7 +63,9 @@ class PlaneTests {
 
         //TC03: the ray intersects the plane
         ray = new Ray(new Point(2,0,0), new Vector(-5,0,1));
-        assertEquals(new Point(.83,0,.17), plane.findIntersections(ray), "ERROR: the ray intersects the plane");
+        List<Point> res = new LinkedList<>();
+        res.add(new Point(.75,0,.25));
+        assertEquals(res, plane.findIntersections(ray), "ERROR: the ray intersects the plane");
 
         //TC04: the ray does not intersect the plane
         ray = new Ray(new Point(2,0,0), new Vector(5,0,1));
@@ -75,7 +80,7 @@ class PlaneTests {
         assertNull(plane.findIntersections(ray), "ERROR: the ray is parallel to the plane");
 
         //TC11: Ray is parallel to the plane and NOT INCLUDED in the plane
-        ray = new Ray(new Point(-1,1,3), new Vector(1,-2,3));
+        ray = new Ray(new Point(-1,1,3), new Vector(1,1,-1));
         assertNull(plane.findIntersections(ray), "ERROR: the ray is parallel to the plane");
 
         //TC12: Ray is Orthogonal to Plane but starts before the plane (therefore they will intersect)
