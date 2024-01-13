@@ -2,9 +2,7 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.*;
-import primitives.Point;
 
-import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 

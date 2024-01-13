@@ -1,5 +1,4 @@
 package primitives;
-import primitives.*;
 
 /**
  * Represents a ray in a three-dimensional (3D) space defined by a starting point and a direction vector.
