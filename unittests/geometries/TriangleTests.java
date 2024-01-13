@@ -1,6 +1,5 @@
 package geometries;
 
-import jdk.incubator.vector.VectorOperators;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 

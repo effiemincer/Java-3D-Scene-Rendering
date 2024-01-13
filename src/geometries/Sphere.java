@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,6 +25,28 @@ public class Sphere extends RadialGeometry {
     }
 
     public List<Point> findIntersections(Ray ray) {
-        return null;
+        //following the formulas given on the slides
+
+        //a normalized version of the ray
+        Vector normalizedRay = ray.getDirection().normalize();
+        Vector headOfRayToOrigin = this.center.subtract(ray.getHead());
+        double tm = normalizedRay.dotProduct(headOfRayToOrigin);
+        double d = Math.sqrt(headOfRayToOrigin.lengthSquared() - (tm*tm));
+
+        if (d >= radius) return null;       //if (d <= r) then there are no intersections
+
+        List<Point> res = new LinkedList<>();
+        double th = Math.sqrt(radius*radius - d*d);
+        double t1 = tm + th;
+        double t2 = tm - th;
+
+        //take only if t > 0
+        if (t1 > 0 )
+            res.add(ray.getHead().add(normalizedRay.scale(t1)));
+
+        if (t2 > 0 )
+            res.add(ray.getHead().add(normalizedRay.scale(t2)));
+
+        return res;
     }
 }
