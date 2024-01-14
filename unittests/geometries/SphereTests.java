@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,14 +42,16 @@ class SphereTests {
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
 
         // TC02: Ray starts before and crosses the sphere (2 points)
-        rayPoint = new Point(4, 0, 0);
-        final Point rayPoint2 = rayPoint;   //was getting error not using final variable in lambda expression
+        rayPoint = new Point(0, 0, 0);
+        Point rayPoint2 = rayPoint;   //was getting error not using final variable in lambda expression
         rayVector = new Vector(0, 5, 0);
         ray = new Ray(rayPoint, rayVector);
-        Point pIntersect1 = new Point(1.67, 2.91, 0);
-        Point pIntersect2 = new Point(-0.7, 5.87, 0);
-        var result = sphere.findIntersections(ray).stream().sorted(Comparator.comparingDouble(p -> p.distance(rayPoint2))).toList();
-        var exp = List.of(pIntersect1, pIntersect2);
+        Point pIntersect1 = new Point(0.0,2.0,0.0);
+        Point pIntersect2 = new Point(0.0,6.0,0.0);
+        List<Point> result = sphere.findIntersections(ray).stream().sorted(Comparator.comparingDouble(p -> p.distance(rayPoint2))).toList();
+        List<Point> exp = new LinkedList<>();
+        exp.add(pIntersect1);
+        exp.add(pIntersect2);
         assertEquals(2, result.size(), "Wrong number of points");
         assertEquals(exp, result, "Ray crosses sphere in the incorrect place(s)");
 
@@ -56,7 +59,7 @@ class SphereTests {
         rayPoint = new Point(0, 5, 0);
         rayVector = new Vector(4, 0, 0);
         ray = new Ray(rayPoint, rayVector);
-        pIntersect1 = new Point(1.67, 2.91, 0);
+        pIntersect1 = new Point(1.7320508075688772,5.0,0.0);
         exp = List.of(pIntersect1);
         result = sphere.findIntersections(ray);
         assertEquals(1, result.size(), "Wrong number of points");
@@ -74,7 +77,7 @@ class SphereTests {
         rayPoint = new Point(0, 2, 0);
         rayVector = new Vector(2, 4, 0);
         ray = new Ray(rayPoint, rayVector);
-        pIntersect1 = new Point(2, 4, 0);
+        pIntersect1 = new Point(1.6, 5.2, 0);
         exp = List.of(pIntersect1);
         result = sphere.findIntersections(ray);
         assertEquals(1, result.size(), "Wrong number of points");
@@ -113,24 +116,24 @@ class SphereTests {
         rayPoint = new Point(0, 3, 0);
         rayVector = new Vector(0, 2, 0);
         ray = new Ray(rayPoint, rayVector);
-        pIntersect1 = new Point(0, 1, 0);
+        pIntersect1 = new Point(0, 6, 0);
         exp = List.of(pIntersect1);
         result = sphere.findIntersections(ray);
         assertEquals(1, result.size(), "Wrong number of points");
         assertEquals(exp, result, "Ray crosses sphere in the incorrect place(s)");
 
-        // TC10: Ray starts at the center (1 point)
-        rayPoint = centerPoint;
+        //TC10: Ray starts at the center (1 point)
+        rayPoint = new Point(0,4,0);
         rayVector = new Vector(0, 1, 0);
         ray = new Ray(rayPoint, rayVector);
-        pIntersect1 = new Point(0, 2, 0);
+        pIntersect1 = new Point(0,6, 0);
         exp = List.of(pIntersect1);
         result = sphere.findIntersections(ray);
         assertEquals(1, result.size(), "Wrong number of points");
         assertEquals(exp, result, "Ray crosses sphere in the incorrect place(s)");
 
         // TC11: Ray starts at sphere and goes outside (0 points)
-        rayPoint = new Point(0, 2, 0);
+        rayPoint = new Point(0, 6, 0);
         rayVector = new Vector(0, 1, 0);
         ray = new Ray(rayPoint, rayVector);
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
@@ -143,14 +146,14 @@ class SphereTests {
 
         // **** Group: Ray's line is tangent to the sphere (all tests 0 points)
         // TC13: Ray starts before the tangent point
-        rayPoint = new Point(2, 2, 0);
+        rayPoint = new Point(2, 2, -2);
         rayVector = new Vector(-2, 2, 0);
         ray = new Ray(rayPoint, rayVector);
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
 
         // TC14: Ray starts at the tangent point
         rayPoint = new Point(0, 2, 0);
-        rayVector = new Vector(2, 2, 0);
+        rayVector = new Vector(1, 0, 0);
         ray = new Ray(rayPoint, rayVector);
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
 
