@@ -19,11 +19,11 @@ public class Ray {
         this.direction = directionVector.normalize(); // Normalizes the direction vector
     }
 
-    public Point getHead(){
+    public Point getHead() {
         return this.head;
     }
 
-    public Vector getDirection(){
+    public Vector getDirection() {
         return this.direction;
     }
 
@@ -34,5 +34,10 @@ public class Ray {
         return (other instanceof Ray obj)
                 && this.head.equals(obj.head)
                 && this.direction.equals(obj.direction);
+    }
+
+    public Point getPoint(double t) {
+        if (t == 0) return getHead();
+        return getHead().add(this.getDirection().scale(t));
     }
 }

@@ -2,6 +2,9 @@ package geometries;
 
 import primitives.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Represents a plane in a three-dimensional (3D) space, defined by a point on the plane (q) and a normal vector.
  * The plane implements the Geometry interface.
@@ -18,7 +21,7 @@ public class Plane implements Geometry {
      * @param b Another point on the plane.
      * @param c Yet another point on the plane.
      */
-    Plane(Point a, Point b, Point c){
+    Plane(Point a, Point b, Point c) {
         //throws exception if the points are not duplicates
         if (a.equals(b) || a.equals(c) || b.equals(c))
             throw new IllegalArgumentException("Two of the points of a plane cannot be the same");
@@ -44,7 +47,7 @@ public class Plane implements Geometry {
      * @param p      A point on the plane.
      * @param normal The normal vector to the plane.
      */
-    Plane(Point p, Vector normal){
+    Plane(Point p, Vector normal) {
         this.q = p; // Initializes the point 'q' on the plane
         this.normal = normal.normalize(); // Normalizes the provided normal vector
     }
@@ -62,5 +65,30 @@ public class Plane implements Geometry {
     public Vector getNormal(Point p) {
         // Additional implementation might be needed for accurate normal at a specific point
         return this.normal;
+    }
+
+    /**
+     * Finds the intersection point of a ray with a plane using the parametric equation.
+     *
+     * @param ray The ray for which the intersection point with the plane is to be found.
+     * @return A list containing the intersection point, or {@code null} if there is no intersection.
+     */
+    public List<Point> findIntersections(Ray ray) {
+        Vector normal = getNormal();
+
+        //for top part of equation
+        Vector qMinusP0 = q.subtract(ray.getHead());
+
+        //for bottom of equation
+        Vector rayDirection = ray.getDirection();
+
+        double t = (normal.dotProduct(qMinusP0))/(normal.dotProduct(rayDirection));
+
+        //if t <= 0 then no points intersect
+        if (t <= 0 || normal.dotProduct(rayDirection) == 0 || normal.dotProduct(rayDirection) == 1) return null;
+
+        List<Point> res = new LinkedList<>();
+        res.add(ray.getPoint(t));
+        return res;
     }
 }

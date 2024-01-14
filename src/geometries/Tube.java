@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.*;
 
+import java.util.List;
+
 /**
  * Represents a tube in a 3D space, a type of radial geometry defined by a radius and an axis (Ray).
  * The tube extends the RadialGeometry abstract class.
@@ -21,8 +23,16 @@ public class Tube extends RadialGeometry {
         // centerOfTube = point + (direction * t)
         double t = this.axis.getDirection().dotProduct(p.subtract(axis.getHead()));
 
-        // Add If t==0? (Peretz)
-        Point centerOfTube = (axis.getHead()).add((axis.getDirection()).scale(t));
-        return p.subtract(centerOfTube).normalize();
+        //P-P0 is orthogonal to the direction of the axis
+        if (t ==0)
+            throw new IllegalArgumentException("P-P0 is orthogonal to the direction of the axis");
+
+        // Add If t==0?
+        return p.subtract(axis.getPoint(t)).normalize();
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 }
