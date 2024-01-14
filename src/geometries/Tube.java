@@ -23,6 +23,10 @@ public class Tube extends RadialGeometry {
         // centerOfTube = point + (direction * t)
         double t = this.axis.getDirection().dotProduct(p.subtract(axis.getHead()));
 
+        //P-P0 is orthogonal to the direction of the axis
+        if (t ==0)
+            throw new IllegalArgumentException("P-P0 is orthogonal to the direction of the axis");
+
         // Add If t==0?
         return p.subtract(axis.getPoint(t)).normalize();
     }

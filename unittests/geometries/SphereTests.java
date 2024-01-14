@@ -42,12 +42,12 @@ class SphereTests {
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
 
         // TC02: Ray starts before and crosses the sphere (2 points)
-        rayPoint = new Point(0, 0, 0);
+        rayPoint = new Point(0, 0, 1);
         Point rayPoint2 = rayPoint;   //was getting error not using final variable in lambda expression
-        rayVector = new Vector(0, 5, 0);
+        rayVector = new Vector(0, 2, -1);
         ray = new Ray(rayPoint, rayVector);
-        Point pIntersect1 = new Point(0.0,2.0,0.0);
-        Point pIntersect2 = new Point(0.0,6.0,0.0);
+        Point pIntersect1 = new Point(0,2,0);
+        Point pIntersect2 = new Point(0.0,5.2,-1.6);
         List<Point> result = sphere.findIntersections(ray).stream().sorted(Comparator.comparingDouble(p -> p.distance(rayPoint2))).toList();
         List<Point> exp = new LinkedList<>();
         exp.add(pIntersect1);
@@ -57,9 +57,9 @@ class SphereTests {
 
         // TC03: Ray starts inside the sphere (1 point)
         rayPoint = new Point(0, 5, 0);
-        rayVector = new Vector(4, 0, 0);
+        rayVector = new Vector(0, 1, 0);
         ray = new Ray(rayPoint, rayVector);
-        pIntersect1 = new Point(1.7320508075688772,5.0,0.0);
+        pIntersect1 = new Point(0,6,0);
         exp = List.of(pIntersect1);
         result = sphere.findIntersections(ray);
         assertEquals(1, result.size(), "Wrong number of points");
@@ -85,7 +85,7 @@ class SphereTests {
 
         // TC06: Ray starts at sphere and goes outside (0 points)
         rayPoint = new Point(0, 2, 0);
-        rayVector = new Vector(2, 0, 0);
+        rayVector = new Vector(0, -1, 0);
         ray = new Ray(rayPoint, rayVector);
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
 
@@ -158,8 +158,8 @@ class SphereTests {
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
 
         // TC15: Ray starts after the tangent point
-        rayPoint = new Point(-2, 2, 0);
-        rayVector = new Vector(-3, 2, 0);
+        rayPoint = new Point(-2, 5, 0);
+        rayVector = new Vector(0,2, 0);
         ray = new Ray(rayPoint, rayVector);
         assertNull(sphere.findIntersections(ray), "Ray's line out of sphere");
 
