@@ -84,7 +84,6 @@ public class Point {
         return (xDistance * xDistance) + (yDistance * yDistance) + (zDistance * zDistance);
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
