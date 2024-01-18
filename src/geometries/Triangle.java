@@ -20,6 +20,17 @@ public class Triangle extends Polygon {
         super(a, b, c);
     }
 
+    /**
+     * Overrides the method in the superclass to retrieve the normal vector at a specified point on the plane.
+     *
+     * @param point The point on the plane for which the normal vector is to be determined.
+     * @return A Vector representing the normal to the plane at the given point.
+     */
+    @Override
+    public Vector getNormal(Point point) {
+        return this.plane.getNormal(point);
+    }
+
 
     /**
      * Finds intersections of a ray with a triangle.
@@ -61,6 +72,8 @@ public class Triangle extends Polygon {
         else
             return null;
     }
+
+
 
 }
 
