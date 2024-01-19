@@ -82,7 +82,7 @@ public class Plane implements Geometry {
         //for bottom of equation
         Vector rayDirection = ray.getDirection();
 
-        double t = (normal.dotProduct(qMinusP0))/(normal.dotProduct(rayDirection));
+        double t = (normal.dotProduct(qMinusP0)) / (normal.dotProduct(rayDirection));
 
         //if t <= 0 then no points intersect
         if (t <= 0 || normal.dotProduct(rayDirection) == 0 || normal.dotProduct(rayDirection) == 1) return null;
