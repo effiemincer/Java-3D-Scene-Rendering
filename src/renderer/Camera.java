@@ -31,20 +31,19 @@ public class Camera implements Cloneable {
         double Rx = height / Nx;
         double Ry = width / Ny;
 
-        double xJ = -(i - (Ny - 1) / 2d) * Ry;
-        double yI = (j - (Nx - 1) / 2d) * Rx;
+        double xJ = (j - (Nx - 1) / 2d) * Rx;
+        double yI = -(i - (Ny - 1) / 2d) * Ry;
 
+        Point pIJ = center;
 
-        Point Pij = center;
-        if (xJ != 0 && yI != 0)
-            Pij = Pij.add(vRight.scale(xJ).add(vUp.scale(yI)));
-        else
-            throw new IllegalArgumentException("xJ and/or yI cannot be zero");
+        if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
 
-        Vector Vij = Pij.subtract(center);
-        
-        return new Ray(center, Vij);
+        Vector Vij = pIJ.subtract(location);
+
+        return new Ray(location, Vij);
     }
+
 
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -83,13 +82,13 @@ public class Camera implements Cloneable {
             return this;
         }
 
-        public Builder setDirection(Vector forward, Vector upwards) {
+        public Builder setDirection(Vector towards, Vector upwards) {
 
             // ! I'm not sure what vertical means in the instructions.
-            if (forward.dotProduct(upwards) == 0)
+            if (towards.dotProduct(upwards) != 0)
                 throw new IllegalArgumentException("Vectors are not orthogonal");
 
-            this.camera.vTo = forward.normalize();
+            this.camera.vTo = towards.normalize();
             this.camera.vUp = upwards.normalize();
 
             return this;
