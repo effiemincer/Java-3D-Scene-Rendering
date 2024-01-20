@@ -21,7 +21,7 @@ public class Plane implements Geometry {
      * @param b Another point on the plane.
      * @param c Yet another point on the plane.
      */
-    Plane(Point a, Point b, Point c) {
+    public Plane(Point a, Point b, Point c) {
         //throws exception if the points are not duplicates
         if (a.equals(b) || a.equals(c) || b.equals(c))
             throw new IllegalArgumentException("Two of the points of a plane cannot be the same");

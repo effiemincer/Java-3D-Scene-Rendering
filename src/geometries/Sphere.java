@@ -35,7 +35,7 @@ public class Sphere extends RadialGeometry {
 
         List<Point> res = new LinkedList<>();
 
-        //if ray starts at the center point
+        //if ray starts at the center point to avoid zero vector
         if (ray.getHead().equals(this.center)) {
             res.add(ray.getPoint(radius));
             return res;
