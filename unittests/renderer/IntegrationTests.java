@@ -10,8 +10,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Integration tests for camera-ray intersection with different geometries.
+ */
 public class IntegrationTests {
 
+    /**
+     * Tests the intersection of camera rays with a plane.
+     */
     @Test
     void testCameraRaysIntersectPlane() {
 
@@ -44,6 +50,9 @@ public class IntegrationTests {
 
     }
 
+    /**
+     * Tests the intersection of camera rays with a triangle.
+     */
     @Test
     void testCameraRaysIntersectTriangle() {
 
@@ -54,7 +63,7 @@ public class IntegrationTests {
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
                 .setVpDistance(1).build();
-        helperMethod(camera, tri, 1);
+        helperMethod(camera, tri, 1);   //error because expected is 1 but actual is zero
 
         // TC02: Small Triangle, just central ray hits. (1 Intersection)
         tri = new Triangle(new Point(0,20,-2), new Point(1,-1,-2), new Point(-1,-1,-2));
@@ -63,10 +72,13 @@ public class IntegrationTests {
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
                 .setVpDistance(1).build();
-        helperMethod(camera, tri, 2);
+        helperMethod(camera, tri, 2);   //error because expected is 2 but actual is 1
 
     }
 
+    /**
+     * Tests the intersection of camera rays with a sphere.
+     */
     @Test
     void testCameraRaysIntersectSphere() {
 
@@ -136,6 +148,13 @@ public class IntegrationTests {
         helperMethod(camera, sphere, 0);
     }
 
+    /**
+     * Helper method for testing camera-ray intersections.
+     *
+     * @param camera                The camera used for generating rays.
+     * @param in                    The intersectable geometry.
+     * @param expectedIntersections The expected number of intersections.
+     */
     void helperMethod(Camera camera, Intersectable in, int expectedIntersections) {
         List<Point> finalResults = new ArrayList<>();
 

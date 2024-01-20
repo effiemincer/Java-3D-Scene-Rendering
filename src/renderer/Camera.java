@@ -6,6 +6,9 @@ import primitives.Ray;
 
 import java.util.MissingResourceException;
 
+/**
+ * Represents a camera used for rendering images.
+ */
 public class Camera implements Cloneable {
     private Point location;
     private Vector vTo;
@@ -18,6 +21,11 @@ public class Camera implements Cloneable {
     private Camera() {
     }
 
+    /**
+     * Gets a new builder instance for creating a camera.
+     *
+     * @return A new builder for constructing a camera.
+     */
     public static Builder getBuilder() {
         return new Builder();
     }
@@ -25,11 +33,11 @@ public class Camera implements Cloneable {
     /**
      * Constructs a ray for a given pixel in the image.
      *
-     * @param Nx      The width of the image.
-     * @param Ny      The height of the image.
-     * @param j       The index by width.
-     * @param i       The index by height.
-     * @return        The constructed ray.
+     * @param Nx The width of the image.
+     * @param Ny The height of the image.
+     * @param j  The index by width.
+     * @param i  The index by height.
+     * @return The constructed ray.
      */
     public Ray constructRay(int Nx, int Ny, int j, int i) {
         // Calculate the center point of the image plane
@@ -59,28 +67,56 @@ public class Camera implements Cloneable {
         return new Ray(location, Vij);
     }
 
-
+    /**
+     * Clones the camera object.
+     *
+     * @return A cloned instance of the camera.
+     * @throws CloneNotSupportedException If cloning is not supported.
+     */
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
+    /**
+     * Gets the location of the camera.
+     *
+     * @return The location of the camera.
+     */
     public Point getLocation() {
         return location;
     }
 
+    /**
+     * Gets the view direction vector of the camera.
+     *
+     * @return The view direction vector.
+     */
     public Vector getVTo() {
         return vTo;
     }
 
+    /**
+     * Gets the up vector of the camera.
+     *
+     * @return The up vector.
+     */
     public Vector getVUp() {
         return vUp;
     }
 
+    /**
+     * Gets the right vector of the camera.
+     *
+     * @return The right vector.
+     */
     public Vector getVRight() {
         return vRight;
     }
 
+    /**
+     * Builder class for constructing a Camera object.
+     */
     public static class Builder {
         private final Camera camera;
 
@@ -92,14 +128,26 @@ public class Camera implements Cloneable {
             this.camera = camera;
         }
 
+        /**
+         * Sets the location of the camera.
+         *
+         * @param point The location of the camera.
+         * @return The builder instance.
+         */
         public Builder setLocation(Point point) {
             this.camera.location = point;
             return this;
         }
 
+        /**
+         * Sets the direction vectors of the camera.
+         *
+         * @param towards The view direction vector.
+         * @param upwards The up vector.
+         * @return The builder instance.
+         * @throws IllegalArgumentException If the vectors are not orthogonal.
+         */
         public Builder setDirection(Vector towards, Vector upwards) {
-
-            // ! I'm not sure what vertical means in the instructions.
             if (towards.dotProduct(upwards) != 0)
                 throw new IllegalArgumentException("Vectors are not orthogonal");
 
@@ -109,10 +157,15 @@ public class Camera implements Cloneable {
             return this;
         }
 
-        //set view plane size
+        /**
+         * Sets the size of the view plane.
+         *
+         * @param w The width of the view plane.
+         * @param h The height of the view plane.
+         * @return The builder instance.
+         * @throws IllegalArgumentException If width or height is not greater than zero.
+         */
         public Builder setVpSize(double w, double h) {
-
-            //checking both doubles are positive
             if (w <= 0 || h <= 0)
                 throw new IllegalArgumentException("Width and height of view plane must both be greater than zero.");
 
@@ -122,35 +175,43 @@ public class Camera implements Cloneable {
             return this;
         }
 
-        //set view plane distance
+        /**
+         * Sets the distance to the view plane.
+         *
+         * @param d The distance to the view plane.
+         * @return The builder instance.
+         * @throws IllegalArgumentException If the distance is less than zero.
+         */
         public Builder setVpDistance(double d) {
-
-            //checks that distance is greater than zero
-            if (d < 0 )
-                throw new IllegalArgumentException("Distance from viewplane must be at least zero.");
+            if (d < 0)
+                throw new IllegalArgumentException("Distance from view plane must be at least zero.");
             this.camera.distance = d;
 
             return this;
         }
 
+        /**
+         * Builds the Camera object.
+         *
+         * @return The constructed Camera object.
+         * @throws MissingResourceException If rendering data is missing (width, height, or distance).
+         * @throws RuntimeException        If cloning the camera fails.
+         */
         public Camera build() {
             final String renderDataMissing = "Rendering data is missing";
             final String cameraClass = "Camera class";
 
             if (this.camera.width == 0)
-                throw new MissingResourceException(renderDataMissing, cameraClass, "Width of viewplane is zero");
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Width of view plane is zero");
 
             if (this.camera.height == 0)
-                throw new MissingResourceException(renderDataMissing, cameraClass, "Height of viewplane is zero");
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Height of view plane is zero");
 
             if (this.camera.distance == 0)
-                throw new MissingResourceException(renderDataMissing, cameraClass, "Distance to viewplane is zero");
-
-            // ! INCORRECT EXCEPTION VALUES?
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Distance to view plane is zero");
 
             this.camera.vRight = this.camera.vTo.crossProduct(this.camera.vUp).normalize();
 
-            // Does this work?
             try {
                 return (Camera) camera.clone();
             } catch (CloneNotSupportedException e) {
