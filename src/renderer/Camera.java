@@ -1,5 +1,6 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
@@ -10,6 +11,8 @@ import java.util.MissingResourceException;
  * Represents a camera used for rendering images.
  */
 public class Camera implements Cloneable {
+    ImageWriter imageWriter;
+    RayTracerBase rayTracer;
     private Point location;
     private Vector vTo;
     private Vector vUp;
@@ -17,7 +20,6 @@ public class Camera implements Cloneable {
     private double width = 0d;
     private double height = 0d;
     private double distance = 0d;
-
     private Point ViewPlaneCenter;
 
     private Camera() {
@@ -111,6 +113,26 @@ public class Camera implements Cloneable {
         return vRight;
     }
 
+    public void renderImage() {
+        throw new UnsupportedOperationException();
+    }
+
+    public void printGrid(int interval, Color color) {
+        return;
+    }
+
+    public void writeToImage() {
+
+    }
+
+    private void castRay(double Nx, double Ny, int j, int i) {
+
+    }
+
+    private Color calcColor(Point p) {
+        return null;
+    }
+
     /**
      * Builder class for constructing a Camera object.
      */
@@ -187,12 +209,22 @@ public class Camera implements Cloneable {
             return this;
         }
 
+        public Builder setImageWriter(ImageWriter iw) {
+            this.camera.imageWriter = iw;
+            return this;
+        }
+
+        public Builder setRayTracer(RayTracerBase rtb) {
+            this.camera.rayTracer = rtb;
+            return this;
+        }
+
         /**
          * Builds the Camera object.
          *
          * @return The constructed Camera object.
          * @throws MissingResourceException If rendering data is missing (width, height, or distance).
-         * @throws RuntimeException        If cloning the camera fails.
+         * @throws RuntimeException         If cloning the camera fails.
          */
         public Camera build() {
             final String renderDataMissing = "Rendering data is missing";
@@ -209,6 +241,12 @@ public class Camera implements Cloneable {
 
             this.camera.vRight = this.camera.vTo.crossProduct(this.camera.vUp).normalize();
             this.camera.ViewPlaneCenter = camera.location.add(camera.vTo.scale(camera.distance));
+
+            if (this.camera.imageWriter != null)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "ImageWriter is null");
+
+            if (this.camera.rayTracer != null)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "RayTracer is null");
 
             try {
                 return (Camera) camera.clone();

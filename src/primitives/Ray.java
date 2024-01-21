@@ -1,5 +1,8 @@
 package primitives;
 
+import java.util.Comparator;
+import java.util.List;
+
 /**
  * Represents a ray in a three-dimensional (3D) space defined by a starting point and a direction vector.
  * This class models the behavior and attributes of a ray used in 3D graphics and geometry.
@@ -19,6 +22,14 @@ public class Ray {
         this.direction = directionVector.normalize(); // Normalizes the direction vector
     }
 
+    public Point findClosestPoint(List<Point> pointList) {
+
+        // ! CHECK
+        List<Point> result = pointList.stream().sorted(Comparator.comparingDouble(p -> p.distance(getHead()))).toList();
+
+        return result.getFirst();
+    }
+
     public Point getHead() {
         return this.head;
     }
@@ -26,7 +37,6 @@ public class Ray {
     public Vector getDirection() {
         return this.direction;
     }
-
 
     @Override
     public boolean equals(Object other) {
