@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
 
 /**
  * Represents a plane in a three-dimensional (3D) space, defined by a point on the plane (q) and a normal vector.
