@@ -5,6 +5,9 @@ import primitives.*;
 import java.util.LinkedList;
 import java.util.List;
 
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 /**
  * Represents a plane in a three-dimensional (3D) space, defined by a point on the plane (q) and a normal vector.
  * The plane implements the Geometry interface.
@@ -82,11 +85,15 @@ public class Plane implements Geometry {
         //for bottom of equation
         Vector rayDirection = ray.getDirection();
 
-        double t = (normal.dotProduct(qMinusP0)) / (normal.dotProduct(rayDirection));
+        if (normal.dotProduct(ray.getDirection()) == 0) return null;
+        if (normal.dotProduct(rayDirection) == 1) return null;
+        //if (ray.getHead().equals(q)) return null;
+
+        double t = alignZero((normal.dotProduct(qMinusP0)) / (normal.dotProduct(rayDirection)));
 
         //if t <= 0 then no points intersect
-        if (t <= 0 || normal.dotProduct(rayDirection) == 0 || normal.dotProduct(rayDirection) == 1) return null;
-
+        //if (t <= 0 || normal.dotProduct(rayDirection) == 0 || normal.dotProduct(rayDirection) == 1) return null;
+        if (t <= 0) return null;
         List<Point> res = new LinkedList<>();
         res.add(ray.getPoint(t));
         return res;
