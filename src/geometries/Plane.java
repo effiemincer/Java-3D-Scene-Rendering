@@ -85,15 +85,17 @@ public class Plane implements Geometry {
         //for bottom of equation
         Vector rayDirection = ray.getDirection();
 
+        //if the ray is parallel
         if (normal.dotProduct(ray.getDirection()) == 0) return null;
+
+        //if the ray is orthogonal
         if (normal.dotProduct(rayDirection) == 1) return null;
-        //if (ray.getHead().equals(q)) return null;
 
         double t = alignZero((normal.dotProduct(qMinusP0)) / (normal.dotProduct(rayDirection)));
 
         //if t <= 0 then no points intersect
-        //if (t <= 0 || normal.dotProduct(rayDirection) == 0 || normal.dotProduct(rayDirection) == 1) return null;
         if (t <= 0) return null;
+
         List<Point> res = new LinkedList<>();
         res.add(ray.getPoint(t));
         return res;
