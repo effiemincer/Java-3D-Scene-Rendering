@@ -31,7 +31,6 @@ public class Triangle extends Polygon {
         return this.plane.getNormal(point);
     }
 
-
     /**
      * Finds intersections of a ray with a triangle.
      * First checks for intersections with the plane the triangle is sitting on,

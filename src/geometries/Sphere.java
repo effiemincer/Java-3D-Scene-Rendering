@@ -35,8 +35,8 @@ public class Sphere extends RadialGeometry {
 
         List<Point> res = new LinkedList<>();
 
-        //if ray starts at the center point
-        if (ray.getHead().equals(this.center)){
+        //if ray starts at the center point to avoid zero vector
+        if (ray.getHead().equals(this.center)) {
             res.add(ray.getPoint(radius));
             return res;
         }
@@ -46,19 +46,19 @@ public class Sphere extends RadialGeometry {
 
         Vector headOfRayToOrigin = this.center.subtract(ray.getHead());
         double tm = rayDirection.dotProduct(headOfRayToOrigin);
-        double d = Math.sqrt(headOfRayToOrigin.lengthSquared() - (tm*tm));
+        double d = Math.sqrt(headOfRayToOrigin.lengthSquared() - (tm * tm));
 
         if (d >= radius) return null;       //if (d >= r) then there are no intersections
 
-        double th = Math.sqrt(radius*radius - d*d);
+        double th = Math.sqrt(radius * radius - d * d);
         double t1 = tm + th;
         double t2 = tm - th;
 
         //take only if t > 0
-        if (t1 > 0 )
+        if (t1 > 0)
             res.add(ray.getPoint(t1));
 
-        if (t2 > 0 ){
+        if (t2 > 0) {
             //puts the closer point to the head of the ray first in the list
             double distance1 = ray.getPoint(t1).distance(ray.getHead());
             double distance2 = ray.getPoint(t2).distance(ray.getHead());
