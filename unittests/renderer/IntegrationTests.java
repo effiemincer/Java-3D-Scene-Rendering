@@ -70,26 +70,6 @@ public class IntegrationTests {
     @Test
     void testCameraRaysIntersectSphere() {
 
-        // TC01: Just the central ray hits (intersects) the sphere
-//        Sphere sphere = new Sphere(1, new Point(0, 0, -3));
-//        Camera camera = Camera.getBuilder()
-//                .setLocation(Point.ZERO)
-//                .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
-//                .setVpSize(3, 3)
-//                .setVpDistance(1).build();
-//
-//        List<Point> result;
-//        for (int i = 0; i <= 2; i++) {
-//            for (int j = 0; j <= 2; j++) {
-//
-//                result = sphere.findIntersections(camera.constructRay(3, 3, j, i));
-//                if (i == 1 && j == 1)
-//                    assertEquals(2, result.size(), "Wrong number of points");
-//                else
-//                    assertNull(result, "Ray's line out of sphere");
-//            }
-//        }
-
         // TC01: Just the central ray intersects the sphere. 2 intersection points
         Sphere sphere = new Sphere(1, new Point(0, 0, -3));
         Camera camera = Camera.getBuilder()

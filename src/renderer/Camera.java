@@ -18,6 +18,8 @@ public class Camera implements Cloneable {
     private double height = 0d;
     private double distance = 0d;
 
+    private Point ViewPlaneCenter;
+
     private Camera() {
     }
 
@@ -40,8 +42,6 @@ public class Camera implements Cloneable {
      * @return The constructed ray.
      */
     public Ray constructRay(int Nx, int Ny, int j, int i) {
-        // Calculate the center point of the image plane
-        Point center = location.add(vTo.scale(distance));
 
         // Calculate the pixel dimensions
         double Rx = height / Nx;
@@ -52,7 +52,7 @@ public class Camera implements Cloneable {
         double yI = -(i - (Ny - 1) / 2d) * Ry;
 
         // Initialize the point in 3D space corresponding to the pixel
-        Point pIJ = center;
+        Point pIJ = ViewPlaneCenter;
 
         // Adjust the point based on the horizontal position of the pixel
         if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
@@ -60,11 +60,8 @@ public class Camera implements Cloneable {
         // Adjust the point based on the vertical position of the pixel
         if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
 
-        // Calculate the direction vector from the camera location to the pixel
-        Vector Vij = pIJ.subtract(location);
-
         // Return the constructed ray
-        return new Ray(location, Vij);
+        return new Ray(location, pIJ.subtract(location));
     }
 
     /**
@@ -211,6 +208,7 @@ public class Camera implements Cloneable {
                 throw new MissingResourceException(renderDataMissing, cameraClass, "Distance to view plane is zero");
 
             this.camera.vRight = this.camera.vTo.crossProduct(this.camera.vUp).normalize();
+            this.camera.ViewPlaneCenter = camera.location.add(camera.vTo.scale(camera.distance));
 
             try {
                 return (Camera) camera.clone();
