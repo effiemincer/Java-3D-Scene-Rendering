@@ -54,7 +54,7 @@ public class RayTests {
         // BV01: empty list. return null
         list = new LinkedList<Point>();
 
-        assertNull(list, "ERROR: List is not empty");
+        assertNull(ray.findClosestPoint(list), "ERROR: List is not empty");
 
         // BV02: element 1 is the closest point. return point
         list = new LinkedList<Point>();
