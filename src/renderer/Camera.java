@@ -5,14 +5,17 @@ import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
 
+import java.util.List;
 import java.util.MissingResourceException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Represents a camera used for rendering images.
  */
 public class Camera implements Cloneable {
-    ImageWriter imageWriter;
-    RayTracerBase rayTracer;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
     private Point location;
     private Vector vTo;
     private Vector vUp;
@@ -114,7 +117,11 @@ public class Camera implements Cloneable {
     }
 
     public void renderImage() {
-        throw new UnsupportedOperationException();
+        for (int i = 0; i <= imageWriter.getNx(); i++) {
+            for (int j = 0; j <= imageWriter.getNy(); j++) {
+                castRay(imageWriter.getNx(), imageWriter.getNy(), i, j);
+            }
+        }
     }
 
     public void printGrid(int interval, Color color) {
@@ -123,14 +130,14 @@ public class Camera implements Cloneable {
 
     public void writeToImage() {
 
+        new ImageWriter().writeToImage();
     }
 
-    private void castRay(double Nx, double Ny, int j, int i) {
-
-    }
-
-    private Color calcColor(Point p) {
-        return null;
+    // TODO: i and j might be in the incorrect order
+    private void castRay(int Nx, int Ny, int j, int i) {
+        Ray r = constructRay(Nx, Ny, j, i);
+        Color color = rayTracer.traceRay(r);
+        imageWriter.writePixel(j, i, color);
     }
 
     /**
@@ -211,11 +218,13 @@ public class Camera implements Cloneable {
 
         public Builder setImageWriter(ImageWriter iw) {
             this.camera.imageWriter = iw;
+
             return this;
         }
 
         public Builder setRayTracer(RayTracerBase rtb) {
             this.camera.rayTracer = rtb;
+
             return this;
         }
 
