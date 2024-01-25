@@ -24,6 +24,8 @@ public class Ray {
 
     public Point findClosestPoint(List<Point> pointList) {
 
+        // TODO: Change to loop through list and find the closest point because that is theta(n)
+
         // ! CHECK
         List<Point> result = pointList.stream().sorted(Comparator.comparingDouble(p -> p.distance(getHead()))).toList();
 
