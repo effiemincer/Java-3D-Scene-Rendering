@@ -42,7 +42,6 @@ public class RayTests {
         Point p3 = new Point(2, 2, 2);
 
 // ============ Equivalence Partitions Tests ==============
-
         // EP01: point is somewhere in the list
         LinkedList<Point> list = new LinkedList<Point>();
         list.add(p1);
@@ -53,12 +52,12 @@ public class RayTests {
 
 // =============== Boundary Values Tests ==================
         // BV01: empty list. return null
-        list = new LinkedList<>();
+        list = new LinkedList<Point>();
 
         assertNull(ray.findClosestPoint(list), "ERROR: List is not empty");
 
         // BV02: element 1 is the closest point. return point
-        list = new LinkedList<>();
+        list = new LinkedList<Point>();
         list.add(p2);
         list.add(p1);
         list.add(p3);
@@ -66,7 +65,7 @@ public class RayTests {
         assertEquals(p2, ray.findClosestPoint(list), "ERROR: Element 1 is not the closest point");
 
         // BV02: last element is the closest point. return point
-        list = new LinkedList<>();
+        list = new LinkedList<Point>();
         list.add(p3);
         list.add(p1);
         list.add(p2);
