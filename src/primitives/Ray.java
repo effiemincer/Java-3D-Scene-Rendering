@@ -22,24 +22,47 @@ public class Ray {
         this.direction = directionVector.normalize(); // Normalizes the direction vector
     }
 
+    /**
+     * Finds the point closest to the head point in the given list of points.
+     * @param pointList The list of points from which to find the closest point.
+     * @return The point closest to the head point, or {@code null} if the list is empty.
+     */
     public Point findClosestPoint(List<Point> pointList) {
 
-        // TODO: Change to loop through list and find the closest point because that is theta(n)
+        if (pointList.isEmpty())
+            return null;
 
-        // ! CHECK
-        List<Point> result = pointList.stream().sorted(Comparator.comparingDouble(p -> p.distance(getHead()))).toList();
+        Point closestPoint = pointList.getFirst();
+        for (Point p : pointList)
+            if (p.distance(getHead()) < closestPoint.distance(getHead())) {
+                closestPoint = p;
+            }
 
-        return result.getFirst();
+        return closestPoint;
     }
 
+
+    /**
+     * Gets the head point of this ray.
+     * @return The head point of this ray.
+     */
     public Point getHead() {
         return this.head;
     }
 
+    /**
+     * Gets the direction vector of this ray.
+     * @return The direction vector of this ray.
+     */
     public Vector getDirection() {
         return this.direction;
     }
 
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * @param other The reference object with which to compare.
+     * @return {@code true} if this object is the same as the other object; {@code false} otherwise.
+     */
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -48,8 +71,14 @@ public class Ray {
                 && this.direction.equals(obj.direction);
     }
 
+    /**
+     * Gets the point along the ray at a given parameter value.
+     * @param t The parameter value indicating the distance along the ray.
+     * @return The point along the ray at the specified parameter value.
+     */
     public Point getPoint(double t) {
         if (t == 0) return getHead();
         return getHead().add(this.getDirection().scale(t));
     }
+
 }
