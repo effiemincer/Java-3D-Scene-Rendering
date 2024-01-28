@@ -2,7 +2,6 @@ package renderer;
 
 import org.junit.jupiter.api.Test;
 import primitives.Color;
-import scene.Scene;
 
 public class ImageWriterTest {
 

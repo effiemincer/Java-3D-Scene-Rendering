@@ -4,12 +4,8 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
-import renderer.*;
 
-import java.util.List;
 import java.util.MissingResourceException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Represents a camera used for rendering images.

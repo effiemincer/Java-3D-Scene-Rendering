@@ -1,18 +1,12 @@
 package renderer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
-import geometries.Sphere;
 import org.junit.jupiter.api.Test;
 
 import primitives.*;
-import renderer.*;
 import scene.Scene;
 
-import java.util.ArrayList;
-import java.util.List;
-//import scene.Scene;
 
 /**
  * Testing Camera Class
