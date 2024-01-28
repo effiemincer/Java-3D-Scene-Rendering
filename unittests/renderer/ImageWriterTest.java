@@ -10,26 +10,18 @@ public class ImageWriterTest {
      */
     @Test
     void writeImageTest() {
+        int interval = 50;
         Color lines = new Color(0, 0, 225);
         Color bg = new Color(0, 225, 0);
         ImageWriter iw = new ImageWriter("Test image", 800, 500);
 
-        // background colouring
         for (int i = 0; i < iw.getNx(); i++) {
             for (int j = 0; j < iw.getNy(); j++) {
-                iw.writePixel(i, j, bg);
-            }
-        }
-        // vertical line colouring
-        for (int i = 0; i < iw.getNx(); i += 50) {
-            for (int j = 0; j < iw.getNy(); j++) {
-                iw.writePixel(i, j, lines);
-            }
-        }
-        // horizontal line colouring
-        for (int i = 0; i < iw.getNx(); i++) {
-            for (int j = 0; j < iw.getNy(); j += 50) {
-                iw.writePixel(i, j, lines);
+                // Background coloring unless its in the interval line
+                if (i % interval == 0 || j % interval == 0)
+                    iw.writePixel(i, j, lines);
+                else
+                    iw.writePixel(i, j, bg);
             }
         }
         iw.writeToImage();
