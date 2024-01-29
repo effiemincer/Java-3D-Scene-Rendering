@@ -4,6 +4,7 @@ import geometries.*;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Vector;
+import scene.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,10 @@ public class IntegrationTests {
                 .setLocation(Point.ZERO)
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
-                .setVpDistance(1).build();
+                .setVpDistance(1)
+                .setRayTracer(new SimpleRayTracer(new Scene("Test")))
+                .setImageWriter(new ImageWriter("Test", 1, 1))
+                .build();
 
         // TC01: Plane is parallel to view plane. (9 Intersections)
         Plane plane = new Plane(new Point(-3,0,-3), new Point(0,-1,-3), new Point(1,3,-3));
@@ -50,7 +54,10 @@ public class IntegrationTests {
                 .setLocation(Point.ZERO)
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
-                .setVpDistance(1).build();
+                .setVpDistance(1)
+                .setRayTracer(new SimpleRayTracer(new Scene("Test")))
+                .setImageWriter(new ImageWriter("Test", 1, 1))
+                .build();
 
         // TC01: Small Triangle, just central ray hits. (1 Intersection)
         // required that the normal of the triangle/plane is not the same as the ray coming in therefore
@@ -76,7 +83,10 @@ public class IntegrationTests {
                 .setLocation(Point.ZERO)
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
-                .setVpDistance(1).build();
+                .setVpDistance(1)
+                .setRayTracer(new SimpleRayTracer(new Scene("Test")))
+                .setImageWriter(new ImageWriter("Test", 1, 1))
+                .build();
         helperMethod(camera, sphere, 2);
 
         // TC02: All rays hit the sphere. 18 intersection points
@@ -85,7 +95,10 @@ public class IntegrationTests {
                 .setLocation(new Point(0, 0, 0.5))
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
-                .setVpDistance(1).build();
+                .setVpDistance(1)
+                .setRayTracer(new SimpleRayTracer(new Scene("Test")))
+                .setImageWriter(new ImageWriter("Test", 1, 1))
+                .build();
         helperMethod(camera, sphere, 18);
 
         // TC03: All but corner rays hit the sphere. (10 intersections)
@@ -94,7 +107,10 @@ public class IntegrationTests {
                 .setLocation(new Point(0, 0, 0.5))
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
-                .setVpDistance(1).build();
+                .setVpDistance(1)
+                .setRayTracer(new SimpleRayTracer(new Scene("Test")))
+                .setImageWriter(new ImageWriter("Test", 1, 1))
+                .build();
         helperMethod(camera, sphere, 10);
 
         // TC04: Camera is inside the sphere (9 Intersections)
@@ -103,7 +119,10 @@ public class IntegrationTests {
                 .setLocation(new Point(0, 0, 0.5))
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
-                .setVpDistance(1).build();
+                .setVpDistance(1)
+                .setRayTracer(new SimpleRayTracer(new Scene("Test")))
+                .setImageWriter(new ImageWriter("Test", 1, 1))
+                .build();
         helperMethod(camera, sphere, 9);
 
         // TC05: Camera is behind the sphere (0 Intersections)
@@ -112,7 +131,10 @@ public class IntegrationTests {
                 .setLocation(new Point(0, 0, 0.5))
                 .setDirection(new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVpSize(3, 3)
-                .setVpDistance(1).build();
+                .setVpDistance(1)
+                .setRayTracer(new SimpleRayTracer(new Scene("Test")))
+                .setImageWriter(new ImageWriter("Test", 1, 1))
+                .build();
         helperMethod(camera, sphere, 0);
     }
 

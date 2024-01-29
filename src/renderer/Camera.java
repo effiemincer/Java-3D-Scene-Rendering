@@ -1,5 +1,6 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
@@ -10,6 +11,8 @@ import java.util.MissingResourceException;
  * Represents a camera used for rendering images.
  */
 public class Camera implements Cloneable {
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
     private Point location;
     private Vector vTo;
     private Vector vUp;
@@ -17,7 +20,6 @@ public class Camera implements Cloneable {
     private double width = 0d;
     private double height = 0d;
     private double distance = 0d;
-
     private Point ViewPlaneCenter;
 
     private Camera() {
@@ -76,8 +78,7 @@ public class Camera implements Cloneable {
     }
 
     /**
-     * Gets the location of the camera.
-     *
+     * Gets the location of the camera
      * @return The location of the camera.
      */
     public Point getLocation() {
@@ -85,8 +86,7 @@ public class Camera implements Cloneable {
     }
 
     /**
-     * Gets the view direction vector of the camera.
-     *
+     * Gets the view direction vector of the camera
      * @return The view direction vector.
      */
     public Vector getVTo() {
@@ -95,7 +95,6 @@ public class Camera implements Cloneable {
 
     /**
      * Gets the up vector of the camera.
-     *
      * @return The up vector.
      */
     public Vector getVUp() {
@@ -104,12 +103,64 @@ public class Camera implements Cloneable {
 
     /**
      * Gets the right vector of the camera.
-     *
      * @return The right vector.
      */
     public Vector getVRight() {
         return vRight;
     }
+
+    /**
+     * Prints a grid on the image with the specified interval and color.
+     * @param interval The interval between grid lines.
+     * @param color    The color of the grid lines.
+     */
+    public void printGrid(int interval, Color color) {
+        //vertical line coloring
+        for (int i = 0; i < imageWriter.getNx(); i += interval) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                imageWriter.writePixel(i, j, color);
+            }
+        }
+        //horizontal line coloring
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j += interval) {
+                imageWriter.writePixel(i, j, color);
+            }
+        }
+    }
+
+    /**
+     * Writes the image to the output file.
+     */
+    public void writeToImage() {
+        imageWriter.writeToImage();
+    }
+
+    /**
+     * Renders the image by casting rays through each pixel and tracing them in the scene.
+     */
+    public void renderImage() {
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                castRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
+            }
+        }
+    }
+
+    /**
+     * Casts a ray through a specific pixel and calculates the color based on ray tracing.
+     *
+     * @param Nx The width of the image.
+     * @param Ny The height of the image.
+     * @param j  The y-coordinate of the pixel.
+     * @param i  The x-coordinate of the pixel.
+     */
+    private void castRay(int Nx, int Ny, int j, int i) {
+        Ray r = constructRay(Nx, Ny, j, i);
+        Color color = rayTracer.traceRay(r);
+        imageWriter.writePixel(i, j, color);
+    }
+
 
     /**
      * Builder class for constructing a Camera object.
@@ -187,14 +238,29 @@ public class Camera implements Cloneable {
             return this;
         }
 
+        public Builder setImageWriter(ImageWriter iw) {
+            this.camera.imageWriter = iw;
+
+            return this;
+        }
+
+        public Builder setRayTracer(RayTracerBase rtb) {
+            this.camera.rayTracer = rtb;
+
+            return this;
+        }
+
+
+
         /**
          * Builds the Camera object.
          *
          * @return The constructed Camera object.
          * @throws MissingResourceException If rendering data is missing (width, height, or distance).
-         * @throws RuntimeException        If cloning the camera fails.
+         * @throws RuntimeException         If cloning the camera fails.
          */
         public Camera build() {
+            //Builder c = new Builder();
             final String renderDataMissing = "Rendering data is missing";
             final String cameraClass = "Camera class";
 
@@ -209,6 +275,12 @@ public class Camera implements Cloneable {
 
             this.camera.vRight = this.camera.vTo.crossProduct(this.camera.vUp).normalize();
             this.camera.ViewPlaneCenter = camera.location.add(camera.vTo.scale(camera.distance));
+
+            if (this.camera.imageWriter == null)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "ImageWriter is null");
+
+            if (this.camera.rayTracer == null)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "RayTracer is null");
 
             try {
                 return (Camera) camera.clone();
