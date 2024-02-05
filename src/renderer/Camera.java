@@ -116,15 +116,15 @@ public class Camera implements Cloneable {
      */
     public Camera printGrid(int interval, Color color) {
         //vertical line coloring
-        for (int i = 0; i < imageWriter.getNx(); i += interval) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                imageWriter.writePixel(i, j, color);
+        for (int j = 0; j < imageWriter.getNx(); j += interval) {
+            for (int i = 0; i < imageWriter.getNy(); i++) {
+                imageWriter.writePixel(j, i, color);
             }
         }
         //horizontal line coloring
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j += interval) {
-                imageWriter.writePixel(i, j, color);
+        for (int j = 0; j < imageWriter.getNx(); j++) {
+            for (int i = 0; i < imageWriter.getNy(); i += interval) {
+                imageWriter.writePixel(j, i, color);
             }
         }
         return this;
@@ -143,8 +143,8 @@ public class Camera implements Cloneable {
     public Camera renderImage() {
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        for (int i = 0; i < nX; i++) {
-            for (int j = 0; j < nY; j++) {
+        for (int j = 0; j < nX; j++) {
+            for (int i = 0; i < nY; i++) {
                 castRay(nX, nY, j, i);
             }
         }
@@ -161,7 +161,7 @@ public class Camera implements Cloneable {
      */
     private void castRay(int Nx, int Ny, int j, int i) {
         Ray r = constructRay(Nx, Ny, j, i);
-        imageWriter.writePixel(i, j, rayTracer.traceRay(r));
+        imageWriter.writePixel(j, i, rayTracer.traceRay(r));
     }
 
     /**

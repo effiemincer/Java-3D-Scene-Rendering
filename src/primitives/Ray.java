@@ -51,7 +51,7 @@ public class Ray {
      * @return the closest point to the head of the ray
      */
     public Point findClosestPoint(List<Point> intersections) {
-        return intersections == null ? null
+        return intersections.isEmpty() ? null
                 : findClosestGeoPoint(intersections.stream()
                 .map(p -> new GeoPoint(null, p)).toList()).point;
     }
