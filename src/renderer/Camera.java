@@ -114,7 +114,7 @@ public class Camera implements Cloneable {
      * @param interval The interval between grid lines.
      * @param color    The color of the grid lines.
      */
-    public void printGrid(int interval, Color color) {
+    public Camera printGrid(int interval, Color color) {
         //vertical line coloring
         for (int i = 0; i < imageWriter.getNx(); i += interval) {
             for (int j = 0; j < imageWriter.getNy(); j++) {
@@ -127,6 +127,7 @@ public class Camera implements Cloneable {
                 imageWriter.writePixel(i, j, color);
             }
         }
+        return this;
     }
 
     /**
@@ -139,12 +140,15 @@ public class Camera implements Cloneable {
     /**
      * Renders the image by casting rays through each pixel and tracing them in the scene.
      */
-    public void renderImage() {
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                castRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
+    public Camera renderImage() {
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
+                castRay(nX, nY, j, i);
             }
         }
+        return this;
     }
 
     /**
@@ -157,10 +161,8 @@ public class Camera implements Cloneable {
      */
     private void castRay(int Nx, int Ny, int j, int i) {
         Ray r = constructRay(Nx, Ny, j, i);
-        Color color = rayTracer.traceRay(r);
-        imageWriter.writePixel(i, j, color);
+        imageWriter.writePixel(i, j, rayTracer.traceRay(r));
     }
-
 
     /**
      * Builder class for constructing a Camera object.
@@ -249,8 +251,10 @@ public class Camera implements Cloneable {
 
             return this;
         }
-
-
+        public Builder setViewPlaneCenter(Point p) {
+            this.camera.ViewPlaneCenter = p;
+            return this;
+        }
 
         /**
          * Builds the Camera object.

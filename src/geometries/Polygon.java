@@ -13,7 +13,7 @@ import primitives.Vector;
  * system
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
    /** List of polygon's vertices */
    protected List<Point> vertices;
    /** Associated plane in which the polygon lays */
@@ -83,7 +83,25 @@ public class Polygon implements Geometry {
    public Vector getNormal(Point point) { return plane.getNormal(); }
 
    @Override
-   public List<Point> findIntersections(Ray ray) {
-      return null;
+   protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+      List<Point> intersections = plane.findIntersections(ray);
+      if (intersections == null) return null;
+
+      Point p0 = ray.getHead();
+      Vector v = ray.getDirection();
+      Vector v1 = vertices.get(0).subtract(p0);
+      Vector v2 = vertices.get(1).subtract(p0);
+      Vector n = v1.crossProduct(v2).normalize();
+
+      if (v.dotProduct(n) == 0) return null;
+
+      for (int i = 2; i < size; i++) {
+         v2 = vertices.get(i).subtract(p0);
+         n = v1.crossProduct(v2).normalize();
+         if (v.dotProduct(n) == 0) return null;
+         v1 = v2;
+      }
+
+      return List.of(new GeoPoint(this, intersections.getFirst()));
    }
 }

@@ -33,18 +33,15 @@ public class Triangle extends Polygon {
 
     /**
      * Finds intersections of a ray with a triangle.
-     * First checks for intersections with the plane the triangle is sitting on,
-     * then determines if the intersection point is inside the triangle.
+     *
      * @param ray The ray we're checking to see if it intersects with the triangle
+     * @return A list of GeoPoints representing the intersections of the ray with the triangle
      */
-    public List<Point> findIntersections(Ray ray) {
-
-        // First check if there are any intersections with the plane the triangle is sitting on
-        List<Point> res = plane.findIntersections(ray);
-
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+        List<Point> intersections = plane.findIntersections(ray);
         // If there are no intersections with the plane, return null
-        if (res == null)
-            return null;
+        if (intersections == null) return null;
 
         // Extracting vectors for vertices and calculating normal vectors
         Vector rayDirection = ray.getDirection();
@@ -67,9 +64,10 @@ public class Triangle extends Polygon {
 
         // If all dot products have the same sign, the point is inside the triangle
         if ((res1 > 0 && res2 > 0 && res3 > 0) || (res1 < 0 && res2 < 0 && res3 < 0))
-            return res;
+            return List.of(new GeoPoint(this, intersections.getFirst()));
         else
             return null;
+
     }
 
 }

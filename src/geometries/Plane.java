@@ -11,7 +11,7 @@ import static primitives.Util.alignZero;
  * Represents a plane in a three-dimensional (3D) space, defined by a point on the plane (q) and a normal vector.
  * The plane implements the Geometry interface.
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     private final Point q; // A point on the plane
     private final Vector normal; // The normal vector to the plane
 
@@ -75,7 +75,8 @@ public class Plane implements Geometry {
      * @param ray The ray for which the intersection point with the plane is to be found.
      * @return A list containing the intersection point, or {@code null} if there is no intersection.
      */
-    public List<Point> findIntersections(Ray ray) {
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Vector normal = getNormal();
 
         //for top part of equation
@@ -95,8 +96,8 @@ public class Plane implements Geometry {
         //if t <= 0 then no points intersect
         if (t <= 0) return null;
 
-        List<Point> res = new LinkedList<>();
-        res.add(ray.getPoint(t));
+        List<GeoPoint> res = new LinkedList<>();
+        res.add(new GeoPoint(this, ray.getPoint(t)));
         return res;
     }
 }
