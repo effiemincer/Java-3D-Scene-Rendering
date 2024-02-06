@@ -47,17 +47,17 @@ public class Ray {
     /**
      * Finds the closest point to the head of the ray from a list of points.
      *
-     * @param intersections list of points
+     * @param points list of points
      * @return the closest point to the head of the ray
      */
-    public Point findClosestPoint(List<Point> intersections) {
-        return intersections.isEmpty() ? null
-                : findClosestGeoPoint(intersections.stream()
-                .map(p -> new GeoPoint(null, p)).toList()).point;
+    public Point findClosestPoint(List<Point> points) {
+        return points == null || points.isEmpty() ? null :
+                findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
     }
 
     /**
      * Gets the head point of this ray.
+     *
      * @return The head point of this ray.
      */
     public Point getHead() {
@@ -66,6 +66,7 @@ public class Ray {
 
     /**
      * Gets the direction vector of this ray.
+     *
      * @return The direction vector of this ray.
      */
     public Vector getDirection() {
@@ -74,6 +75,7 @@ public class Ray {
 
     /**
      * Indicates whether some other object is "equal to" this one.
+     *
      * @param other The reference object with which to compare.
      * @return {@code true} if this object is the same as the other object; {@code false} otherwise.
      */
@@ -87,6 +89,7 @@ public class Ray {
 
     /**
      * Gets the point along the ray at a given parameter value.
+     *
      * @param t The parameter value indicating the distance along the ray.
      * @return The point along the ray at the specified parameter value.
      */
