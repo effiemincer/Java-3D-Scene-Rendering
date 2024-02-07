@@ -8,6 +8,7 @@ public class Vector extends Point {
 
     final int ZERO = 0;
     final int VECTOR_INVERTER_SCALE = -1;
+    public static final Vector Y = new Vector(0, 1, 0);
 
     /**
      * Constructs a Vector object with three individual coordinates.

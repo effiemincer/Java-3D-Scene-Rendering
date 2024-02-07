@@ -208,6 +208,26 @@ public class Camera implements Cloneable {
         }
 
         /**
+         * Sets the direction vectors of the camera.
+         *
+         * @param p The location of the camera.
+         * @param upwards The up vector.
+         * @return The builder instance.
+         * @throws IllegalArgumentException If the vectors are not orthogonal.
+         */
+        public Builder setDirection(Point p, Vector upwards) {
+            Vector towards = p.subtract(this.camera.location);
+
+            if (towards.dotProduct(upwards) != 0)
+                throw new IllegalArgumentException("Vectors are not orthogonal");
+
+            this.camera.vTo = towards.normalize();
+            this.camera.vUp = upwards.normalize();
+
+            return this;
+        }
+
+        /**
          * Sets the size of the view plane.
          *
          * @param w The width of the view plane.

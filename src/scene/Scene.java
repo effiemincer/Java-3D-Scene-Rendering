@@ -2,7 +2,10 @@ package scene;
 
 import geometries.Geometries;
 import lighting.AmbientLight;
+import lighting.LightSource;
 import primitives.Color;
+
+import java.util.*;
 
 /**
  * Represents a scene in a ray tracing environment.
@@ -20,6 +23,11 @@ public class Scene {
 
     /** The geometries present in the scene. */
     public Geometries geometries = new Geometries();
+
+    /**
+     * The lights present in the scene.
+     */
+    public List<LightSource> lights = new LinkedList<LightSource>();
 
     /**
      * Constructs a new Scene object with the given name.
@@ -56,6 +64,17 @@ public class Scene {
      */
     public Scene setAmbientLight(AmbientLight ambientLight) {
         this.ambientLight = ambientLight;
+        return this;
+    }
+
+    /**
+     * Sets the lights present in the scene.
+     *
+     * @param lights The lights to be set.
+     * @return The updated Scene object.
+     */
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
         return this;
     }
 }
