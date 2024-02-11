@@ -201,8 +201,8 @@ public class LightsTests {
    public void sphereMultipleLights() {
       scene1.geometries.add(sphere);
       scene1.lights.add(new DirectionalLight(sphereLightColor.scale(0.33), sphereLightDirection));
-      scene1.lights.add(new PointLight(sphereLightColor.scale(0.5), new Point(50,60,25)).setKl(0.001).setKq(0.0002));
-      scene1.lights.add(new SpotLight(sphereLightColor.scale(0.5), new Point(0,0,25), new Vector(0,0,-0.5)).setKl(0.001).setKq(0.0001));
+      scene1.lights.add(new PointLight(new Color(100,100,100), new Point(50,60,25)).setKl(0.001).setKq(0.0002));
+      scene1.lights.add(new SpotLight(new Color(255,0,0), new Point(0,0,25), new Vector(0,0,-0.5)).setKl(0.001).setKq(0.0001));
       scene1.lights.add(new SpotLight(sphereLightColor, new Point(25,-25,25), new Vector(0,0,-0.5))
                       .setKl(0.001).setKq(0.0001).setNarrowBeam(10));
 
