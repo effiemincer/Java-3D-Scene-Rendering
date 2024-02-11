@@ -43,4 +43,5 @@ public class DirectionalLight extends Light implements LightSource {
     public Vector getL(Point point) {
         return this.direction;
     }
+
 }
