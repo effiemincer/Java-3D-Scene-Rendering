@@ -22,6 +22,12 @@ public abstract class Intersectable {
         return geoList == null ? null : geoList.stream().map(gp -> gp.point).toList();
     }
 
+    /**
+     * Uses the helper function to return the intersections for an array and a geometry
+     *
+     * @param ray The ray for which intersections are to be found.
+     * @return A list of intersection points, or an empty list if no intersections occur.
+     */
     public final List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
     }
