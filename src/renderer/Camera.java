@@ -114,19 +114,20 @@ public class Camera implements Cloneable {
      * @param interval The interval between grid lines.
      * @param color    The color of the grid lines.
      */
-    public void printGrid(int interval, Color color) {
+    public Camera printGrid(int interval, Color color) {
         //vertical line coloring
-        for (int i = 0; i < imageWriter.getNx(); i += interval) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                imageWriter.writePixel(i, j, color);
+        for (int j = 0; j < imageWriter.getNx(); j += interval) {
+            for (int i = 0; i < imageWriter.getNy(); i++) {
+                imageWriter.writePixel(j, i, color);
             }
         }
         //horizontal line coloring
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j += interval) {
-                imageWriter.writePixel(i, j, color);
+        for (int j = 0; j < imageWriter.getNx(); j++) {
+            for (int i = 0; i < imageWriter.getNy(); i += interval) {
+                imageWriter.writePixel(j, i, color);
             }
         }
+        return this;
     }
 
     /**
@@ -139,12 +140,15 @@ public class Camera implements Cloneable {
     /**
      * Renders the image by casting rays through each pixel and tracing them in the scene.
      */
-    public void renderImage() {
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                castRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
+    public Camera renderImage() {
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int j = 0; j < nX; j++) {
+            for (int i = 0; i < nY; i++) {
+                castRay(nX, nY, j, i);
             }
         }
+        return this;
     }
 
     /**
@@ -157,10 +161,8 @@ public class Camera implements Cloneable {
      */
     private void castRay(int Nx, int Ny, int j, int i) {
         Ray r = constructRay(Nx, Ny, j, i);
-        Color color = rayTracer.traceRay(r);
-        imageWriter.writePixel(i, j, color);
+        imageWriter.writePixel(j, i, rayTracer.traceRay(r));
     }
-
 
     /**
      * Builder class for constructing a Camera object.
@@ -196,6 +198,26 @@ public class Camera implements Cloneable {
          * @throws IllegalArgumentException If the vectors are not orthogonal.
          */
         public Builder setDirection(Vector towards, Vector upwards) {
+            if (towards.dotProduct(upwards) != 0)
+                throw new IllegalArgumentException("Vectors are not orthogonal");
+
+            this.camera.vTo = towards.normalize();
+            this.camera.vUp = upwards.normalize();
+
+            return this;
+        }
+
+        /**
+         * Sets the direction vectors of the camera.
+         *
+         * @param p The location of the camera.
+         * @param upwards The up vector.
+         * @return The builder instance.
+         * @throws IllegalArgumentException If the vectors are not orthogonal.
+         */
+        public Builder setDirection(Point p, Vector upwards) {
+            Vector towards = p.subtract(this.camera.location);
+
             if (towards.dotProduct(upwards) != 0)
                 throw new IllegalArgumentException("Vectors are not orthogonal");
 
@@ -249,8 +271,10 @@ public class Camera implements Cloneable {
 
             return this;
         }
-
-
+        public Builder setViewPlaneCenter(Point p) {
+            this.camera.ViewPlaneCenter = p;
+            return this;
+        }
 
         /**
          * Builds the Camera object.
