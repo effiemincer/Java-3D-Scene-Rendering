@@ -62,7 +62,7 @@ public class PointLight extends Light implements LightSource {
      * Sets the quadratic attenuation factor of the point light.
      *
      * @param Kq The quadratic attenuation factor.
-     * @return  The point light with the specified quadratic attenuation factor.
+     * @return The point light with the specified quadratic attenuation factor.
      */
     public PointLight setKq(double Kq) {
         this.Kq = Kq;
@@ -73,7 +73,7 @@ public class PointLight extends Light implements LightSource {
      * Gets the intensity of the light at the given point.
      *
      * @param point The point to which the intensity is calculated.
-     * @return    The intensity of the light at the given point.
+     * @return The intensity of the light at the given point.
      */
     public Color getIntensity(Point point) {
         double d = point.distance(this.position);
@@ -85,9 +85,13 @@ public class PointLight extends Light implements LightSource {
      * Gets the vector from the light source to the given point.
      *
      * @param point The point to which the vector is calculated.
-     * @return    The vector from the light source to the given point.
+     * @return The vector from the light source to the given point.
      */
     public Vector getL(Point point) {
         return point.subtract(this.position).normalize();
+    }
+
+    public double getDistance(Point point) {
+        return point.distance(this.position);
     }
 }
