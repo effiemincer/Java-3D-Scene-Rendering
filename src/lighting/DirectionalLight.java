@@ -16,7 +16,7 @@ public class DirectionalLight extends Light implements LightSource {
     /**
      * Constructs a directional light with the specified color and direction.
      *
-     * @param color The color of the light.
+     * @param color     The color of the light.
      * @param direction The direction of the light.
      */
     public DirectionalLight(Color color, Vector direction) {
@@ -42,5 +42,9 @@ public class DirectionalLight extends Light implements LightSource {
      */
     public Vector getL(Point point) {
         return this.direction;
+    }
+
+    public double getDistance(Point point) {
+        return Double.POSITIVE_INFINITY;
     }
 }
