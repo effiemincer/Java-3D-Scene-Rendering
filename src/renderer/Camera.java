@@ -216,7 +216,11 @@ public class Camera implements Cloneable {
          * @throws IllegalArgumentException If the vectors are not orthogonal.
          */
         public Builder setDirection(Point p, Vector upwards) {
-            Vector towards = p.subtract(this.camera.location);
+            Vector towards;
+            if (!p.equals(Point.ZERO))
+                towards = p.subtract(this.camera.location);
+            else
+                towards = new Vector(0,0,-1);
 
             if (towards.dotProduct(upwards) != 0)
                 throw new IllegalArgumentException("Vectors are not orthogonal");

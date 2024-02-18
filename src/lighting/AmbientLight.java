@@ -30,5 +30,15 @@ public class AmbientLight extends Light {
         super(color.scale(d));
     }
 
+    /**
+     * Constructs an ambient light with the specified color and intensity.
+     *
+     * @param color The color of the ambient light.
+     * @param d     The intensity of the ambient light as a Double3.
+     */
+    public AmbientLight(Color color, double d) {
+        super(color.scale(d));
+    }
+
 
 }
