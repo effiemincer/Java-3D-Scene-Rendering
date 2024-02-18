@@ -7,6 +7,7 @@ import static java.awt.Color.*;
 
 import geometries.Plane;
 import lighting.DirectionalLight;
+import lighting.PointLight;
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -152,6 +153,9 @@ public class ReflectionRefractionTests {
                 .writeToImage();
     }
 
+    /**
+     * Produce a picture of a sphere lighted by a spot-light
+     */
     @Test
     public void bonusPicture() {
         scene.geometries.add(
@@ -166,19 +170,36 @@ public class ReflectionRefractionTests {
                         .setEmission(new Color(255, 255, 255))
                         .setMaterial(new Material().setKr(1)),
                 new Triangle(new Point(-1500, 1500, -1500), new Point(1500, 1500, -1500),
-                        new Point(-670, 670, 1500))
+                        new Point(-670, 670, 0))
                         .setEmission(new Color(25, 25, 25))
                         .setMaterial(new Material().setKt(0.5)),
                 new Plane(new Point(0, 0, -2000), new Vector(0, 0, 1))
                         .setEmission(new Color(0, 0, 0))
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)),
+                new Sphere(200d, new Point(-1500, 0, -1000)).setEmission(new Color(0, 0, 100))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(25).setKt(0.5)),
+                new Sphere(200d, new Point(1500, 0, -1000)).setEmission(new Color(100, 0, 0))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKr(1)),
+                new Triangle(new Point(1500, 1500, 1500), new Point(1500, 0, -1500),
+                        new Point(1500, 1000, 0))
+                        .setEmission(new Color(20, 120, 20))
+                        .setMaterial(new Material().setKr(new Double3(0.5, 0, 0.4))),
+                new Sphere(350d, new Point(0, 1500, -100)).setEmission(new Color(75, 0, 100))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKt(0.5)),
+                new Sphere(350d, new Point(0, -1500, -100)).setEmission(new Color(100, 100, 0))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKt(0.5))
         );
-        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
-        scene.lights.add(new DirectionalLight(new Color(1020, 400, 400), new Vector(-1, -4, -4)));
+        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.05));
+        scene.lights.add(new DirectionalLight(new Color(100, 50,  100), new Vector(-1, -4, -4)));
+        scene.lights.add(new SpotLight(new Color(255, 255, 255), new Point(-1500, 0, -1000), new Vector(0,1, -1))
+                .setKl(0.00001).setKq(0.000005).setNarrowBeam(20));
+        scene.lights.add(new PointLight(new Color(255, 255, 255), new Point(0, 100, 0)).setKl(0.0001).setKq(0.000001));
+        scene.lights.add(new SpotLight(new Color(255, 255, 255), new Point(0, 1500, -100), new Vector(0,1, -1))
+                .setKl(0.00001).setKq(0.000005));
 
-        cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(10000)
+        cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(7500)
                 .setVpSize(2500, 2500)
-                .setImageWriter(new ImageWriter("buildYourOwnPicture", 500, 500))
+                .setImageWriter(new ImageWriter("Bonus Picture", 500, 500))
                 .build()
                 .renderImage()
                 .writeToImage();
