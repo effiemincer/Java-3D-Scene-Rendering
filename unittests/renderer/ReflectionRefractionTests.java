@@ -117,6 +117,9 @@ public class ReflectionRefractionTests {
                 .writeToImage();
     }
 
+    /**
+     * Produce a picture designed by us that shows off the new features  of reflection and refraction
+     */
     @Test
     public void buildYourOwnPicture(){
         scene.geometries.add(
