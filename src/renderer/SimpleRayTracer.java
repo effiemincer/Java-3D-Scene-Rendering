@@ -97,28 +97,6 @@ public class SimpleRayTracer extends RayTracerBase {
         return color;
     }
 
-//    private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
-//        Vector n = gp.geometry.getNormal(gp.point);
-//        Vector v = ray.getDirection();
-//        double nv = alignZero(n.dotProduct(v));
-//        if (isZero(nv)) return Color.BLACK;
-//
-//        Material material = gp.geometry.getMaterial();
-//        Color color = gp.geometry.getEmission();
-//        for (LightSource lightSource : scene.lights) {
-//            Vector l = lightSource.getL(gp.point);
-//            double nl = alignZero(n.dotProduct(l));
-//            if ((nl * nv > 0) && unshaded(gp, lightSource, l, n, nl)) {    // sign(nl) == sign(nv)
-//                Color lightIntensity = lightSource.getIntensity(gp.point);
-//                color = color.add(
-//                        lightIntensity.scale(calcDiffusive(material, nl)
-//                                .add(calcSpecular(material, n, l, nl, v))));
-//            }
-//        }
-//        return color;
-//    }
-
-
     /**
      * Calculates the diffusive color of a point on a geometry.
      *
