@@ -118,7 +118,7 @@ public class ReflectionRefractionTests {
     }
 
     @Test
-    public void buildYourOwnPicture(){
+    public void buildYourOwnPicture() {
         scene.geometries.add(
                 new Sphere(400d, new Point(0, 0, -1000)).setEmission(new Color(0, 50, 100))
                         .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(50)
@@ -133,8 +133,11 @@ public class ReflectionRefractionTests {
                 new Triangle(new Point(-1500, 1500, -1500), new Point(1500, 1500, -1500),
                         new Point(-670, 670, 1500))
                         .setEmission(new Color(25, 25, 25))
-                        .setMaterial(new Material().setKt(0.5))
-                );
+                        .setMaterial(new Material().setKt(0.5)),
+                new Plane(new Point(0, 0, -2000), new Vector(0, 0, 1))
+                        .setEmission(new Color(0, 0, 0))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60))
+        );
         scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
         scene.lights.add(new DirectionalLight(new Color(1020, 400, 400), new Vector(-1, -4, -4)));
 
