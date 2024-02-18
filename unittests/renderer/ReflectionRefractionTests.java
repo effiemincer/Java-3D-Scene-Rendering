@@ -5,6 +5,7 @@ package renderer;
 
 import static java.awt.Color.*;
 
+import geometries.Plane;
 import lighting.DirectionalLight;
 import org.junit.jupiter.api.Test;
 
@@ -120,14 +121,22 @@ public class ReflectionRefractionTests {
     public void buildYourOwnPicture(){
         scene.geometries.add(
                 new Sphere(400d, new Point(0, 0, -1000)).setEmission(new Color(0, 50, 100))
+                        .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(50)
+                                .setKt(new Double3(0.5, 0, 0))),
+                new Sphere(600d, new Point(100, -250, -2000)).setEmission(new Color(0, 100, 0))
                         .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
-                                .setKt(new Double3(0.5, 0, 0))));
-//                new Sphere(800d, new Point(100, 250, -2000)).setEmission(new Color(255, 255, 0))
-//                        .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
-//                                .setKr(new Double3(.3))));
+                                .setKr(new Double3(.3))),
+                new Triangle(new Point(1500, -1500, -1500), new Point(-1500, -1500, -1500),
+                        new Point(670, -670, 1500))
+                        .setEmission(new Color(255, 255, 255))
+                        .setMaterial(new Material().setKr(1)),
+                new Triangle(new Point(-1500, 1500, -1500), new Point(1500, 1500, -1500),
+                        new Point(-670, 670, 1500))
+                        .setEmission(new Color(25, 25, 25))
+                        .setMaterial(new Material().setKt(0.5))
+                );
         scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
-        scene.lights.add(new SpotLight(new Color(1020, 400, 400), new Point(0, -50, -150), new Vector(-1, -1, -4))
-                .setKl(0.00001).setKq(0.00005));
+        scene.lights.add(new DirectionalLight(new Color(1020, 400, 400), new Vector(-1, -4, -4)));
 
         cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(10000)
                 .setVpSize(2500, 2500)
