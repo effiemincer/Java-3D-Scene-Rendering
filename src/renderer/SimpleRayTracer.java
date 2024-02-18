@@ -75,10 +75,10 @@ public class SimpleRayTracer extends RayTracerBase {
     /**
      * Calculates the color of a given point in the scene.
      *
-     * @param gp The point for which to calculate the color.
-     * @param ray The ray that hit the point
+     * @param gp    The point for which to calculate the color.
+     * @param ray   The ray that hit the point
      * @param level The level of recursion
-     * @param k The transparency factor
+     * @param k     The transparency factor
      * @return The color of the specified point in the scene.
      */
     private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
@@ -145,11 +145,12 @@ public class SimpleRayTracer extends RayTracerBase {
 
     /**
      * Checks if the point is unshaded. Not in use after implementation of Transparency.
-     * @param gp   The point for which to calculate the color
+     *
+     * @param gp    The point for which to calculate the color
      * @param light The light source
-     * @param l    The light vector
-     * @param n   The normal vector
-     * @param nl The dot product of n and l
+     * @param l     The light vector
+     * @param n     The normal vector
+     * @param nl    The dot product of n and l
      * @return true if the point is unshaded, false otherwise
      */
     private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nl) {
@@ -170,10 +171,10 @@ public class SimpleRayTracer extends RayTracerBase {
     /**
      * Calculates the global effects of a point on a geometry.
      *
-     * @param gp The point for which to calculate the color
-     * @param ray The ray that hit the point
+     * @param gp    The point for which to calculate the color
+     * @param ray   The ray that hit the point
      * @param level The level of recursion
-     * @param k The transparency factor
+     * @param k     The transparency factor
      * @return The color of the point
      */
     private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
@@ -187,10 +188,10 @@ public class SimpleRayTracer extends RayTracerBase {
     /**
      * Calculates the global effect of a ray.
      *
-     * @param ray  The ray to be traced
+     * @param ray   The ray to be traced
      * @param level The level of recursion
-     * @param k The transparency factor
-     * @param kx The reflection/refraction factor
+     * @param k     The transparency factor
+     * @param kx    The reflection/refraction factor
      * @return The color of the ray
      */
     private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
@@ -204,8 +205,8 @@ public class SimpleRayTracer extends RayTracerBase {
      * Constructs the refracted ray of a given point on a geometry.
      *
      * @param gp The point for which to calculate the refracted ray
-     * @param v The view vector
-     * @param n The normal vector
+     * @param v  The view vector
+     * @param n  The normal vector
      * @return The refracted ray
      */
     private Ray constructRefractedRay(GeoPoint gp, Vector v, Vector n) {
@@ -216,8 +217,8 @@ public class SimpleRayTracer extends RayTracerBase {
      * Constructs the reflected ray of a given point on a geometry.
      *
      * @param gp The point for which to calculate the reflected ray
-     * @param v The view vector
-     * @param n The normal vector
+     * @param v  The view vector
+     * @param n  The normal vector
      * @return The reflected ray
      */
     private Ray constructReflectedRay(GeoPoint gp, Vector v, Vector n) {

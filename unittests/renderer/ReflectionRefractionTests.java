@@ -151,4 +151,36 @@ public class ReflectionRefractionTests {
                 .renderImage()
                 .writeToImage();
     }
+
+    @Test
+    public void bonusPicture() {
+        scene.geometries.add(
+                new Sphere(400d, new Point(0, 0, -1000)).setEmission(new Color(0, 50, 100))
+                        .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(50)
+                                .setKt(new Double3(0.5, 0, 0))),
+                new Sphere(600d, new Point(100, -250, -2000)).setEmission(new Color(0, 100, 0))
+                        .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
+                                .setKr(new Double3(.3))),
+                new Triangle(new Point(1500, -1500, -1500), new Point(-1500, -1500, -1500),
+                        new Point(670, -670, 1500))
+                        .setEmission(new Color(255, 255, 255))
+                        .setMaterial(new Material().setKr(1)),
+                new Triangle(new Point(-1500, 1500, -1500), new Point(1500, 1500, -1500),
+                        new Point(-670, 670, 1500))
+                        .setEmission(new Color(25, 25, 25))
+                        .setMaterial(new Material().setKt(0.5)),
+                new Plane(new Point(0, 0, -2000), new Vector(0, 0, 1))
+                        .setEmission(new Color(0, 0, 0))
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60))
+        );
+        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
+        scene.lights.add(new DirectionalLight(new Color(1020, 400, 400), new Vector(-1, -4, -4)));
+
+        cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(10000)
+                .setVpSize(2500, 2500)
+                .setImageWriter(new ImageWriter("buildYourOwnPicture", 500, 500))
+                .build()
+                .renderImage()
+                .writeToImage();
+    }
 }
