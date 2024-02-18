@@ -163,7 +163,7 @@ public class SimpleRayTracer extends RayTracerBase {
     private Ray constructReflectedRay(GeoPoint gp, Ray ray) {
         Vector normal = gp.geometry.getNormal(gp.point);
         //Vector direction = ray.getDirection();
-        //if (isZero(alignZero(normal.dotProduct(ray.getDirection())))) return null;
+        if (isZero(alignZero(normal.dotProduct(ray.getDirection())))) return null;
         //Point point = gp.point.add(normal.scale(Ray.DELTA));
         return new Ray(gp.point, ray.getDirection().scale(-1), normal);
     }

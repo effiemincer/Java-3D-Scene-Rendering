@@ -5,6 +5,7 @@ package renderer;
 
 import static java.awt.Color.*;
 
+import lighting.DirectionalLight;
 import org.junit.jupiter.api.Test;
 
 import geometries.Sphere;
@@ -97,6 +98,27 @@ public class ReflectionRefractionTests {
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
                 .setVpSize(200, 200)
                 .setImageWriter(new ImageWriter("refractionShadow", 600, 600))
+                .build()
+                .renderImage()
+                .writeToImage();
+    }
+
+    @Test
+    public void buildYourOwnPicture(){
+        scene.geometries.add(
+                new Sphere(400d, new Point(0, 0, -1000)).setEmission(new Color(0, 50, 100))
+                        .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
+                                .setKt(new Double3(0.5, 0, 0))));
+//                new Sphere(800d, new Point(100, 250, -2000)).setEmission(new Color(255, 255, 0))
+//                        .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
+//                                .setKr(new Double3(.3))));
+        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
+        scene.lights.add(new SpotLight(new Color(1020, 400, 400), new Point(0, -50, -150), new Vector(-1, -1, -4))
+                .setKl(0.00001).setKq(0.00005));
+
+        cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(10000)
+                .setVpSize(2500, 2500)
+                .setImageWriter(new ImageWriter("buildYourOwnPicture", 500, 500))
                 .build()
                 .renderImage()
                 .writeToImage();
