@@ -49,7 +49,7 @@ public class Plane extends Geometry {
      * @param p      A point on the plane.
      * @param normal The normal vector to the plane.
      */
-    Plane(Point p, Vector normal) {
+    public Plane(Point p, Vector normal) {
         this.q = p; // Initializes the point 'q' on the plane
         this.normal = normal.normalize(); // Normalizes the provided normal vector
     }

@@ -13,6 +13,11 @@ public class Ray {
     private final Vector direction; // The direction vector of the ray
 
     /**
+     * The offset value used to avoid self-intersection.
+     */
+    public static final double DELTA = 0.1;
+
+    /**
      * Constructs a Ray object initialized with a specified starting point and direction vector.
      *
      * @param startingPoint   The starting point of the ray.
@@ -21,6 +26,21 @@ public class Ray {
     public Ray(Point startingPoint, Vector directionVector) {
         this.head = startingPoint;
         this.direction = directionVector.normalize(); // Normalizes the direction vector
+    }
+
+    /**
+     * Constructs a Ray object initialized with a specified starting point, direction vector, and normal vector.
+     * The normal vector is used to create a small offset from the starting point to avoid self-intersection.
+     *
+     * @param head     The starting point of the ray.
+     * @param direction The direction vector of the ray.
+     * @param normal   The normal vector of the geometry
+     */
+    public Ray(Point head, Vector direction, Vector normal) {
+        this.direction = direction.normalize();
+        double nv = normal.dotProduct(direction);
+        Vector normalDelta = normal.scale(nv > 0 ? DELTA : -DELTA);
+        this.head = head.add(normalDelta);
     }
 
     /**
