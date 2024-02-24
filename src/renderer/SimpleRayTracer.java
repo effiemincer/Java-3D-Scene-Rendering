@@ -50,6 +50,27 @@ public class SimpleRayTracer extends RayTracerBase {
     }
 
     /**
+     * Casts a ray through a specific pixel and calculates the color based on jitter sampling.
+     *
+     * @param Nx The width of the image.
+     * @param Ny The height of the image.
+     * @return The color of the pixel.
+     */
+    private Color jitterSampling(int Nx, int Ny, int width, int height, Ray r) {
+        double Rx = height*1d / Nx;
+        double Ry = width*1d / Ny;
+
+        Vector rdireciton = r.getDirection();
+        Point rpoint = r.getHead();
+
+        Color averageColor = Color.BLACK;
+
+        return averageColor;
+    }
+
+
+
+    /**
      * Finds the closest intersection point of the given ray with the geometries in the scene.
      *
      * @param ray The ray for which to find the closest intersection point.
