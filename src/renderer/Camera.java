@@ -6,6 +6,7 @@ import primitives.Vector;
 import primitives.Ray;
 
 import java.util.MissingResourceException;
+import java.util.Random;
 
 /**
  * Represents a camera used for rendering images.
@@ -146,13 +147,22 @@ public class Camera implements Cloneable {
      */
     public Ray constructRay(int Nx, int Ny, int j, int i) {
 
-        // Calculate the pixel dimensions
-        double Rx = height / Nx;
-        double Ry = width / Ny;
+        // Calculate the pixel dimensions (quadrupling resolution for super sampling)
+        double Rx = height / (Nx);
+        double Ry = width / (Ny);
+
+        Random rand = new Random();
+
+        // Add random jitter to the pixel position for super sampling
+        double minX = -Rx;
+        double minY = -Ry;
+
+        double randomX = rand.nextDouble() * (Rx - minX) + minX;
+        double randomY = rand.nextDouble() * (Ry - minY) + minY;
 
         // Calculate the position of the pixel on the image plane
-        double xJ = (j - (Nx - 1) / 2d) * Rx;
-        double yI = -(i - (Ny - 1) / 2d) * Ry;
+        double xJ = (j - (Nx - 1) / 2d) * Rx + randomX;
+        double yI = -(i - (Ny - 1) / 2d) * Ry + randomY;
 
         // Initialize the point in 3D space corresponding to the pixel
         Point pIJ = ViewPlaneCenter;

@@ -198,7 +198,7 @@ public class ReflectionRefractionTests {
 
         cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(7500)
                 .setVpSize(2500, 2500)
-                .setImageWriter(new ImageWriter("Bonus Picture", 500, 500))
+                .setImageWriter(new ImageWriter("Bonus Picture1", 500, 500))
                 .build()
                 .renderImage()
                 .writeToImage();
