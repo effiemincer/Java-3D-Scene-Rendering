@@ -134,9 +134,7 @@ public class Camera implements Cloneable {
     private void castRay(int Nx, int Ny, int j, int i) {
         Color avgColor = rayTracer.traceRay(constructRay(Nx, Ny, j, i, this.totalRays));
         for (int k = 0; k < totalRays; k++) {
-            //for (int l=0; l < totalRays; l++) {
-                avgColor = avgColor.add(rayTracer.traceRay(constructRay(Nx, Ny, j, i, this.totalRays)));
-            //}
+            avgColor = avgColor.add(rayTracer.traceRay(constructRay(Nx, Ny, j, i, this.totalRays)));
         }
 
         imageWriter.writePixel(j, i, avgColor.reduce(this.totalRays));
