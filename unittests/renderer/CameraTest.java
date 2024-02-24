@@ -26,7 +26,7 @@ class CameraTest {
 
     /**
      * Test method for
-     * {@link Camera#constructRay(int, int, int, int)}.
+     * {@link Camera#constructRay(int, int, int, int, int)}.
      */
     @Test
     void testConstructRay() {

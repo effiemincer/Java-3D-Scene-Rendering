@@ -132,7 +132,7 @@ public class Camera implements Cloneable {
      * @param i  The x-coordinate of the pixel.
      */
     private void castRay(int Nx, int Ny, int j, int i) {
-        Color avgColor = rayTracer.traceRay(constructRay(Nx, Ny, j, i, this.totalRays));
+        Color avgColor = Color.BLACK;
         for (int k = 0; k < totalRays; k++) {
             avgColor = avgColor.add(rayTracer.traceRay(constructRay(Nx, Ny, j, i, this.totalRays)));
         }
@@ -152,17 +152,22 @@ public class Camera implements Cloneable {
     public Ray constructRay(int Nx, int Ny, int j, int i, int totalRays) {
 
         // Calculate the pixel dimensions (quadrupling resolution for super sampling)
-        double Rx = height / (Nx);
-        double Ry = width / (Ny);
+        double Rx = height / Nx;
+        double Ry = width / Ny;
 
-        Random rand = new Random();
+        double randomX = 0d;
+        double randomY = 0d;
 
-        // Add random jitter to the pixel position for super sampling
-        double minX = -(Rx);
-        double minY = -(Ry);
+        if (totalRays != 1) {
+            Random rand = new Random();
 
-        double randomX = rand.nextDouble() * (-2*minX) + minX;
-        double randomY = rand.nextDouble() * (-2*minY) + minY;
+            // Add random jitter to the pixel position for super sampling
+            double minX = -(Rx);
+            double minY = -(Ry);
+
+            randomX = rand.nextDouble() * (-2 * minX) + minX;
+            randomY = rand.nextDouble() * (-2 * minY) + minY;
+        }
 
         // Calculate the position of the pixel on the image plane
         double xJ = (j - (Nx - 1) / 2d) * Rx + randomX;
