@@ -22,6 +22,7 @@ public class Camera implements Cloneable {
     private double height = 0d;
     private double distance = 0d;
     private Point ViewPlaneCenter;
+    private int totalRays = 1;
 
     private Camera() {
     }
@@ -131,9 +132,14 @@ public class Camera implements Cloneable {
      * @param i  The x-coordinate of the pixel.
      */
     private void castRay(int Nx, int Ny, int j, int i) {
-        Ray r = constructRay(Nx, Ny, j, i);
+        Color avgColor = rayTracer.traceRay(constructRay(Nx, Ny, j, i, this.totalRays));
+        for (int k = 0; k < totalRays; k++) {
+            //for (int l=0; l < totalRays; l++) {
+                avgColor = avgColor.add(rayTracer.traceRay(constructRay(Nx, Ny, j, i, this.totalRays)));
+            //}
+        }
 
-        imageWriter.writePixel(j, i, rayTracer.traceRay(r));
+        imageWriter.writePixel(j, i, avgColor.reduce(this.totalRays));
     }
 
     /**
@@ -145,7 +151,7 @@ public class Camera implements Cloneable {
      * @param i  The index by height.
      * @return The constructed ray.
      */
-    public Ray constructRay(int Nx, int Ny, int j, int i) {
+    public Ray constructRay(int Nx, int Ny, int j, int i, int totalRays) {
 
         // Calculate the pixel dimensions (quadrupling resolution for super sampling)
         double Rx = height / (Nx);
@@ -154,11 +160,11 @@ public class Camera implements Cloneable {
         Random rand = new Random();
 
         // Add random jitter to the pixel position for super sampling
-        double minX = -Rx;
-        double minY = -Ry;
+        double minX = -(Rx);
+        double minY = -(Ry);
 
-        double randomX = rand.nextDouble() * (Rx - minX) + minX;
-        double randomY = rand.nextDouble() * (Ry - minY) + minY;
+        double randomX = rand.nextDouble() * (-2*minX) + minX;
+        double randomY = rand.nextDouble() * (-2*minY) + minY;
 
         // Calculate the position of the pixel on the image plane
         double xJ = (j - (Nx - 1) / 2d) * Rx + randomX;
@@ -293,6 +299,11 @@ public class Camera implements Cloneable {
             return this;
         }
 
+        public Builder setTotalRays(int totalRays) {
+            this.camera.totalRays = totalRays;
+            return this;
+        }
+
         /**
          * Builds the Camera object.
          *
@@ -313,6 +324,9 @@ public class Camera implements Cloneable {
 
             if (this.camera.distance == 0)
                 throw new MissingResourceException(renderDataMissing, cameraClass, "Distance to view plane is zero");
+
+            if (this.camera.totalRays == 0)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Number of rays per pixel is zero");
 
             this.camera.vRight = this.camera.vTo.crossProduct(this.camera.vUp).normalize();
             this.camera.ViewPlaneCenter = camera.location.add(camera.vTo.scale(camera.distance));
