@@ -199,37 +199,7 @@ public class SimpleRayTracer extends RayTracerBase {
         Double3 kkx = kx.product(k);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint gp = findClosestIntersection(ray);
-
-        if (gp == null) return scene.background;
-
-        //super sampling
-        Color avgColor = Color.BLACK;
-        double radius = 10;
-        double gloss = gp.geometry.getMaterial().nGlossDiffuse;
-
-        //double distance = gloss*10;
-
-        Point center = ray.getHead().add(ray.getDirection().scale(gloss*1000));
-        double z = center.getZ();
-
-        //super sample 80 rays
-        for (int i = 0; i < 80; i++){
-            Random random = new Random();
-            double angle = 2 * Math.PI * random.nextDouble();
-            double x = radius * Math.cos(angle);
-            double y = radius * Math.sin(angle);
-            Point pointOnCirle = new Point(x, y, z);
-
-            Vector direction = pointOnCirle.subtract(gp.point).normalize();
-            Ray r = new Ray(gp.point, direction, gp.geometry.getNormal(gp.point));
-
-            avgColor = avgColor.add(calcColor(gp, r, level - 1, kkx)).scale(kx);
-
-        }
-
-
-        return avgColor.reduce(80);
-        //return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx)).scale(kx);
+        return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx)).scale(kx);
     }
 
     /**
