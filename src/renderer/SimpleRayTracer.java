@@ -5,6 +5,7 @@ import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -28,6 +29,17 @@ public class SimpleRayTracer extends RayTracerBase {
      * The maximum level of recursion for calculating the color of a point in the scene.
      */
     private static final int MAX_CALC_COLOR_LEVEL = 10;
+
+    /**
+     * The super sampling level.
+     */
+    private int superSampling = 1;
+
+    public SimpleRayTracer setSuperSampling(int superSampling) {
+        this.superSampling = superSampling;
+        return this;
+    }
+
 
     /**
      * Constructs a SimpleRayTracer object with the given scene.
@@ -179,11 +191,50 @@ public class SimpleRayTracer extends RayTracerBase {
      * @return The color of the point
      */
     private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
+        Color color = Color.BLACK;
         Vector v = ray.getDirection();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        return calcGlobalEffect(constructReflectedRay(gp, v, n), level, k, material.kR)
-            .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT));
+        Double3 kkr = material.kR.product(k);
+        if (!kkr.lowerThan(MIN_CALC_COLOR_K)) {
+            Ray originalReflectedRay = constructReflectedRay(gp, v, n);
+            double gloss = material.kGloss;
+
+            if (gloss > 0){
+                color = calcColorHelper(originalReflectedRay, n, level, superSampling, kkr, gloss, material.kR);
+            }
+            else {
+                color = calcGlobalEffect(originalReflectedRay, level, k, material.kR);
+            }
+        }
+
+        Double3 kkt = material.kT.product(k);
+        if (!kkt.lowerThan(MIN_CALC_COLOR_K)) {
+            Ray originalRefractedRay = constructRefractedRay(gp, v, n);
+            double diff = material.kDiffuse;
+
+            if (diff > 0){
+                color = calcColorHelper(originalRefractedRay, n, level, superSampling, kkt, diff, material.kT);
+            }
+            else {
+                color = calcGlobalEffect(originalRefractedRay, level, k, material.kT);
+            }
+        }
+        return color;
+    }
+
+    private Color calcColorHelper(Ray ray, Vector n, int level, int superSampling, Double3 k, double gloss, Double3 kx){
+        Color color = Color.BLACK;
+        LinkedList<Ray> rays = Camera.constructRayBeam(scene.camera.getNx(), scene.camera.getNy(), 0, 0, superSampling * superSampling);
+        for (int i = 0; i < superSampling; i++){
+            for (int j = 0; j < superSampling; j++){
+                double x = (i + new Random().nextDouble()) / superSampling;
+                double y = (j + new Random().nextDouble()) / superSampling;
+                Ray newRay = ray.constructRayThroughPixel(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, x, y);
+                color = color.add(calcGlobalEffect(newRay, level, k, kx));
+            }
+        }
+        return color.scale(1.0 / (superSampling * superSampling));
     }
 
     private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
