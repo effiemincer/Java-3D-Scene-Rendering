@@ -24,6 +24,11 @@ public class Material {
     public int nShininess = 1;
 
     /**
+     * The number of gloss/diffusion.
+     */
+    public double nGlossDiffuse = 0.5;
+
+    /**
      * Sets the diffuse reflection coefficient.
      *
      * @param kD The new diffuse reflection coefficient
@@ -119,6 +124,19 @@ public class Material {
      */
     public Material setKr(double d) {
         this.kR = new Double3(d);
+        return this;
+    }
+
+    /**
+     * Sets the number of gloss/diffusion.
+     *
+     * @param nGlossDiffuse The new number of gloss/diffusion
+     * @return This Material instance
+     */
+    public Material setGlossDiffuse(double nGlossDiffuse) {
+        if (nGlossDiffuse > 1 || nGlossDiffuse < 0)
+            throw new IllegalArgumentException("The number of gloss/diffusion must be between 1 and 0");
+        this.nGlossDiffuse = nGlossDiffuse;
         return this;
     }
 }

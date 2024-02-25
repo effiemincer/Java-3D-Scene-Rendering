@@ -99,4 +99,17 @@ public class Point {
     public String toString() {
         return xyz.toString();
     }
+
+    public double getZ() {
+        return xyz.d3;
+    }
+
+    public double getY() {
+        return xyz.d2;
+    }
+
+    public double getX() {
+        return xyz.d1;
+    }
+
 }

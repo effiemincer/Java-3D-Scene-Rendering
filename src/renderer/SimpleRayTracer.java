@@ -6,6 +6,7 @@ import primitives.*;
 import scene.Scene;
 
 import java.util.List;
+import java.util.Random;
 
 import static primitives.Util.*;
 
@@ -48,26 +49,6 @@ public class SimpleRayTracer extends RayTracerBase {
         GeoPoint closestPoint = findClosestIntersection(ray);
         return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
-
-    /**
-     * Casts a ray through a specific pixel and calculates the color based on jitter sampling.
-     *
-     * @param Nx The width of the image.
-     * @param Ny The height of the image.
-     * @return The color of the pixel.
-     */
-    private Color jitterSampling(int Nx, int Ny, int width, int height, Ray r) {
-        double Rx = height*1d / Nx;
-        double Ry = width*1d / Ny;
-
-        Vector rdireciton = r.getDirection();
-        Point rpoint = r.getHead();
-
-        Color averageColor = Color.BLACK;
-
-        return averageColor;
-    }
-
 
 
     /**
@@ -202,7 +183,7 @@ public class SimpleRayTracer extends RayTracerBase {
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
         return calcGlobalEffect(constructReflectedRay(gp, v, n), level, k, material.kR)
-                .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT));
+            .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT));
     }
 
     /**
@@ -218,7 +199,37 @@ public class SimpleRayTracer extends RayTracerBase {
         Double3 kkx = kx.product(k);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint gp = findClosestIntersection(ray);
-        return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx)).scale(kx);
+
+        if (gp == null) return scene.background;
+
+        //super sampling
+        Color avgColor = Color.BLACK;
+        double radius = 10;
+        double gloss = gp.geometry.getMaterial().nGlossDiffuse;
+
+        //double distance = gloss*10;
+
+        Point center = ray.getHead().add(ray.getDirection().scale(gloss*1000));
+        double z = center.getZ();
+
+        //super sample 80 rays
+        for (int i = 0; i < 80; i++){
+            Random random = new Random();
+            double angle = 2 * Math.PI * random.nextDouble();
+            double x = radius * Math.cos(angle);
+            double y = radius * Math.sin(angle);
+            Point pointOnCirle = new Point(x, y, z);
+
+            Vector direction = pointOnCirle.subtract(gp.point).normalize();
+            Ray r = new Ray(gp.point, direction, gp.geometry.getNormal(gp.point));
+
+            avgColor = avgColor.add(calcColor(gp, r, level - 1, kkx)).scale(kx);
+
+        }
+
+
+        return avgColor.reduce(80);
+        //return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx)).scale(kx);
     }
 
     /**
@@ -237,7 +248,7 @@ public class SimpleRayTracer extends RayTracerBase {
      * Constructs the reflected ray of a given point on a geometry.
      *
      * @param gp The point for which to calculate the reflected ray
-     * @param v  The view vector
+     * @parcam v  The view vector
      * @param n  The normal vector
      * @return The reflected ray
      */

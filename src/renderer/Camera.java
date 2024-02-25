@@ -22,6 +22,10 @@ public class Camera implements Cloneable {
     private double height = 0d;
     private double distance = 0d;
     private Point ViewPlaneCenter;
+
+    /**
+     * The total number of rays to cast for each pixel.
+     */
     private int totalRays = 1;
 
     private Camera() {
@@ -133,10 +137,12 @@ public class Camera implements Cloneable {
      */
     private void castRay(int Nx, int Ny, int j, int i) {
         Color avgColor = Color.BLACK;
+        //super sample for the total number of rays
         for (int k = 0; k < totalRays; k++) {
             avgColor = avgColor.add(rayTracer.traceRay(constructRay(Nx, Ny, j, i, this.totalRays)));
         }
 
+        //divide the total color by the number of rays to get the average color
         imageWriter.writePixel(j, i, avgColor.reduce(this.totalRays));
     }
 
