@@ -180,6 +180,8 @@ public class SimpleRayTracer extends RayTracerBase {
         Vector v = ray.getDirection();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
+
+        //TODO: add in a method for loop calculating the reflection and refraction using generatePointsCircle
         return calcGlobalEffect(constructReflectedRay(gp, v, n), level, k, material.kR)
                 .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT));
     }

@@ -154,4 +154,23 @@ public class Vector extends Point {
     public String toString() {
         return (xyz.toString());
     }
+
+    /**
+     * find the orthogonal vector
+     * @return
+     */
+    public Vector findOrthogonal(){
+        double a, b, c;
+        a = getXyz().d1; b = getXyz().d2; c = getXyz().d3
+        if(!Util.isZero(c)){
+            return new Vector(1,1,-(a+b)/c).normalize();
+        }
+        else if(!Util.isZero(b))
+        {
+            return new Vector(1,-(a+c)/b,1).normalize();
+        }
+        else{
+            return new Vector(-(b+c)/a,1,1).normalize();
+        }
+    }
 }
