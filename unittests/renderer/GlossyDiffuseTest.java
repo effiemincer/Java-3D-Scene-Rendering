@@ -36,7 +36,7 @@ public class GlossyDiffuseTest {
         scene.geometries.add(
                 new Sphere(30d, new Point(0, 0, -11)) //
                         .setEmission(new Color(BLUE)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setKr(1).setShininess(100).setGloss(1)),
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setKr(1).setShininess(100)),
                 new Sphere(15d, new Point(25,40, 150))
                         .setEmission(new Color(150, 0, 0))
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(10))//
