@@ -159,7 +159,7 @@ public class ReflectionRefractionTests {
     public void bonusPicture() {
         scene.geometries.add(
                 new Sphere(400d, new Point(0, 0, -1000)).setEmission(new Color(0, 50, 100))
-                        .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(50).setGlossDiffuse(1)
+                        .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(50)
                                 .setKt(new Double3(0.5, 0, 0))),
                 new Sphere(600d, new Point(100, -250, -2000)).setEmission(new Color(0, 100, 0))
                         .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)

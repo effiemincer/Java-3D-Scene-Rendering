@@ -182,8 +182,8 @@ public class SimpleRayTracer extends RayTracerBase {
         Vector v = ray.getDirection();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        return calcGlobalEffect(constructReflectedRay(gp, v, n), level, k, material.kR)
-            .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT));
+        return calcGlobalEffect(constructReflectedRay(gp, v, n), level, k, material.kR, material.kDiffuse, material.kGloss, true)
+            .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT, material.kDiffuse, material.kGloss, false));
     }
 
     /**
@@ -195,7 +195,7 @@ public class SimpleRayTracer extends RayTracerBase {
      * @param kx    The reflection/refraction factor
      * @return The color of the ray
      */
-    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
+    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx, double kDiff, double kGloss, boolean diffOrGloss) {
         Double3 kkx = kx.product(k);
         if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
         GeoPoint gp = findClosestIntersection(ray);
@@ -204,16 +204,16 @@ public class SimpleRayTracer extends RayTracerBase {
 
         //super sampling
         Color avgColor = Color.BLACK;
-        double radius = 10;
-        double gloss = gp.geometry.getMaterial().nGlossDiffuse;
+        //set the radius to gloss or diff depending on if it's a refracted or reflected ray
+        double radius = diffOrGloss ? kDiff : kGloss;
 
         //double distance = gloss*10;
 
-        Point center = ray.getHead().add(ray.getDirection().scale(gloss*1000));
+        Point center = ray.getHead().add(ray.getDirection().scale(100));
         double z = center.getZ();
 
         //super sample 80 rays
-        for (int i = 0; i < 80; i++){
+        for (int i = 0; i < 30; i++){
             Random random = new Random();
             double angle = 2 * Math.PI * random.nextDouble();
             double x = radius * Math.cos(angle);
@@ -223,7 +223,9 @@ public class SimpleRayTracer extends RayTracerBase {
             Vector direction = pointOnCirle.subtract(gp.point).normalize();
             Ray r = new Ray(gp.point, direction, gp.geometry.getNormal(gp.point));
 
-            avgColor = avgColor.add(calcColor(gp, r, level - 1, kkx)).scale(kx);
+
+            if (direction.dotProduct(gp.geometry.getNormal(gp.point)) != 0)
+                avgColor = avgColor.add(calcColor(gp, r, level - 1, kkx)).scale(kx);
 
         }
 
