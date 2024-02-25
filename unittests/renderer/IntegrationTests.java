@@ -151,9 +151,9 @@ public class IntegrationTests {
         //creating rays for each pixel and finding the intersection
         for (int i = 0; i <= 2; i++) {
             for (int j = 0; j <= 2; j++) {
-                List<Point> result = in.findIntersections(camera.constructRay(3, 3, j, i, 1));
+                List<Point> result = in.findIntersections(camera.constructRay(3, 3, j, i));
                 if (result != null)
-                    finalResults.addAll(in.findIntersections(camera.constructRay(3, 3, j, i, 1)));
+                    finalResults.addAll(in.findIntersections(camera.constructRay(3, 3, j, i)));
             }
         }
         assertEquals(expectedIntersections, finalResults.size(), "Wrong number of intersections");
