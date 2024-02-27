@@ -5,6 +5,7 @@ import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
 
+import java.util.LinkedList;
 import java.util.MissingResourceException;
 
 /**
@@ -21,6 +22,7 @@ public class Camera implements Cloneable {
     private double height = 0d;
     private double distance = 0d;
     private Point ViewPlaneCenter;
+    private int totalRays = 1;
 
     private Camera() {
     }
@@ -78,6 +80,12 @@ public class Camera implements Cloneable {
         return vRight;
     }
 
+    public int getTotalRays() {
+        return totalRays;
+    }
+
+
+
     /**
      * Prints a grid on the image with the specified interval and color.
      * @param interval The interval between grid lines.
@@ -131,9 +139,39 @@ public class Camera implements Cloneable {
     private void castRay(int Nx, int Ny, int j, int i) {
         Ray r = constructRay(Nx, Ny, j, i);
 
-        //TODO: add super sampling from blackboard (generatePointsSquare) and then sum and average color
+        //if totalRays is one then don't do super Sampling
+        if (totalRays == 1) {
+            imageWriter.writePixel(j, i, rayTracer.traceRay(r));
+            return;
+        }
 
-        imageWriter.writePixel(j, i, rayTracer.traceRay(r));
+        Color avgColor = Color.BLACK;
+
+        // Calculate the pixel dimensions
+        double Rx = height / Nx;
+        double Ry = width / Ny;
+
+        // Calculate the position of the pixel on the image plane
+        double xJ = (j - (Nx - 1) / 2d) * Rx;
+        double yI = -(i - (Ny - 1) / 2d) * Ry;
+
+        // Initialize the point in 3D space corresponding to the pixel
+        Point pIJ = ViewPlaneCenter;
+
+        // Adjust the point based on the horizontal position of the pixel
+        if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
+
+        // Adjust the point based on the vertical position of the pixel
+        if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
+
+        LinkedList<Point> points = Blackboard.generatePointsSquare(pIJ, Rx, vUp, vRight, totalRays);
+
+        for (Point p : points) {
+            Ray ray = new Ray(location, p.subtract(location));
+            avgColor = avgColor.add(rayTracer.traceRay(ray));
+        }
+
+        imageWriter.writePixel(j, i, avgColor.reduce(points.size()));
     }
 
     /**
@@ -281,6 +319,11 @@ public class Camera implements Cloneable {
         }
         public Builder setViewPlaneCenter(Point p) {
             this.camera.ViewPlaneCenter = p;
+            return this;
+        }
+
+        public Builder setTotalRays(int totalRays) {
+            this.camera.totalRays = totalRays;
             return this;
         }
 

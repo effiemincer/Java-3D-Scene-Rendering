@@ -5,6 +5,7 @@ import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.*;
@@ -27,6 +28,8 @@ public class SimpleRayTracer extends RayTracerBase {
      * The maximum level of recursion for calculating the color of a point in the scene.
      */
     private static final int MAX_CALC_COLOR_LEVEL = 10;
+
+    private static final int RADIUS = 30;
 
     /**
      * Constructs a SimpleRayTracer object with the given scene.
@@ -181,9 +184,46 @@ public class SimpleRayTracer extends RayTracerBase {
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
 
-        //TODO: add in a method for loop calculating the reflection and refraction using generatePointsCircle
-        return calcGlobalEffect(constructReflectedRay(gp, v, n), level, k, material.kR)
-                .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT));
+        Ray reflectedRay = constructReflectedRay(gp, v, n);
+        Ray refractedRay = constructRefractedRay(gp, v, n);
+
+        Color reflectedColor = Color.BLACK;
+        Color refractedColor = Color.BLACK;
+
+        //glossy
+        if (material.gloss == 0){
+            reflectedColor = calcGlobalEffect(reflectedRay, level, k, material.kR);
+        }
+        else{
+            LinkedList<Point> pointsReflected = (reflectedRay == null) ? null  : Blackboard.generatePointsCircle(reflectedRay, gp.point.add(reflectedRay.getDirection().scale(material.gloss)), RADIUS, 10);
+            //1 for loop for reflected rays
+            if (pointsReflected != null) {
+                for (Point p : pointsReflected) {
+                    Ray reflectedRay2 = new Ray(gp.point, p.subtract(gp.point), n);
+                    reflectedColor.add(calcGlobalEffect(reflectedRay2, level, k, material.kR));
+                }
+                reflectedColor.reduce(pointsReflected.size());
+            }
+        }
+
+        //diffuse
+        if (material.diff == 0){
+            refractedColor = calcGlobalEffect(refractedRay, level, k, material.kT);
+        }
+        else{
+            LinkedList<Point> pointsRefracted = Blackboard.generatePointsCircle(refractedRay, gp.point.add(refractedRay.getDirection().scale(material.diff)), RADIUS, 10);
+            //1 for loop for refracted rays
+            for (Point q : pointsRefracted) {
+                Ray refractedRay2 = new Ray(gp.point, q.subtract(gp.point), n);
+                refractedColor.add(calcGlobalEffect(refractedRay2, level, k, material.kT));
+            }
+            refractedColor.reduce(pointsRefracted.size());
+        }
+
+        return reflectedColor.add(refractedColor);
+
+        //return calcGlobalEffect(constructReflectedRay(gp, v, n), level, k, material.kR)
+               // .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT));
     }
 
     /**

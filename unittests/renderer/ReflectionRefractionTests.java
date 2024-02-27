@@ -138,7 +138,7 @@ public class ReflectionRefractionTests {
                         .setEmission(new Color(25, 25, 25))
                         .setMaterial(new Material().setKt(0.5)),
                 new Plane(new Point(0, 0, -2000), new Vector(0, 0, 1))
-                        .setEmission(new Color(0, 0, 0))
+                        .setEmission(new Color(0, 100, 0))
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60))
         );
         scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
@@ -146,7 +146,7 @@ public class ReflectionRefractionTests {
 
         cameraBuilder.setLocation(new Point(0, 0, 10000)).setVpDistance(10000)
                 .setVpSize(2500, 2500)
-                .setImageWriter(new ImageWriter("buildYourOwnPicture", 500, 500))
+                .setImageWriter(new ImageWriter("buildYourOwnPictureGLOSS", 500, 500))
                 .build()
                 .renderImage()
                 .writeToImage();

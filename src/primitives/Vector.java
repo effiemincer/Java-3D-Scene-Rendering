@@ -156,21 +156,31 @@ public class Vector extends Point {
     }
 
     /**
-     * find the orthogonal vector
-     * @return
+     * finds the orthogonal vector
+     *
+     * @return the orthogonal vector
      */
-    public Vector findOrthogonal(){
+    public Vector findOrthogonal() {
+        // Extracting components from the vector
         double a, b, c;
-        a = getXyz().d1; b = getXyz().d2; c = getXyz().d3
-        if(!Util.isZero(c)){
-            return new Vector(1,1,-(a+b)/c).normalize();
+        a = getXyz().d1;
+        b = getXyz().d2;
+        c = getXyz().d3;
+
+        // Checking if c is not zero
+        if (!Util.isZero(c)) {
+            // Returning a vector orthogonal to (1,1,c)
+            return new Vector(1d, 1d, -(a + b) / c).normalize();
         }
-        else if(!Util.isZero(b))
-        {
-            return new Vector(1,-(a+c)/b,1).normalize();
+        // Checking if b is not zero
+        else if (!Util.isZero(b)) {
+            // Returning a vector orthogonal to (1,b,1)
+            return new Vector(1d, -(a + c) / b, 1d).normalize();
         }
-        else{
-            return new Vector(-(b+c)/a,1,1).normalize();
+        else {
+            // Returning a vector orthogonal to (a,1,1)
+            return new Vector(-(b + c) / a, 1d, 1d).normalize();
         }
     }
+
 }

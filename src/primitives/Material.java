@@ -23,6 +23,20 @@ public class Material {
     /** The shininess coefficient. */
     public int nShininess = 1;
 
+    public int gloss = 0;
+
+    public int diff = 0;
+
+    public Material setGloss(int gloss) {
+        this.gloss = gloss;
+        return this;
+    }
+
+    public Material setDiff(int diff) {
+        this.diff = diff;
+        return this;
+    }
+
     /**
      * Sets the diffuse reflection coefficient.
      *
