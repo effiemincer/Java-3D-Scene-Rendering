@@ -200,9 +200,9 @@ public class SimpleRayTracer extends RayTracerBase {
             if (pointsReflected != null) {
                 for (Point p : pointsReflected) {
                     Ray reflectedRay2 = new Ray(gp.point, p.subtract(gp.point), n);
-                    reflectedColor.add(calcGlobalEffect(reflectedRay2, level, k, material.kR));
+                    reflectedColor = reflectedColor.add(calcGlobalEffect(reflectedRay2, level, k, material.kR));
                 }
-                reflectedColor.reduce(pointsReflected.size());
+                reflectedColor = reflectedColor.reduce(pointsReflected.size());
             }
         }
 
@@ -215,9 +215,9 @@ public class SimpleRayTracer extends RayTracerBase {
             //1 for loop for refracted rays
             for (Point q : pointsRefracted) {
                 Ray refractedRay2 = new Ray(gp.point, q.subtract(gp.point), n);
-                refractedColor.add(calcGlobalEffect(refractedRay2, level, k, material.kT));
+                refractedColor = refractedColor.add(calcGlobalEffect(refractedRay2, level, k, material.kT));
             }
-            refractedColor.reduce(pointsRefracted.size());
+            refractedColor = refractedColor.reduce(pointsRefracted.size());
         }
 
         return reflectedColor.add(refractedColor);

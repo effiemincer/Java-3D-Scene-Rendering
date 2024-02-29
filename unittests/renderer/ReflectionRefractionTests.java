@@ -128,7 +128,7 @@ public class ReflectionRefractionTests {
                                 .setKt(new Double3(0.5, 0, 0))),
                 new Sphere(600d, new Point(100, -250, -2000)).setEmission(new Color(0, 100, 0))
                         .setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20)
-                                .setKr(new Double3(.3))),
+                                .setKr(new Double3(.3)).setGloss(10)),
                 new Triangle(new Point(1500, -1500, -1500), new Point(-1500, -1500, -1500),
                         new Point(670, -670, 1500))
                         .setEmission(new Color(255, 255, 255))
