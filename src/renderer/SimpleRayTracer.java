@@ -195,7 +195,7 @@ public class SimpleRayTracer extends RayTracerBase {
             reflectedColor = calcGlobalEffect(reflectedRay, level, k, material.kR);
         }
         else{
-            LinkedList<Point> pointsReflected = (reflectedRay == null) ? null  : Blackboard.generatePointsCircle(reflectedRay, gp.point.add(reflectedRay.getDirection().scale(material.gloss)), RADIUS, 10);
+            LinkedList<Point> pointsReflected = (reflectedRay == null) ? null  : Blackboard.generatePointsCircle(reflectedRay, gp.point.add(reflectedRay.getDirection().scale(material.gloss)), RADIUS, 100);
             //1 for loop for reflected rays
             if (pointsReflected != null) {
                 for (Point p : pointsReflected) {
@@ -211,7 +211,7 @@ public class SimpleRayTracer extends RayTracerBase {
             refractedColor = calcGlobalEffect(refractedRay, level, k, material.kT);
         }
         else{
-            LinkedList<Point> pointsRefracted = Blackboard.generatePointsCircle(refractedRay, gp.point.add(refractedRay.getDirection().scale(material.diff)), RADIUS, 10);
+            LinkedList<Point> pointsRefracted = Blackboard.generatePointsCircle(refractedRay, gp.point.add(refractedRay.getDirection().scale(material.diff)), RADIUS, 100);
             //1 for loop for refracted rays
             for (Point q : pointsRefracted) {
                 Ray refractedRay2 = new Ray(gp.point, q.subtract(gp.point), n);
