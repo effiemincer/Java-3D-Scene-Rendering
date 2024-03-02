@@ -12,8 +12,6 @@ public class Blackboard {
     public static LinkedList<Point> generatePointsSquare(Point center, double size, Vector vUp, Vector vRight, int numberOfRays) {
         LinkedList<Point> points = new LinkedList<>();
 
-        //TODO: add a check to make sure that the ray is perpendicular to the circle being generated
-
         //2x2, 3x3, 9x9, 17x17, 33x33
         int sqrt = (int) Math.sqrt(numberOfRays);
         double offset = 1d / ((double) sqrt + 1d);
@@ -32,7 +30,7 @@ public class Blackboard {
         }
 
             return points;
-        }
+    }
 
     public static LinkedList<Point> generatePointsCircle(Ray originalRay, Point center, double radius, int numberOfRays){
         Vector vUp = originalRay.getDirection().findOrthogonal();

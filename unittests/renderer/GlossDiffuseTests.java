@@ -32,13 +32,13 @@ public class GlossDiffuseTests {
         scene.geometries.add(
                 new Sphere(50d, new Point(0, 0, 0)) //
                         .setEmission(new Color(RED)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30)), //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30).setKr(0.85).setGloss(225)), //
                 new Triangle(new Point(-150, 100, 400), new Point(150, 100, 400), new Point(0, 0, -750)) //
                         .setEmission(new Color(0, 100, 0)) //
                         .setMaterial(new Material().setKd(0.05).setKs(0.15)),
                 new Triangle(new Point(-150, -100, 400), new Point(150, -100, 400), new Point(0, 0, -750)) //
                         .setEmission(new Color(0, 0, 100)) //
-                        .setMaterial(new Material().setKd(0.05).setKs(0.15).setKr(0.85).setGloss(75))
+                        .setMaterial(new Material().setKd(0.05).setKs(0.15).setKr(0.85).setGloss(225))
         );
         //scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
         scene.lights.add(
@@ -79,6 +79,35 @@ public class GlossDiffuseTests {
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(7500)
                 .setVpSize(2500, 2500)
                 .setImageWriter(new ImageWriter("DiffuseTest", 500, 500)).setTotalRays(10)
+                .build()
+                .renderImage()
+                .writeToImage();
+    }
+
+    @Test
+    public void DiffuseTest2() {
+        scene.geometries.add(
+                new Sphere(50d, new Point(0, 0, 100)) //
+                        .setEmission(new Color(BLUE)) ///
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30).setKt(0.75).setDiff(250)), //
+                new Sphere(25d, new Point(-25, 0, 0)) //
+                        .setEmission(new Color(RED)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30)), //
+                new Triangle(new Point(0, 0, 0), new Point(150, -100, 0), new Point(0, 100, 0)) //
+                         //.setEmission(new Color(GREEN)) //
+                        .setMaterial(new Material().setKd(0.05).setKs(0.15).setKt(0.95).setDiff(250)), //
+                new Sphere(25d, new Point(50, 0, -100)) //
+                        .setEmission(new Color(RED)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30)) //
+        );
+        scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.05));
+        scene.lights.add(
+                new SpotLight(new Color(255, 255, 255), new Point(0, 0, 200), new Vector(-1, -1, -4)) //
+                        .setKl(4E-4).setKq(2E-5));
+
+        cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(7500)
+                .setVpSize(2500, 2500)
+                .setImageWriter(new ImageWriter("DiffuseTest2", 500, 500)).setTotalRays(10)
                 .build()
                 .renderImage()
                 .writeToImage();
