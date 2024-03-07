@@ -5,6 +5,7 @@ import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.*;
@@ -27,6 +28,8 @@ public class SimpleRayTracer extends RayTracerBase {
      * The maximum level of recursion for calculating the color of a point in the scene.
      */
     private static final int MAX_CALC_COLOR_LEVEL = 10;
+
+    private static final int RADIUS = 20;
 
     /**
      * Constructs a SimpleRayTracer object with the given scene.
@@ -180,8 +183,56 @@ public class SimpleRayTracer extends RayTracerBase {
         Vector v = ray.getDirection();
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        return calcGlobalEffect(constructReflectedRay(gp, v, n), level, k, material.kR)
-                .add(calcGlobalEffect(constructRefractedRay(gp, v, n), level, k, material.kT));
+
+        Ray reflectedRay = constructReflectedRay(gp, v, n);
+        Ray refractedRay = constructRefractedRay(gp, v, n.scale(-1));
+
+        Color reflectedColor = Color.BLACK;
+        Color refractedColor = Color.BLACK;
+
+        //glossy
+        if (material.gloss == 0){
+            reflectedColor = calcGlobalEffect(reflectedRay, level, k, material.kR);
+        }
+        else{
+            LinkedList<Point> pointsReflected = Blackboard.generatePointsCircle(reflectedRay, gp.point.add(reflectedRay.getDirection().scale(material.gloss)), RADIUS, 4);
+            int pointsSizeReflected = pointsReflected.size();
+            //1 for loop for reflected rays
+            for (Point p : pointsReflected) {
+                Ray reflectedRay2 = new Ray(gp.point, p.subtract(gp.point), n);
+                //this allows us to check if the reflected ray is in the same direction as the original ray
+                double nr = alignZero(n.dotProduct(reflectedRay2.getDirection()));
+                double nc = alignZero(n.dotProduct(reflectedRay.getDirection()));
+                if (nr * nc > 0)
+                    reflectedColor = reflectedColor.add(calcGlobalEffect(reflectedRay2, level, k, material.kR));
+                else
+                    pointsSizeReflected--;
+            }
+            reflectedColor = reflectedColor.reduce(pointsSizeReflected);
+        }
+
+        //diffuse
+        if (material.diff == 0){
+            refractedColor = calcGlobalEffect(refractedRay, level, k, material.kT);
+        }
+        else{
+            LinkedList<Point> pointsRefracted = Blackboard.generatePointsCircle(refractedRay, gp.point.add(refractedRay.getDirection().scale(material.diff)), RADIUS, 4);
+            int pointsSizeRefracted = pointsRefracted.size();
+            //1 for loop for refracted rays
+            for (Point q : pointsRefracted) {
+                Ray refractedRay2 = new Ray(gp.point, q.subtract(gp.point), n.scale(-1));
+                double nrRefracted = alignZero(n.dotProduct(refractedRay2.getDirection()));
+                double ncRefracted = alignZero(n.dotProduct(refractedRay.getDirection()));
+                if (nrRefracted * ncRefracted > 0)
+                    refractedColor = refractedColor.add(calcGlobalEffect(refractedRay2, level, k, material.kT));
+                else
+                    pointsSizeRefracted--;
+            }
+            refractedColor = refractedColor.reduce(pointsSizeRefracted);
+        }
+
+        return reflectedColor.add(refractedColor);
+
     }
 
     /**
@@ -221,8 +272,8 @@ public class SimpleRayTracer extends RayTracerBase {
      * @return The reflected ray
      */
     private Ray constructReflectedRay(GeoPoint gp, Vector v, Vector n) {
-        double vn = v.dotProduct(n);
-        if (vn == 0) return null;
+        double vn = alignZero(v.dotProduct(n));
+        //if (vn == 0) return null;
         Vector r = v.subtract(n.scale(2 * vn));
         return new Ray(gp.point, r, n);
     }
