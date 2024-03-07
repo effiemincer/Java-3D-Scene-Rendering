@@ -27,6 +27,9 @@ public class GlossDiffuseTests {
             .setDirection(Point.ZERO, Vector.Y)
             .setRayTracer(new SimpleRayTracer(scene));
 
+    /**
+     * Produce a picture of a sphere and a triangle with a spot light testing gloss
+     */
     @Test
     public void GlossTest() {
         scene.geometries.add(
@@ -84,6 +87,9 @@ public class GlossDiffuseTests {
                 .writeToImage();
     }
 
+    /**
+     * Produce a picture of a sphere and a triangle with a spot light testing diffuse
+     */
     @Test
     public void DiffuseTest2() {
         scene.geometries.add(

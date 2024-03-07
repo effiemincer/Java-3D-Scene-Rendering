@@ -7,8 +7,21 @@ import primitives.Vector;
 
 import java.util.LinkedList;
 
+/**
+ * Blackboard class is a helper class for generating points on a square or a circle
+ */
 public class Blackboard {
 
+    /**
+     * Generate points on a square
+     *
+     * @param center the center of the square
+     * @param size the size of the square
+     * @param vUp the up vector
+     * @param vRight the right vector
+     * @param numberOfRays the number of rays to generate
+     * @return a list of points on the square
+     */
     public static LinkedList<Point> generatePointsSquare(Point center, double size, Vector vUp, Vector vRight, int numberOfRays) {
         LinkedList<Point> points = new LinkedList<>();
 
@@ -32,6 +45,15 @@ public class Blackboard {
             return points;
     }
 
+    /**
+     * Generate points on a circle
+     *
+     * @param originalRay the original ray
+     * @param center the center of the circle
+     * @param radius the radius of the circle
+     * @param numberOfRays the number of rays to generate
+     * @return a list of points on the circle
+     */
     public static LinkedList<Point> generatePointsCircle(Ray originalRay, Point center, double radius, int numberOfRays){
         Vector vUp = originalRay.getDirection().findOrthogonal();
         Vector vRight = calcVRight(vUp, originalRay.getDirection());

@@ -80,6 +80,10 @@ public class Camera implements Cloneable {
         return vRight;
     }
 
+    /**
+     * Gets the width of the view plane.
+     * @return the width of the view plane
+     */
     public int getTotalRays() {
         return totalRays;
     }
