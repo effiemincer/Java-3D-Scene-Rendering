@@ -1572,7 +1572,7 @@ public class TeapotTest {
         cameraBuilder
                 .setMultiThreading(3)
                 .setDebugPrint(0.1)
-              //.setTotalRays(30)
+                //.setTotalRays(30)
                 .build()
                 .renderImage()
                 .printGrid(50, new Color(YELLOW))
