@@ -113,7 +113,8 @@ public class GlossDiffuseTests {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(7500)
                 .setVpSize(2500, 2500)
-                .setImageWriter(new ImageWriter("DiffuseTest2", 500, 500)).setTotalRays(10)
+                .setImageWriter(new ImageWriter("DiffuseTest2", 500, 500))
+                .setTotalRays(10)
                 .build()
                 .renderImage()
                 .writeToImage();

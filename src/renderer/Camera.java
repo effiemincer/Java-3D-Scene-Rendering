@@ -7,6 +7,7 @@ import primitives.Ray;
 
 import java.util.LinkedList;
 import java.util.MissingResourceException;
+import java.util.stream.*;
 
 /**
  * Represents a camera used for rendering images.
@@ -23,6 +24,9 @@ public class Camera implements Cloneable {
     private double distance = 0d;
     private Point ViewPlaneCenter;
     private int totalRays = 1;
+    private int threads = 1;
+    private double printInterval = 0;
+    private PixelManager pixelManager;
 
     private Camera() {
     }
@@ -124,10 +128,25 @@ public class Camera implements Cloneable {
     public Camera renderImage() {
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        for (int j = 0; j < nX; j++) {
-            for (int i = 0; i < nY; i++) {
-                castRay(nX, nY, j, i);
+
+        //single thread
+        if (threads == 1) {
+            for (int j = 0; j < nX; j++) {
+                for (int i = 0; i < nY; i++) {
+                    castRay(nX, nY, j, i);
+                }
             }
+        }
+
+        //multithreading
+        else{
+            pixelManager = new PixelManager(nX, nY, printInterval);
+            IntStream.range(0,nY).parallel().forEach(i ->{
+                IntStream.range(0,nX).forEach(j ->{
+                    castRay(nX, nY, j, i);
+                    pixelManager.pixelDone();
+                });
+            });
         }
         return this;
     }
@@ -310,12 +329,24 @@ public class Camera implements Cloneable {
             return this;
         }
 
+        /**
+         * Sets the image writer to use for rendering.
+         *
+         * @param iw The image writer to use.
+         * @return The builder instance.
+         */
         public Builder setImageWriter(ImageWriter iw) {
             this.camera.imageWriter = iw;
 
             return this;
         }
 
+        /**
+         * Sets the ray tracer to use for rendering.
+         *
+         * @param rtb The ray tracer to use.
+         * @return The builder instance.
+         */
         public Builder setRayTracer(RayTracerBase rtb) {
             this.camera.rayTracer = rtb;
 
@@ -326,8 +357,30 @@ public class Camera implements Cloneable {
             return this;
         }
 
+        /**
+         * Sets the number of rays to cast through each pixel.
+         *
+         * @param totalRays The number of rays to cast.
+         * @return The builder instance.
+         */
         public Builder setTotalRays(int totalRays) {
             this.camera.totalRays = totalRays;
+            return this;
+        }
+
+        /**
+         * Sets the number of threads to use for rendering.
+         *
+         * @param nThreads The number of threads to use.
+         * @return The builder instance.
+         */
+        public Builder setMultiThreading(int nThreads) {
+            this.camera.threads = nThreads;
+            return this;
+        }
+
+        public Builder setDebugPrint(double interval) {
+            this.camera.printInterval = interval;
             return this;
         }
 
@@ -360,6 +413,16 @@ public class Camera implements Cloneable {
 
             if (this.camera.rayTracer == null)
                 throw new MissingResourceException(renderDataMissing, cameraClass, "RayTracer is null");
+
+            if (this.camera.threads < 1)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Number of threads is below zero");
+
+            if (this.camera.totalRays < 1)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Number of rays is below one");
+
+            if (this.camera.printInterval < 0)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Debug print is below zero");
+
 
             try {
                 return (Camera) camera.clone();
