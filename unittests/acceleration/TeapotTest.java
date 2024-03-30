@@ -21,7 +21,7 @@ import scene.Scene;
  * @author Dan
  */
 public class TeapotTest {
-    private final ImageWriter imageWriter = new ImageWriter("teapot", 800, 800);
+    private final ImageWriter imageWriter = new ImageWriter("teapot2", 800, 800);
 
     private final Scene scene = new Scene("Test scene");
 
@@ -1572,7 +1572,8 @@ public class TeapotTest {
         cameraBuilder
                 .setMultiThreading(3)
                 .setDebugPrint(0.1)
-                //.setTotalRays(30)
+                .setAdaptive(true)
+                //.setTotalRays(10)
                 .build()
                 .renderImage()
                 .printGrid(50, new Color(YELLOW))

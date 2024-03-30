@@ -27,6 +27,7 @@ public class Camera implements Cloneable {
     private int threads = 1;
     private double printInterval = 0;
     private PixelManager pixelManager;
+    private boolean adaptive = false;
 
     private Camera() {
     }
@@ -92,7 +93,37 @@ public class Camera implements Cloneable {
         return totalRays;
     }
 
+    /**
+     * Gets the number of threads used for rendering.
+     * @return The number of threads used for rendering.
+     */
+    public int getThreads() {
+        return threads;
+    }
 
+    /**
+     * Gets the print interval for debugging.
+     * @return The print interval for debugging.
+     */
+    public double getPrintInterval() {
+        return printInterval;
+    }
+
+    /**
+     * Gets the image writer used for rendering.
+     * @return The image writer used for rendering.
+     */
+    public RayTracerBase getRayTracer() {
+        return rayTracer;
+    }
+
+    /**
+     * Gets the image writer used for rendering.
+     * @return The image writer used for rendering.
+     */
+    public boolean getAdaptive() {
+        return adaptive;
+    }
 
     /**
      * Prints a grid on the image with the specified interval and color.
@@ -141,10 +172,20 @@ public class Camera implements Cloneable {
         //multithreading
         else{
             pixelManager = new PixelManager(nX, nY, printInterval);
+//            while (threads-- > 0){
+//                new Thread(() -> {
+//                    for (PixelManager.Pixel pixel = pixelManager.nextPixel(); pixel != null; pixel = pixelManager.nextPixel()){
+//                        castRay(nX, nY, pixel.col, pixel.row);
+//                        pixelManager.pixelDone();
+//                    }
+//                }).start();
+//            }
+
             IntStream.range(0,nY).parallel().forEach(i ->{
                 IntStream.range(0,nX).forEach(j ->{
                     castRay(nX, nY, j, i);
                     pixelManager.pixelDone();
+                    //pixelManager.printPixel();
                 });
             });
         }
@@ -163,12 +204,10 @@ public class Camera implements Cloneable {
         Ray r = constructRay(Nx, Ny, j, i);
 
         //if totalRays is one then don't do super Sampling
-        if (totalRays == 1) {
+        if (totalRays == 1 && !adaptive) {
             imageWriter.writePixel(j, i, rayTracer.traceRay(r));
             return;
         }
-
-        Color avgColor = Color.BLACK;
 
         // Calculate the pixel dimensions
         double Rx = height / Nx;
@@ -187,14 +226,25 @@ public class Camera implements Cloneable {
         // Adjust the point based on the vertical position of the pixel
         if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
 
-        LinkedList<Point> points = Blackboard.generatePointsSquare(pIJ, Rx, vUp, vRight, totalRays);
-
-        for (Point p : points) {
-            Ray ray = new Ray(location, p.subtract(location));
-            avgColor = avgColor.add(rayTracer.traceRay(ray));
+        //if there is adaptive super sampling
+        if (adaptive) {
+            //center of the first pixel
+            Color prevAvgColor = rayTracer.traceRay(r);
+            //Ray centerRay = new Ray(location, pIJ.subtract(location));
+            Color avgColor = Blackboard.adaptiveSuperSampling(pIJ, Rx, vUp, vRight, prevAvgColor, this, 3);
+            imageWriter.writePixel(j, i, avgColor);
+        }
+        //No adaptive super sampling
+        else {
+            Color avgColor = Color.BLACK;
+            LinkedList<Point> points = Blackboard.generatePointsSquare(pIJ, Rx, vUp, vRight, totalRays);
+            for (Point p : points) {
+                Ray ray = new Ray(location, p.subtract(location));
+                avgColor = avgColor.add(rayTracer.traceRay(ray));
+            }
+            imageWriter.writePixel(j, i, avgColor.reduce(points.size()));
         }
 
-        imageWriter.writePixel(j, i, avgColor.reduce(points.size()));
     }
 
     /**
@@ -379,8 +429,25 @@ public class Camera implements Cloneable {
             return this;
         }
 
+        /**
+         * Sets the print interval for debugging.
+         *
+         * @param interval The interval for printing debug information.
+         * @return The builder instance.
+         */
         public Builder setDebugPrint(double interval) {
             this.camera.printInterval = interval;
+            return this;
+        }
+
+        /**
+         * Sets the adaptive super sampling flag.
+         *
+         * @param adaptive The adaptive super sampling flag.
+         * @return The builder instance.
+         */
+        public Builder setAdaptive(boolean adaptive) {
+            this.camera.adaptive = adaptive;
             return this;
         }
 
