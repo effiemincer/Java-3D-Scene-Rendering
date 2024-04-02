@@ -19,6 +19,9 @@ import scene.Scene;
 
 import static java.awt.Color.*;
 
+/**
+ * Final presentation scene
+ */
 public class FinalPresentation  {
 
     private final Scene scene = new Scene("Test scene");
@@ -43,9 +46,6 @@ public class FinalPresentation  {
                 new Sphere(10d, new Point(0, -30, 350))
                         .setEmission(new Color(BLACK))
                         .setMaterial(new Material().setKd(0.05).setKs(0.15).setKr(0.85).setGloss(225)),
-//                new Sphere(10d, new Point(0, 40, 350))
-//                        .setEmission(new Color(DARK_GRAY))
-//                        .setMaterial(new Material().setKd(0.5).setKs(0.15).setKr(0.6)),
                 new Plane(new Point(0, -40, 0), new Vector(0,1, 0))
                         .setEmission(new Color(45, 100, 210))
                         .setMaterial(new Material().setKd(0.5).setKs(0.15)));
