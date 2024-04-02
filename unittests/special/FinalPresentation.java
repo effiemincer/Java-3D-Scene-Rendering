@@ -57,8 +57,8 @@ public class FinalPresentation  {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpSize(200, 200).setVpDistance(1000)
                 .setDebugPrint(0.1).setMultiThreading(3)
-                .setAdaptiveDepth(2)
-                //.setTotalRays(9)
+                .setAdaptiveDepth(4)
+                //.setTotalRays(81)
                 .setImageWriter(new ImageWriter("Final Presentation", 500, 500))
                 .build()
                 .renderImage()
