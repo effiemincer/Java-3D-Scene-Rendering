@@ -1,4 +1,4 @@
-package acceleration;
+package special;
 
 import geometries.Sphere;
 import geometries.Triangle;
@@ -40,8 +40,8 @@ public class AdaptiveSamplingTest {
 
         cameraBuilder.setLocation(new Point(0, 0, 1000)).setVpDistance(1000)
                 .setVpSize(200, 200).setDebugPrint(0.1).setMultiThreading(3)
-                .setAdaptive(true)
-                //.setTotalRays(9)
+                .setAdaptiveDepth(3)
+                //.setTotalRays(81)
                 .setImageWriter(new ImageWriter("Adaptive Sampling test", 600, 600))
                 .build()
                 .renderImage()

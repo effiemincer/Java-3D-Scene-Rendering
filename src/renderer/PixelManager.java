@@ -92,17 +92,4 @@ class PixelManager {
         }
     }
 
-    /**
-     * Print pixel progress percentage
-     */
-    void printPixel() {
-        long current = pixels;
-        if (print) {
-            int percentage = (int) (1000l * current / totalPixels);
-            if (lastPrinted != percentage) {
-                lastPrinted = percentage;
-                System.out.printf(PRINT_FORMAT, percentage / 10d);
-            }
-        }
-    }
 }

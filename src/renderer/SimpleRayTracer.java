@@ -194,8 +194,9 @@ public class SimpleRayTracer extends RayTracerBase {
         if (material.gloss == 0){
             reflectedColor = calcGlobalEffect(reflectedRay, level, k, material.kR);
         }
+
         else{
-            LinkedList<Point> pointsReflected = Blackboard.generatePointsCircle(reflectedRay, gp.point.add(reflectedRay.getDirection().scale(material.gloss)), RADIUS, 4);
+            LinkedList<Point> pointsReflected = Blackboard.generatePointsCircle(reflectedRay, gp.point.add(reflectedRay.getDirection().scale(material.gloss)), RADIUS, 9);
             int pointsSizeReflected = pointsReflected.size();
             //1 for loop for reflected rays
             for (Point p : pointsReflected) {
@@ -208,7 +209,10 @@ public class SimpleRayTracer extends RayTracerBase {
                 else
                     pointsSizeReflected--;
             }
-            reflectedColor = reflectedColor.reduce(pointsSizeReflected);
+            if (pointsSizeReflected == 0)
+                reflectedColor = calcGlobalEffect(reflectedRay, level, k, material.kR);
+            else
+                reflectedColor = reflectedColor.reduce(pointsSizeReflected);
         }
 
         //diffuse
@@ -216,7 +220,7 @@ public class SimpleRayTracer extends RayTracerBase {
             refractedColor = calcGlobalEffect(refractedRay, level, k, material.kT);
         }
         else{
-            LinkedList<Point> pointsRefracted = Blackboard.generatePointsCircle(refractedRay, gp.point.add(refractedRay.getDirection().scale(material.diff)), RADIUS, 4);
+            LinkedList<Point> pointsRefracted = Blackboard.generatePointsCircle(refractedRay, gp.point.add(refractedRay.getDirection().scale(material.diff)), RADIUS, 64);
             int pointsSizeRefracted = pointsRefracted.size();
             //1 for loop for refracted rays
             for (Point q : pointsRefracted) {
@@ -228,7 +232,10 @@ public class SimpleRayTracer extends RayTracerBase {
                 else
                     pointsSizeRefracted--;
             }
-            refractedColor = refractedColor.reduce(pointsSizeRefracted);
+            if (pointsSizeRefracted == 0)
+                refractedColor = calcGlobalEffect(refractedRay, level, k, material.kT);
+            else
+                refractedColor = refractedColor.reduce(pointsSizeRefracted);
         }
 
         return reflectedColor.add(refractedColor);
@@ -273,7 +280,7 @@ public class SimpleRayTracer extends RayTracerBase {
      */
     private Ray constructReflectedRay(GeoPoint gp, Vector v, Vector n) {
         double vn = alignZero(v.dotProduct(n));
-        //if (vn == 0) return null;
+        if (vn == 0) return null;
         Vector r = v.subtract(n.scale(2 * vn));
         return new Ray(gp.point, r, n);
     }

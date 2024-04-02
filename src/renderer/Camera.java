@@ -1,5 +1,6 @@
 package renderer;
 
+import org.junit.jupiter.api.extension.BeforeAllCallback;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -27,7 +28,7 @@ public class Camera implements Cloneable {
     private int threads = 1;
     private double printInterval = 0;
     private PixelManager pixelManager;
-    private boolean adaptive = false;
+    private int adaptiveDepth = 0;
 
     private Camera() {
     }
@@ -121,8 +122,8 @@ public class Camera implements Cloneable {
      * Gets the image writer used for rendering.
      * @return The image writer used for rendering.
      */
-    public boolean getAdaptive() {
-        return adaptive;
+    public int getAdaptiveDepth() {
+        return adaptiveDepth;
     }
 
     /**
@@ -172,20 +173,10 @@ public class Camera implements Cloneable {
         //multithreading
         else{
             pixelManager = new PixelManager(nX, nY, printInterval);
-//            while (threads-- > 0){
-//                new Thread(() -> {
-//                    for (PixelManager.Pixel pixel = pixelManager.nextPixel(); pixel != null; pixel = pixelManager.nextPixel()){
-//                        castRay(nX, nY, pixel.col, pixel.row);
-//                        pixelManager.pixelDone();
-//                    }
-//                }).start();
-//            }
-
             IntStream.range(0,nY).parallel().forEach(i ->{
                 IntStream.range(0,nX).forEach(j ->{
                     castRay(nX, nY, j, i);
                     pixelManager.pixelDone();
-                    //pixelManager.printPixel();
                 });
             });
         }
@@ -204,14 +195,14 @@ public class Camera implements Cloneable {
         Ray r = constructRay(Nx, Ny, j, i);
 
         //if totalRays is one then don't do super Sampling
-        if (totalRays == 1 && !adaptive) {
+        if (totalRays == 1 && adaptiveDepth == 0) {
             imageWriter.writePixel(j, i, rayTracer.traceRay(r));
             return;
         }
 
         // Calculate the pixel dimensions
-        double Rx = height / Nx;
-        double Ry = width / Ny;
+        double Rx = width / Nx;
+        double Ry = height / Ny;
 
         // Calculate the position of the pixel on the image plane
         double xJ = (j - (Nx - 1) / 2d) * Rx;
@@ -227,12 +218,8 @@ public class Camera implements Cloneable {
         if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
 
         //if there is adaptive super sampling
-        if (adaptive) {
-            //center of the first pixel
-            Color prevAvgColor = rayTracer.traceRay(r);
-            //Ray centerRay = new Ray(location, pIJ.subtract(location));
-            Color avgColor = Blackboard.adaptiveSuperSampling(pIJ, Rx, vUp, vRight, prevAvgColor, this, 3);
-            imageWriter.writePixel(j, i, avgColor);
+        if (adaptiveDepth > 0) {
+            imageWriter.writePixel(j, i, Blackboard.adaptiveSuperSampling(Blackboard.generatePointsSquare(pIJ, Rx, vUp, vRight, 4), pIJ, rayTracer.traceRay(r), Rx, vUp, vRight, this, adaptiveDepth));
         }
         //No adaptive super sampling
         else {
@@ -443,11 +430,11 @@ public class Camera implements Cloneable {
         /**
          * Sets the adaptive super sampling flag.
          *
-         * @param adaptive The adaptive super sampling flag.
+         * @param adaptiveDepth The adaptive super sampling flag.
          * @return The builder instance.
          */
-        public Builder setAdaptive(boolean adaptive) {
-            this.camera.adaptive = adaptive;
+        public Builder setAdaptiveDepth(int adaptiveDepth) {
+            this.camera.adaptiveDepth = adaptiveDepth;
             return this;
         }
 
@@ -490,6 +477,8 @@ public class Camera implements Cloneable {
             if (this.camera.printInterval < 0)
                 throw new MissingResourceException(renderDataMissing, cameraClass, "Debug print is below zero");
 
+            if (this.camera.adaptiveDepth < 0)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Adaptive depth is below zero");
 
             try {
                 return (Camera) camera.clone();

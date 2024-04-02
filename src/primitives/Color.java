@@ -81,6 +81,23 @@ public class Color {
    }
 
    /**
+    * Operation of adding this and one or more other colors (by component)
+    * @param  colors one or more other colors to add
+    * @return        new Color object which is a result of the operation
+    */
+   public Color subtract(Color... colors) {
+      double rr = rgb.d1;
+      double rg = rgb.d2;
+      double rb = rgb.d3;
+      for (Color c : colors) {
+         rr = Math.abs(rr - c.rgb.d1);
+         rg = Math.abs(rg - c.rgb.d2);
+         rb = Math.abs(rb - c.rgb.d3);
+      }
+      return new Color(rr, rg, rb);
+   }
+
+   /**
     * Scale the color by a scalar triad per rgb
     * @param  k scale factor per rgb
     * @return   new Color object which is the result of the operation
@@ -110,6 +127,19 @@ public class Color {
       if (k < 1) throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
       return new Color(rgb.reduce(k));
    }
+
+   /**
+    * Check if two colors are similar
+    * @param color1
+    * @param color2
+    * @return true if the colors are similar, false otherwise
+    */
+   public static boolean isColorSimilar(Color color1, Color color2) {
+      Color res = color1.subtract(color2);
+
+      return res.getColor().getBlue() == 0 && res.getColor().getGreen() == 0 && res.getColor().getRed() == 0;
+   }
+
 
    @Override
    public String toString() { return "rgb:" + rgb; }

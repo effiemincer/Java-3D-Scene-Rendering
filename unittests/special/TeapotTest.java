@@ -1,4 +1,4 @@
-package acceleration;
+package special;
 
 import static java.awt.Color.YELLOW;
 
@@ -1572,8 +1572,8 @@ public class TeapotTest {
         cameraBuilder
                 .setMultiThreading(3)
                 .setDebugPrint(0.1)
-                .setAdaptive(true)
-                //.setTotalRays(10)
+                //.setAdaptiveDepth(1)
+                //.setTotalRays(81)
                 .build()
                 .renderImage()
                 .printGrid(50, new Color(YELLOW))
