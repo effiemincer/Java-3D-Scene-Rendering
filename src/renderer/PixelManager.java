@@ -91,4 +91,5 @@ class PixelManager {
             if (flag) System.out.printf(PRINT_FORMAT, percentage / 10d);
         }
     }
+
 }

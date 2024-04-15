@@ -1,5 +1,6 @@
 package renderer;
 
+import org.junit.jupiter.api.extension.BeforeAllCallback;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -27,6 +28,7 @@ public class Camera implements Cloneable {
     private int threads = 1;
     private double printInterval = 0;
     private PixelManager pixelManager;
+    private int adaptiveDepth = 0;
 
     private Camera() {
     }
@@ -92,7 +94,37 @@ public class Camera implements Cloneable {
         return totalRays;
     }
 
+    /**
+     * Gets the number of threads used for rendering.
+     * @return The number of threads used for rendering.
+     */
+    public int getThreads() {
+        return threads;
+    }
 
+    /**
+     * Gets the print interval for debugging.
+     * @return The print interval for debugging.
+     */
+    public double getPrintInterval() {
+        return printInterval;
+    }
+
+    /**
+     * Gets the image writer used for rendering.
+     * @return The image writer used for rendering.
+     */
+    public RayTracerBase getRayTracer() {
+        return rayTracer;
+    }
+
+    /**
+     * Gets the image writer used for rendering.
+     * @return The image writer used for rendering.
+     */
+    public int getAdaptiveDepth() {
+        return adaptiveDepth;
+    }
 
     /**
      * Prints a grid on the image with the specified interval and color.
@@ -163,16 +195,14 @@ public class Camera implements Cloneable {
         Ray r = constructRay(Nx, Ny, j, i);
 
         //if totalRays is one then don't do super Sampling
-        if (totalRays == 1) {
+        if (totalRays == 1 && adaptiveDepth == 0) {
             imageWriter.writePixel(j, i, rayTracer.traceRay(r));
             return;
         }
 
-        Color avgColor = Color.BLACK;
-
         // Calculate the pixel dimensions
-        double Rx = height / Nx;
-        double Ry = width / Ny;
+        double Rx = width / Nx;
+        double Ry = height / Ny;
 
         // Calculate the position of the pixel on the image plane
         double xJ = (j - (Nx - 1) / 2d) * Rx;
@@ -187,14 +217,21 @@ public class Camera implements Cloneable {
         // Adjust the point based on the vertical position of the pixel
         if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
 
-        LinkedList<Point> points = Blackboard.generatePointsSquare(pIJ, Rx, vUp, vRight, totalRays);
-
-        for (Point p : points) {
-            Ray ray = new Ray(location, p.subtract(location));
-            avgColor = avgColor.add(rayTracer.traceRay(ray));
+        //if there is adaptive super sampling
+        if (adaptiveDepth > 0) {
+            imageWriter.writePixel(j, i, Blackboard.adaptiveSuperSampling(Blackboard.generatePointsSquare(pIJ, Rx, vUp, vRight, 4), pIJ, rayTracer.traceRay(r), Rx, vUp, vRight, this, adaptiveDepth));
+        }
+        //No adaptive super sampling
+        else {
+            Color avgColor = Color.BLACK;
+            LinkedList<Point> points = Blackboard.generatePointsSquare(pIJ, Rx, vUp, vRight, totalRays);
+            for (Point p : points) {
+                Ray ray = new Ray(location, p.subtract(location));
+                avgColor = avgColor.add(rayTracer.traceRay(ray));
+            }
+            imageWriter.writePixel(j, i, avgColor.reduce(points.size()));
         }
 
-        imageWriter.writePixel(j, i, avgColor.reduce(points.size()));
     }
 
     /**
@@ -379,8 +416,25 @@ public class Camera implements Cloneable {
             return this;
         }
 
+        /**
+         * Sets the print interval for debugging.
+         *
+         * @param interval The interval for printing debug information.
+         * @return The builder instance.
+         */
         public Builder setDebugPrint(double interval) {
             this.camera.printInterval = interval;
+            return this;
+        }
+
+        /**
+         * Sets the adaptive super sampling flag.
+         *
+         * @param adaptiveDepth The adaptive super sampling flag.
+         * @return The builder instance.
+         */
+        public Builder setAdaptiveDepth(int adaptiveDepth) {
+            this.camera.adaptiveDepth = adaptiveDepth;
             return this;
         }
 
@@ -423,6 +477,8 @@ public class Camera implements Cloneable {
             if (this.camera.printInterval < 0)
                 throw new MissingResourceException(renderDataMissing, cameraClass, "Debug print is below zero");
 
+            if (this.camera.adaptiveDepth < 0)
+                throw new MissingResourceException(renderDataMissing, cameraClass, "Adaptive depth is below zero");
 
             try {
                 return (Camera) camera.clone();
