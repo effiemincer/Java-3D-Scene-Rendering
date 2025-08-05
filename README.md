@@ -58,3 +58,18 @@ Java-3D-Scene-Rendering/
 ├── scenes/              # Sample scene description files
 ├── output/              # Rendered image output
 └── README.md
+```
+
+---
+## 📚 Background
+This project was built as part of a university course in computer graphics and Java systems programming.
+
+Key learning outcomes:
+
+* Understanding 3D space, vector math, and lighting models
+
+* Recursive algorithms for ray tracing
+
+* Scene serialization and deserialization
+
+* Parallelization in Java
