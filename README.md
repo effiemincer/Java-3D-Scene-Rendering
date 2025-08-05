@@ -36,15 +36,6 @@ Rendering is parallelized using Java’s multithreading features to improve perf
 
 ---
 
-## 🧑‍💻 Authors
-**Effie Mincer**
-Computer Science @ JCT | [effiemincer.dev](https://www.effiemincer.dev)
-
-**Yehuda Gurovich**
-Computer Science @ JCT
-
----
-
 ## 🧱 Project Structure
 
 ```bash
@@ -73,3 +64,12 @@ Key learning outcomes:
 * Scene serialization and deserialization
 
 * Parallelization in Java
+
+---
+
+## 🧑‍💻 Authors
+**Effie Mincer**
+Computer Science @ JCT | [effiemincer.dev](https://www.effiemincer.dev)
+
+**Yehuda Gurovich**
+Computer Science @ JCT
