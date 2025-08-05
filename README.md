@@ -39,6 +39,7 @@ Rendering is parallelized using Java’s multithreading features to improve perf
 ## 🧑‍💻 Authors
 **Effie Mincer**
 Computer Science @ JCT | [effiemincer.dev](https://www.effiemincer.dev)
+
 **Yehuda Gurovich**
 Computer Science @ JCT
 
